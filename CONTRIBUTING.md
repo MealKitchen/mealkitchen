@@ -2,14 +2,13 @@
 
 ## High Level Workflow
 
-1. Fork the repo & clone to your local
-1. Cut a feature branch from master
+1. Fork the repo & clone to your local.
+1. Cut a feature branch from master.
 1. Make commits to your feature branch.
-1. When you've finished with your fix or feature, Rebase upstream changes into your branch. 
-1. Submit a [pull request][] to the master repo
-1. Your pull request will be reviewed by another maintainer and merged in if approved
-1. (Fix any issues raised by your code reviwer, and push your fixes as a single
-   new commit.)
+1. When you've finished with your fix or feature, rebase upstream changes into your branch. 
+1. Submit a pull request to the master repo.
+1. Your pull request will be reviewed by another team member and merged in if approved (or it will be sent back to you with comments).
+1. Clean up your master branches and optionally delete old branches.
 
 ## Detailed Workflow
 
