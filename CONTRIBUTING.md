@@ -1,20 +1,10 @@
 # Contributing
 
-## High Level Workflow
-
-1. Fork the repo & clone to your local.
-1. Cut a feature branch from master.
-1. Make commits to your feature branch.
-1. When you've finished with your fix or feature, rebase upstream changes into your branch. 
-1. Submit a pull request to the master repo.
-1. Your pull request will be reviewed by another team member and merged in if approved (or it will be sent back to you with comments).
-1. Clean up your master branches and optionally delete old branches.
-
 ## Detailed Workflow
 
 ### Step 1: Fork the repo
  
-Use github’s interface to make a fork of the master repo (github.com/<org_name>/<repo_name>.git). 
+Use github’s interface to make a fork of the master repo (github.com/ORG_NAME/REPO_NAME.git). 
 
 ### Step 2: Clone the repo
 
@@ -61,21 +51,22 @@ git pull --rebase upstream master
 
 This will start the rebase process. You must commit all of your changes
 before doing this. If there are no conflicts, this should just roll all
-of your changes back on top of the changes from upstream, leading to a
+of your changes back and the apply them one by one on top of the current upstream, leading to a
 nice, clean, linear commit history.
 
 If there are conflicting changes, git will start yelling at you part way
 through the rebasing process. Git will pause rebasing to allow you to sort
-out the conflicts. You do this the same way you solve merge conflicts,
-by checking all of the files git says have been changed in both histories
-and picking the versions you want. Be aware that these changes will show
-up in your pull request, so try and incorporate upstream changes as much
-as possible.
+out the conflicts. Look for the word "CONFLICT" in the command line output.
 
-You pick a file by `git add`ing it - you do not make commits during a
-rebase.
+To resolve conflicts, go to the file(s) that appear after "CONFLICT". You will see your version and HEAD's version on top of each other. Simply resolve the conflict as you see fit by picking the version you want to keep and deleting the other (and also deleting the lines that Git inserted).
 
-Once you are done fixing conflicts for a specific commit, run:
+Once you've resolved the conflicts in one file, you must then `git add` it to continue. NOTE: you do NOT commit while in the middle of a rebase process, only add.
+
+```bash
+git add FILE_NAME
+```
+
+Once you have added all the files that you have fixed conflicts for, run:
 
 ```bash
 git rebase --continue
