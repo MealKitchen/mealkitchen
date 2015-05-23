@@ -1,0 +1,30 @@
+{
+  "name": "mealplan",
+  "version": "0.0.0",
+  "homepage": "https://github.com/Unconditional-Chocolate/mealplan",
+  "authors": [
+    "Zack Fischmann <zacharyrobert@gmail.com>",
+    "Andy Sponring <asponring@gmail.com"
+  ],
+  "description": "Plan meals and generate a shopping list.",
+  "main": "index.html",
+  "keywords": [
+    "food",
+    "shopping",
+    "list",
+    "yummly",
+    "machine",
+    "learning"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "react": "~0.13.3"
+  }
+}
