@@ -1,15 +1,43 @@
 var MealQuery = React.createClass({
+  
+  getInitialState: function() {
+    return {
+      numMeals: 0,
+      vegetarian: false,
+      vegan: false,
+      nutFree: false,
+      glutenFree: false,
+      carnivore: false
+    };
+  },
+
+  handleChange: function(event) {
+    name = event.target.name;
+    if(name === 'numMeals'){
+      this.setState({numMeals: event.target.value});
+    } else {
+      var newState = {};
+      newState[name] = event.target.checked;
+      this.setState(newState);
+    }
+  },
+
+  handleSubmit: function(e){
+    e.preventDefault();
+    console.log(this.state);
+    console.log();
+  },
+
   render: function() {
-    // var name = this.props.name;
+    var value = this.state.value;
     return (
-      <form>
-        <input type="number" placeholder="Enter number of meals" />
-      
-        <label><input type="checkbox" id="vegetarian" name="vegetarian" value="vegetarian" class="checkbox" /> Vegetarian</label>
-        <label><input type="checkbox" id="vegan" name="vegan" value="vegan" class="checkbox" /> Vegan</label>
-        <label><input type="checkbox" id="nut-free" name="nut-free" value="nut-free" class="checkbox" /> Nut Free</label>
-        <label><input type="checkbox" id="gluten-free" name="gluten-free" value="gluten-free" class="checkbox" /> Gluten Free</label>
-        <label><input type="checkbox" id="carnivore" name="carnivore" value="carnivore" class="checkbox" /> Carnivore</label>
+      <form onSubmit={this.handleSubmit}>
+        <input type="number" name="numMeals" placeholder="Enter number of meals" value={value} onChange={this.handleChange} />
+        <label><input type="checkbox" name="vegetarian" value="vegetarian" class="checkbox" onChange={this.handleChange} /> Vegetarian</label>
+        <label><input type="checkbox" name="vegan" value="vegan" class="checkbox" onChange={this.handleChange} /> Vegan</label>
+        <label><input type="checkbox" name="nutFree" value="nut-free" class="checkbox" onChange={this.handleChange} /> Nut Free</label>
+        <label><input type="checkbox" name="glutenFree" value="gluten-free" class="checkbox" onChange={this.handleChange} /> Gluten Free</label>
+        <label><input type="checkbox" name="carnivore" value="carnivore" class="checkbox" onChange={this.handleChange} /> Carnivore</label>
         <input type="submit" />
       </form>
     );
