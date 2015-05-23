@@ -12,3 +12,5 @@ var SearchBar = React.createClass({
     );
   }
 });
+
+React.render(<SearchBar />, document.body);
