@@ -1,12 +1,14 @@
 {
   "name": "mealplan",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "homepage": "https://github.com/Unconditional-Chocolate/mealplan",
   "authors": [
     "Zack Fischmann <zacharyrobert@gmail.com>",
-    "Andy Sponring <asponring@gmail.com"
+    "Andy Sponring <asponring@gmail.com>",
+    "Mark Tausch <tausch86@gmail.com>",
+    "Melanie Gin <melaniegin1@gmail.com>"
   ],
-  "description": "Plan meals and generate a shopping list.",
+  "description": "Personalize your meal plans and generate custom grocery lists",
   "main": "index.html",
   "keywords": [
     "food",
