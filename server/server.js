@@ -5,5 +5,3 @@ var app = express();
 middleware(app, express);
 
 module.exports = app;
-
-console.log("server.js");
