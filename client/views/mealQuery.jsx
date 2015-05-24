@@ -3,29 +3,32 @@ var MealQuery = React.createClass({
   getInitialState: function() {
     return {
       numMeals: 0,
-      vegetarian: false,
-      vegan: false,
-      nutFree: false,
-      glutenFree: false,
-      carnivore: false
+      allowedAllergy: {
+        vegetarian: false,
+        vegan: false,
+        nutFree: false,
+        glutenFree: false,
+        carnivore: false
+      }
     };
   },
 
+  //Every time a user interacts with the form, we need to update the state of the view to reflect that change.
   handleChange: function(event) {
-    name = event.target.name;
+    var name = event.target.name;
     if(name === 'numMeals'){
       this.setState({numMeals: event.target.value});
     } else {
-      var newState = {};
-      newState[name] = event.target.checked;
-      this.setState(newState);
-    }
+      var newAllergies = _.extend({}, this.state.allowedAllergy);
+      newAllergies[name] = event.target.checked;
+      this.setState({allowedAllergy: newAllergies});
+    };
   },
 
+  //TODO: Send the state to a backbone model to be sent to Yummly
   handleSubmit: function(e){
     e.preventDefault();
     console.log(this.state);
-    console.log();
   },
 
   render: function() {
@@ -44,4 +47,3 @@ var MealQuery = React.createClass({
   }
 });
 
-// React.render(<SearchBar />, document.body);
