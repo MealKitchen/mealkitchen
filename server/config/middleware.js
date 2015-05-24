@@ -13,7 +13,7 @@ module.exports = function(app, express) {
 
   // 'api/recipes' routing
   app.post('/api/recipes/makeplan', recipeController.makePlan);
-  app.post('/api/recipes/getplan', recipeController.getPlan);
+  app.post('/api/recipes/getingredients', recipeController.getIngredients);
 
   // 'api/users' routing
   app.post('/api/users/signup', userController.signUp);
