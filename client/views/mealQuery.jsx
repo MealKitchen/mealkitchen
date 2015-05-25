@@ -33,6 +33,8 @@ var MealQuery = React.createClass({
   handleSubmit: function(e){
     e.preventDefault();
     var thisQuery = new QueryModel(this.state);
+    console.dir(thisQuery);
+    thisQuery.save();
   },
 
   render: function() {
