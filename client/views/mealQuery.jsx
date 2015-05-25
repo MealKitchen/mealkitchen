@@ -2,13 +2,17 @@ var MealQuery = React.createClass({
   
   getInitialState: function() {
     return {
-      numMeals: 0,
-      allowedAllergy: {
-        vegetarian: false,
-        vegan: false,
-        nutFree: false,
-        glutenFree: false,
-        carnivore: false
+      "numMeals": 0,
+      "allowedAllergy": {
+        "Egg-Free": false,
+        "Gluten-Free": false,
+        "Peanut-Free": false,
+        "Seafood-Free": false,
+        "Sesame-Free": false,
+        "Soy-Free": false,
+        "Sulfite-Free": false,
+        "Tree Nut-Free": false,
+        "Wheat-Free": false
       }
     };
   },
