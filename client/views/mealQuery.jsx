@@ -28,7 +28,7 @@ var MealQuery = React.createClass({
   //TODO: Send the state to a backbone model to be sent to Yummly
   handleSubmit: function(e){
     e.preventDefault();
-    console.log(this.state);
+    var thisQuery = new QueryModel(this.state);
   },
 
   render: function() {
