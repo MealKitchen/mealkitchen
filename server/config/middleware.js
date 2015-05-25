@@ -6,10 +6,7 @@ module.exports = function(app, express) {
 
   app.use(bodyParser.json());
 
-  // '/' routing
-  app.get('/', function(request, response) {
-    response.send("Received GET request to homepage");
-  });
+  app.use(express.static(__dirname + '/../../client'));
 
   // 'api/recipes' routing
   app.post('/api/recipes/makeplan', recipeController.makePlan);

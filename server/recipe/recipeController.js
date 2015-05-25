@@ -21,18 +21,26 @@ var allowedCuisineLibrary = {
   "Thai": "cuisine^cuisine-thai",
   "Japanese": "cuisine^cuisine-japanese",
   "Hawaiian": "cuisine^cuisine-hawaiian",
-  "swedish": "cuisine^cuisine-swedish",
+  "Swedish": "cuisine^cuisine-swedish",
 };
 
 
 var queryYummly = function (request, response) {
-  console.log(request.body);
+  console.log("request.body:", request.body);
 
-  var allowedCuisine = request.body.allowedCuisine;
-  var allowedAllergy = request.body.allowedAllergy;
+  //var allowedCuisine = request.body.allowedCuisine;
+  var allowedAllergyList = request.body.allowedAllergy;
+  var queryString = "";
+  for (var key in allowedAllergyList) {
+    if (allowedAllergyList[key]) {
+      queryString += "&allowedAllergy[]" + allowedAllergyLibrary[key];
+    }
+  }
 
-  var query = "&allowedCuisine[]" + allowedCuisineLibrary[allowedCuisine] + "&allowedAllergy[]" + allowedAllergyLibrary[allowedAllergy] +"&requirePictures=true";
-  console.log(query);
+  //var query = "&allowedCuisine[]" + allowedCuisineLibrary[allowedCuisine] + "&allowedAllergy[]" + allowedAllergyLibrary[allowedAllergy] +"&requirePictures=true";
+  var query = queryString +"&requirePictures=true";
+
+  console.log("query:", query);
 
 };
 
