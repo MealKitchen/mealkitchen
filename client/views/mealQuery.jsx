@@ -36,11 +36,15 @@ var MealQuery = React.createClass({
     return (
       <form onSubmit={this.handleSubmit}>
         <input type="number" name="numMeals" placeholder="Enter number of meals" value={value} onChange={this.handleChange} />
-        <label><input type="checkbox" name="vegetarian" value="vegetarian" class="checkbox" onChange={this.handleChange} /> Vegetarian</label>
-        <label><input type="checkbox" name="vegan" value="vegan" class="checkbox" onChange={this.handleChange} /> Vegan</label>
-        <label><input type="checkbox" name="nutFree" value="nut-free" class="checkbox" onChange={this.handleChange} /> Nut Free</label>
-        <label><input type="checkbox" name="glutenFree" value="gluten-free" class="checkbox" onChange={this.handleChange} /> Gluten Free</label>
-        <label><input type="checkbox" name="carnivore" value="carnivore" class="checkbox" onChange={this.handleChange} /> Carnivore</label>
+        <label><input type="checkbox" name="Egg-Free" value="Egg-Free" class="checkbox" onChange={this.handleChange} /> Egg-Free</label>
+        <label><input type="checkbox" name="Gluten-Free" value="Gluten-Free" class="checkbox" onChange={this.handleChange} /> Gluten-Free</label>
+        <label><input type="checkbox" name="Peanut-Free" value="Peanut-Free" class="checkbox" onChange={this.handleChange} /> Peanut-Free</label>
+        <label><input type="checkbox" name="Seafood-Free" value="Seafood-Free" class="checkbox" onChange={this.handleChange} /> Seafood-Free</label>
+        <label><input type="checkbox" name="Sesame-Free" value="Sesame-Free" class="checkbox" onChange={this.handleChange} /> Sesame-Free</label>
+        <label><input type="checkbox" name="Soy-Free" value="Soy-Free" class="checkbox" onChange={this.handleChange} /> Soy-Free</label>
+        <label><input type="checkbox" name="Sulfite-Free" value="Sulfite-Free" class="checkbox" onChange={this.handleChange} /> Sulfite-Free</label>
+        <label><input type="checkbox" name="Tree Nut-Free" value="Tree Nut-Free" class="checkbox" onChange={this.handleChange} /> Tree Nut-Free</label>
+        <label><input type="checkbox" name="Wheat-Free" value="Wheat-Free" class="checkbox" onChange={this.handleChange} /> Wheat-Free</label>
         <input type="submit" />
       </form>
     );
