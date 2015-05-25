@@ -1,3 +1,6 @@
+var appCodes = require('../config/config.js');
+var http = require('http');
+
 var allowedAllergyLibrary = {
   "Egg-Free": "397^Egg-Free",
   "Gluten-Free": "393^Gluten-Free",
@@ -24,35 +27,46 @@ var allowedCuisineLibrary = {
   "Swedish": "cuisine^cuisine-swedish",
 };
 
-
 var queryYummly = function (request, response) {
-  console.log("request.body:", request.body);
-
   //var allowedCuisine = request.body.allowedCuisine;
   var allowedAllergyList = request.body.allowedAllergy;
+  var numResults = request.body.numMeals * 4;
   var queryString = "";
+  var results = {};
+  var start = request.body.start || 0;
+  // add each allowed allergy to query string
   for (var key in allowedAllergyList) {
     if (allowedAllergyList[key]) {
       queryString += "&allowedAllergy[]" + allowedAllergyLibrary[key];
     }
   }
-
   //var query = "&allowedCuisine[]" + allowedCuisineLibrary[allowedCuisine] + "&allowedAllergy[]" + allowedAllergyLibrary[allowedAllergy] +"&requirePictures=true";
-  var query = queryString +"&requirePictures=true";
+  var yummlyQuery =
+    "http://api.yummly.com/v1/api/recipes?_app_id=" + appCodes.APPLICATION_ID +
+    "&_app_key=" + appCodes.APPLICATION_KEY +
+    queryString + "&requirePictures=true" +
+    "&maxResult=" + numResults + "&start=" + start;
 
-  console.log("query:", query);
+  http.get(yummlyQuery, function(yummlyResponse){
+    var str = '';
+    console.log('Response is '+yummlyResponse.statusCode);
+    yummlyResponse.on('data', function (chunk) {
+      str += chunk;
+    });
 
+    yummlyResponse.on('end', function () {
+      results = JSON.parse(str);
+      response.status(200).send(results);
+    });
+  });
 };
 
 module.exports = {
-  makePlan: function (request, response) {
+  createRecipes: function (request, response) {
     queryYummly(request, response);
-
-    response.sendStatus(200);
   },
-  
 
-  getIngredients: function (request, response) {
+  makeIngredientsList: function (request, response) {
     response.sendStatus(200);
   }
 };

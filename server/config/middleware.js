@@ -9,12 +9,11 @@ module.exports = function(app, express) {
   app.use(express.static(__dirname + '/../../client'));
 
   // 'api/recipes' routing
-  app.post('/api/recipes/makeplan', recipeController.makePlan);
-  app.post('/api/recipes/getingredients', recipeController.getIngredients);
+  app.post('/api/recipes', recipeController.createRecipes);
+  app.post('/api/mealplan', recipeController.createMealPlan);
 
   // 'api/users' routing
   app.post('/api/users/signup', userController.signUp);
   app.post('/api/users/signin', userController.signIn);
-
-  console.log("middleware.js");
 };
+
