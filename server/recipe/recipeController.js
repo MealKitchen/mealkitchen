@@ -1,5 +1,6 @@
 var appCodes = require('../config/config.js');
 var http = require('http');
+var Recipe = require('./recipeModel');
 
 var allowedAllergyLibrary = {
   "Egg-Free": "397^Egg-Free",
@@ -55,31 +56,51 @@ var queryYummly = function (request, response) {
     });
 
     yummlyResponse.on('end', function () {
+      console.log('here are recipes');
       results = JSON.parse(str);
+      saveRecipeMatches(results);
       response.status(200).send(results);
     });
   });
 };
 
+var saveRecipeMatches = function(results){
+  var matches = results.matches;
+  for(var i = 0; i < matches.length; i++){
+    var recipe = matches[i];
+    console.log(recipe);
+    new Recipe({'yumId': recipe.id}).fetch().then(function(found){
+      if(!found){
+        var newRecipe = new Recipe({
+          
+        })
+      }
+    })
+  }
+};
+
+var saveRecipe = function(recipe){
+
+}
 module.exports = {
   createRecipes: function (request, response) {
     queryYummly(request, response);
   }
 };
 
-// var requestFormat = {
-//   "numMeals": 3,
-//   "allowedAllergy": {
-//     "Egg-Free": false,
-//     "Gluten-Free": false,
-//     "Peanut-Free": true,
-//     "Seafood-Free": false,
-//     "Sesame-Free": false,
-//     "Soy-Free": false,
-//     "Sulfite-Free": false,
-//     "Tree Nut-Free": true,
-//     "Wheat-Free": false
-//   },
-//   "rejectedRecipeId": "902942",
-//   "totalRecipesRequested": 5
-// };
+var requestFormat = {
+  "numMeals": 3,
+  "allowedAllergy": {
+    "Egg-Free": false,
+    "Gluten-Free": false,
+    "Peanut-Free": true,
+    "Seafood-Free": false,
+    "Sesame-Free": false,
+    "Soy-Free": false,
+    "Sulfite-Free": false,
+    "Tree Nut-Free": true,
+    "Wheat-Free": false
+  },
+  "rejectedRecipeId": "902942",
+  "totalRecipesRequested": 5
+};
