@@ -1,9 +1,16 @@
-var Bookshelf = require('bookshelf');
-
-var db = Bookshelf.initialize({
+var knex = require('knex')({
   client: 'pg',
-  connection: process.env.PG_CONNECTION_STRING
+  connection: {
+    host: '127.0.0.1',
+    port: 5432,
+    user: '',
+    password: '',
+    database: 'mealplan',
+    charset: 'utf8'
+  }
 });
+
+var db = require('bookshelf')(knex);
 
 db.knex.schema.hasTable('recipes').then(function(exists) {
   if (!exists) {
@@ -62,7 +69,7 @@ db.knex.schema.hasTable('restrictions').then(function(exists){
 db.knex.schema.hasTable('userRestrictions').then(function(exists){
   if(!exists){
     db.knex.schema.createTable('userRestrictions', function(userRestriction){
-      userRestriction.incrments('id').primary();
+      userRestriction.increments('id').primary();
       userRestriction.integer('userId');
       userRestriction.integer('restrictionId');
     }).then(function(table){
@@ -74,7 +81,7 @@ db.knex.schema.hasTable('userRestrictions').then(function(exists){
 db.knex.schema.hasTable('mealPlans').then(function(exists){
   if(!exists){
     db.knex.schema.createTable('mealPlans', function(userRestriction){
-      userRestriction.incrments('id').primary();
+      userRestriction.increments('id').primary();
       userRestriction.integer('userId');
     }).then(function(table){
       consolelog('Created Table', table);
@@ -85,11 +92,11 @@ db.knex.schema.hasTable('mealPlans').then(function(exists){
 db.knex.schema.hasTable('mealPlanRecipes').then(function(exists){
   if(!exists){
     db.knex.schema.createTable('mealPlanRecipes', function(userRestriction){
-      userRestriction.incrments('id').primary();
+      userRestriction.increments('id').primary();
       userRestriction.integer('recipeId');
       userRestriction.integer('mealPlanId');
     }).then(function(table){
-      consolelog('Created Table', table);
+      console.log('Created Table', table);
     });
   }
 });

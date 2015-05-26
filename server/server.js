@@ -4,4 +4,6 @@ var app = express();
 
 middleware(app, express);
 
+var db = require('./db.js');
+
 module.exports = app;
