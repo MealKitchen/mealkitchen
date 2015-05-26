@@ -73,7 +73,7 @@ db.knex.schema.hasTable('userRestrictions').then(function(exists){
       userRestriction.integer('userId');
       userRestriction.integer('restrictionId');
     }).then(function(table){
-      consolelog('Created Table', table);
+      console.log('Created Table', table);
     });
   }
 });
@@ -84,7 +84,7 @@ db.knex.schema.hasTable('mealPlans').then(function(exists){
       userRestriction.increments('id').primary();
       userRestriction.integer('userId');
     }).then(function(table){
-      consolelog('Created Table', table);
+      console.log('Created Table', table);
     });
   }
 });
