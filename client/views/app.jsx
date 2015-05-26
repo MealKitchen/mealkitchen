@@ -1,17 +1,25 @@
+/** @jsx React.DOM */
 var AppView = React.createClass({
   
   getInitialState: function(){
-    return { query: new QueryModel() };
-  }
+    return {
+      querySent: false,
+      planApproved: false
+     };
+  },
+
+  querySubmitted: function(){
+    this.setState({querySent: true});
+  },
 
   render: function() {
-    if(this.state.query.get(totalRecipesRequested) === 0){
+    if(!this.state.querySent){
       return (
-        <MealQuery query={this.state.query} />
+        <MealQuery onSubmit={this.querySubmitted}/>
       );
     } else {
       return (
-        <ReviewMeals recipes={'RecipesCollection'} />
+        <ReviewMeals />
       );
     }
   }

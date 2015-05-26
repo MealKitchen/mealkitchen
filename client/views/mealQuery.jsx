@@ -29,7 +29,17 @@ var MealQuery = React.createClass({
   //TODO: Send the state to a backbone model to be sent to Yummly
   handleSubmit: function(e){
     e.preventDefault();
-    this.state.save();
+    
+    this.state.save({}, {
+      success: function(model, res){
+        console.log("Response from the server: ", res);
+      },
+      error: function(model, err){
+        console.error("There was an error with your request! ", err);
+      }
+    });
+    
+    this.props.onSubmit();
   },
 
   render: function() {
