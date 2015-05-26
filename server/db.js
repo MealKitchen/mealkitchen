@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 var knex = require('knex')({
   client: 'pg',
   connection: {
@@ -12,6 +13,15 @@ var knex = require('knex')({
 
 var db = require('bookshelf')(knex);
 
+=======
+var Bookshelf = require('bookshelf');
+
+var db = Bookshelf.initialize({
+  client: 'pg',
+  connection: process.env.PG_CONNECTION_STRING
+});
+
+>>>>>>> progress on schema design and postgres integration
 db.knex.schema.hasTable('recipes').then(function(exists) {
   if (!exists) {
     db.knex.schema.createTable('recipes', function (recipe) {
@@ -69,7 +79,11 @@ db.knex.schema.hasTable('restrictions').then(function(exists){
 db.knex.schema.hasTable('userRestrictions').then(function(exists){
   if(!exists){
     db.knex.schema.createTable('userRestrictions', function(userRestriction){
+<<<<<<< HEAD
       userRestriction.increments('id').primary();
+=======
+      userRestriction.incrments('id').primary();
+>>>>>>> progress on schema design and postgres integration
       userRestriction.integer('userId');
       userRestriction.integer('restrictionId');
     }).then(function(table){
@@ -81,7 +95,11 @@ db.knex.schema.hasTable('userRestrictions').then(function(exists){
 db.knex.schema.hasTable('mealPlans').then(function(exists){
   if(!exists){
     db.knex.schema.createTable('mealPlans', function(userRestriction){
+<<<<<<< HEAD
       userRestriction.increments('id').primary();
+=======
+      userRestriction.incrments('id').primary();
+>>>>>>> progress on schema design and postgres integration
       userRestriction.integer('userId');
     }).then(function(table){
       console.log('Created Table', table);
@@ -92,11 +110,19 @@ db.knex.schema.hasTable('mealPlans').then(function(exists){
 db.knex.schema.hasTable('mealPlanRecipes').then(function(exists){
   if(!exists){
     db.knex.schema.createTable('mealPlanRecipes', function(userRestriction){
+<<<<<<< HEAD
       userRestriction.increments('id').primary();
       userRestriction.integer('recipeId');
       userRestriction.integer('mealPlanId');
     }).then(function(table){
       console.log('Created Table', table);
+=======
+      userRestriction.incrments('id').primary();
+      userRestriction.integer('recipeId');
+      userRestriction.integer('mealPlanId');
+    }).then(function(table){
+      consolelog('Created Table', table);
+>>>>>>> progress on schema design and postgres integration
     });
   }
 });
