@@ -1,3 +1,6 @@
+var appCodes = require('../config/config.js');
+var http = require('http');
+
 var allowedAllergyLibrary = {
   "Egg-Free": "397^Egg-Free",
   "Gluten-Free": "393^Gluten-Free",
@@ -24,35 +27,59 @@ var allowedCuisineLibrary = {
   "Swedish": "cuisine^cuisine-swedish",
 };
 
-
 var queryYummly = function (request, response) {
-  console.log("request.body:", request.body);
-
   //var allowedCuisine = request.body.allowedCuisine;
   var allowedAllergyList = request.body.allowedAllergy;
+  var numResults = request.body.rejectedRecipeId ? 1 : request.body.numMeals;
+  var start = request.body.rejectedRecipeId ? request.body.totalRecipesRequested : 0;
   var queryString = "";
+  var results = {};
+  // add each allowed allergy to query string
   for (var key in allowedAllergyList) {
     if (allowedAllergyList[key]) {
       queryString += "&allowedAllergy[]" + allowedAllergyLibrary[key];
     }
   }
-
   //var query = "&allowedCuisine[]" + allowedCuisineLibrary[allowedCuisine] + "&allowedAllergy[]" + allowedAllergyLibrary[allowedAllergy] +"&requirePictures=true";
-  var query = queryString +"&requirePictures=true";
+  var query =
+    "http://api.yummly.com/v1/api/recipes?_app_id=" + appCodes.APPLICATION_ID +
+    "&_app_key=" + appCodes.APPLICATION_KEY +
+    queryString + "&allowedCourse[]=course^course-Main Dishes" + "&requirePictures=true" +
+    "&maxResult=" + numResults + "&start=" + start;
 
-  console.log("query:", query);
+  http.get(query, function(yummlyResponse){
+    var str = '';
+    console.log('Response is '+yummlyResponse.statusCode);
+    yummlyResponse.on('data', function (chunk) {
+      str += chunk;
+    });
 
+    yummlyResponse.on('end', function () {
+      results = JSON.parse(str);
+      response.status(200).send(results);
+    });
+  });
 };
 
 module.exports = {
-  makePlan: function (request, response) {
+  createRecipes: function (request, response) {
     queryYummly(request, response);
-
-    response.sendStatus(200);
-  },
-  
-
-  getIngredients: function (request, response) {
-    response.sendStatus(200);
   }
 };
+
+// var requestFormat = {
+//   "numMeals": 3,
+//   "allowedAllergy": {
+//     "Egg-Free": false,
+//     "Gluten-Free": false,
+//     "Peanut-Free": true,
+//     "Seafood-Free": false,
+//     "Sesame-Free": false,
+//     "Soy-Free": false,
+//     "Sulfite-Free": false,
+//     "Tree Nut-Free": true,
+//     "Wheat-Free": false
+//   },
+//   "rejectedRecipeId": "902942",
+//   "totalRecipesRequested": 5
+// };
