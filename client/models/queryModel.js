@@ -1,9 +1,9 @@
 //TODO: get queryObject from mealQuery view and store in QueryModel
 var QueryModel = Backbone.Model.extend({
 
-  url: 'api/recipes/makeplan',
+  url: 'api/recipes',
 
-  initialize: function(params){
-    this.set({numMeals: params.numMeals, allowedAllergy: params.allowedAllergy});
+  initialize: function(){
+    this.set( {numMeals: null, allowedAllergy: {}, rejectedRecipeId: null, totalRecipesRequested: 0} );
   },
 });
