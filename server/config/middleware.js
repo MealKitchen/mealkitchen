@@ -1,5 +1,6 @@
 var bodyParser = require('body-parser');
 var recipeController = require('../recipe/recipeController.js');
+var mealPlanController = require('../mealplan/mealPlanController.js');
 var userController = require('../user/userController.js');
 
 module.exports = function(app, express) {
@@ -10,7 +11,9 @@ module.exports = function(app, express) {
 
   // 'api/recipes' routing
   app.post('/api/recipes', recipeController.createRecipes);
-  app.post('/api/mealplan', recipeController.createMealPlan);
+  
+  // 'api/mealplan' routing
+  app.post('/api/mealplan', mealPlanController.createMealPlan);
 
   // 'api/users' routing
   app.post('/api/users/signup', userController.signUp);

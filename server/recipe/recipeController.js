@@ -30,10 +30,10 @@ var allowedCuisineLibrary = {
 var queryYummly = function (request, response) {
   //var allowedCuisine = request.body.allowedCuisine;
   var allowedAllergyList = request.body.allowedAllergy;
-  var numResults = request.body.numMeals * 4;
+  var numResults = request.body.rejectedRecipeId ? 1 : request.body.numMeals;
+  var start = request.body.rejectedRecipeId ? request.body.totalRecipesRequested : 0;
   var queryString = "";
   var results = {};
-  var start = request.body.start || 0;
   // add each allowed allergy to query string
   for (var key in allowedAllergyList) {
     if (allowedAllergyList[key]) {
@@ -41,13 +41,13 @@ var queryYummly = function (request, response) {
     }
   }
   //var query = "&allowedCuisine[]" + allowedCuisineLibrary[allowedCuisine] + "&allowedAllergy[]" + allowedAllergyLibrary[allowedAllergy] +"&requirePictures=true";
-  var yummlyQuery =
+  var query =
     "http://api.yummly.com/v1/api/recipes?_app_id=" + appCodes.APPLICATION_ID +
     "&_app_key=" + appCodes.APPLICATION_KEY +
-    queryString + "&requirePictures=true" +
+    queryString + "&allowedCourse[]=course^course-Main Dishes" + "&requirePictures=true" +
     "&maxResult=" + numResults + "&start=" + start;
 
-  http.get(yummlyQuery, function(yummlyResponse){
+  http.get(query, function(yummlyResponse){
     var str = '';
     console.log('Response is '+yummlyResponse.statusCode);
     yummlyResponse.on('data', function (chunk) {
@@ -64,9 +64,22 @@ var queryYummly = function (request, response) {
 module.exports = {
   createRecipes: function (request, response) {
     queryYummly(request, response);
-  },
-
-  makeIngredientsList: function (request, response) {
-    response.sendStatus(200);
   }
 };
+
+// var requestFormat = {
+//   "numMeals": 3,
+//   "allowedAllergy": {
+//     "Egg-Free": false,
+//     "Gluten-Free": false,
+//     "Peanut-Free": true,
+//     "Seafood-Free": false,
+//     "Sesame-Free": false,
+//     "Soy-Free": false,
+//     "Sulfite-Free": false,
+//     "Tree Nut-Free": true,
+//     "Wheat-Free": false
+//   },
+//   "rejectedRecipeId": "902942",
+//   "totalRecipesRequested": 5
+// };
