@@ -18,7 +18,8 @@ var MealQuery = React.createClass({
   handleChange: function(event) {
     var name = event.target.name;
     if(name === 'numMeals'){
-      this.state.set('numMeals', event.target.value);
+      this.state.set({ 'numMeals': event.target.value,
+                       'totalRecipesRequested': event.target.value });
     } else {
       var newAllergies = _.extend({}, this.state.get('allowedAllergy'));
       newAllergies[name] = event.target.checked;
@@ -46,7 +47,7 @@ var MealQuery = React.createClass({
         console.log('Recipes collection: ', recipesCollection);
         
         //Sets the Recipes Collection as a property on the AppView State, and updates the UI to reflect the recipes queried by the user.
-        that.props.onSubmit(recipesCollection);
+        that.props.onSubmit(recipesCollection, that.state);
       },
       error: function(model, err){
         console.error("There was an error with your request! ", err);
