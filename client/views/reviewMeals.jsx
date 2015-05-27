@@ -1,13 +1,43 @@
 var ReviewMeals = React.createClass({
+
+  mixins: [Backbone.Events],
   
   //TODO: state should be the recipes collection returned from yummly
   getInitialState: function() {
     return null;
   },
 
-  //Every time a user interacts with the recipes, we need to update the state of the view to reflect that change.
-  handleChange: function(event) {
+  componentDidMount: function() {
+    // set listener on RecipeCollection to re-render view when user rejects recipe
+    var that = this;
+    this.listenTo(this.props.recipes, 'add remove', function() {
+      that.forceUpdate();
+    });
+  },
 
+  //Every time a user interacts with the recipes, we need to update the state of the view to reflect that change.
+  rejectRecipe: function(event) {
+    // save id of recipe, and remove recipe from the RecipeCollection
+    var recipe = this.props.recipes.remove(this.props.recipes.at(event.target.dataset.id));
+    var recipeId = recipe.get('id');
+
+    // update queryModel for rejectedRecipeId and totalRecipesRequested to ensure unique recipes from Yummly query
+    var totalRecipesRequested = this.props.query.get('totalRecipesRequested');
+    this.props.query.set({ "rejectedRecipeId": recipeId, 
+                           "totalRecipesRequested": ++totalRecipesRequested });
+    
+    // add new recipe to RecipeCollection
+    var that = this;
+    this.props.query.save({}, {
+      success: function(model, res) {
+        console.log("Response from server:", res);
+        that.props.recipes.add(new RecipeModel(res.matches[0]));
+      },
+      error: function(model, err) {
+        console.error("There was an error with your request! ", err);
+      }
+    });
+  
   },
 
   //TODO: Send the state to a backbone model to be sent to Yummly
@@ -15,14 +45,15 @@ var ReviewMeals = React.createClass({
     //TODO: save a MealPlan model to a user's mealplan collection, and to the db
   },
 
-  //TODO: dynamically render recipes on page according to model (specifically, nummeals)
+  // dynamically render recipes on page according to RecipesCollection
   render: function() {
       return (
         <div>
           {this.props.recipes.map(function(item, i) {
-            return (
+            return [
+              <button data-id={i} onClick={this.rejectRecipe}>X</button>,
               <div key={i}>{item.get('recipeName')}</div>
-            );
+              ];
           }, this)}
         </div>
       );

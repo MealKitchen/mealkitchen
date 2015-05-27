@@ -5,12 +5,13 @@ var AppView = React.createClass({
     return {
       querySent: false,
       queryResults: null,
-      planApproved: false
+      planApproved: false,
+      query: null
      };
   },
 
-  querySubmitted: function(recipesCollection){
-    this.setState( {querySent: true, queryResults: recipesCollection} );
+  querySubmitted: function(recipesCollection, queryModel){
+    this.setState( {querySent: true, queryResults: recipesCollection, query: queryModel } );
   },
 
   render: function() {
@@ -20,7 +21,7 @@ var AppView = React.createClass({
       );
     } else {
       return (
-        <ReviewMeals recipes={this.state.queryResults} />
+        <ReviewMeals recipes={this.state.queryResults} query={this.state.query} />
       );
     }
   }
