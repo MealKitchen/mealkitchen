@@ -1,40 +1,45 @@
+/** @jsx React.DOM */
 var MealQuery = React.createClass({
   
+  mixins: [Backbone.Events],
+
   getInitialState: function() {
-    return {
-      "numMeals": 0,
-      "allowedAllergy": {
-        "Egg-Free": false,
-        "Gluten-Free": false,
-        "Peanut-Free": false,
-        "Seafood-Free": false,
-        "Sesame-Free": false,
-        "Soy-Free": false,
-        "Sulfite-Free": false,
-        "Tree Nut-Free": false,
-        "Wheat-Free": false
-      }
-    };
+    return new QueryModel(); 
+  },
+
+  //test listener on model
+  componentDidMount: function(){
+    this.listenTo(this.state, 'change', function(){
+      console.log('heard a change event!');
+    }, this);
   },
 
   //Every time a user interacts with the form, we need to update the state of the view to reflect that change.
   handleChange: function(event) {
     var name = event.target.name;
     if(name === 'numMeals'){
-      this.setState({numMeals: event.target.value});
+      this.state.set('numMeals', event.target.value);
     } else {
-      var newAllergies = _.extend({}, this.state.allowedAllergy);
+      var newAllergies = _.extend({}, this.state.get('allowedAllergy'));
       newAllergies[name] = event.target.checked;
-      this.setState({allowedAllergy: newAllergies});
+      this.state.set('allowedAllergy', newAllergies);
     };
   },
 
   //TODO: Send the state to a backbone model to be sent to Yummly
   handleSubmit: function(e){
     e.preventDefault();
-    var thisQuery = new QueryModel(this.state);
-    console.dir(thisQuery);
-    thisQuery.save();
+    
+    this.state.save({}, {
+      success: function(model, res){
+        console.log("Response from the server: ", res);
+      },
+      error: function(model, err){
+        console.error("There was an error with your request! ", err);
+      }
+    });
+    
+    this.props.onSubmit();
   },
 
   render: function() {
