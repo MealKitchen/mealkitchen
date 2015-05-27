@@ -34,12 +34,18 @@ var MealQuery = React.createClass({
     //Send a POST request to the server with the QueryModel to get a list of recipes that match the query.
     this.state.save({}, {
       success: function(model, res){
+        
         console.log("Response from the server: ", res);
+
+        //Create a Recipes Collection with Recipe Models for each Recipe returned from the server.
         var recipesCollection = new RecipesCollection();
         _.each(res.matches, function(recipe){
           recipesCollection.add(new RecipeModel(recipe));
         });
+
         console.log('Recipes collection: ', recipesCollection);
+        
+        //Sets the Recipes Collection as a property on the AppView State, and updates the UI to reflect the recipes queried by the user.
         that.props.onSubmit(recipesCollection);
       },
       error: function(model, err){
