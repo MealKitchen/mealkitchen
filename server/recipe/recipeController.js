@@ -50,38 +50,55 @@ var queryYummly = function (request, response) {
 
   http.get(query, function(yummlyResponse){
     var str = '';
-    console.log('Response is '+yummlyResponse.statusCode);
+    //console.log('Response is '+yummlyResponse.statusCode);
     yummlyResponse.on('data', function (chunk) {
       str += chunk;
     });
 
     yummlyResponse.on('end', function () {
-      console.log('here are recipes');
+
       results = JSON.parse(str);
-      saveRecipeMatches(results);
+      for(var i = 0; i < results.matches.length; i++){
+        //had to make a call to a function to retain recipe info #async
+        console.log(results.matches[i]);
+        saveRecipe(results.matches[i]);
+      }
       response.status(200).send(results);
     });
   });
 };
 
-var saveRecipeMatches = function(results){
-  var matches = results.matches;
-  for(var i = 0; i < matches.length; i++){
-    var recipe = matches[i];
-    console.log(recipe);
-    new Recipe({'yumId': recipe.id}).fetch().then(function(found){
-      if(!found){
-        var newRecipe = new Recipe({
-          
-        })
-      }
-    })
-  }
-};
 
 var saveRecipe = function(recipe){
+  new Recipe({'yumId': recipe.id}).fetch().then(function(found){
+    if(!found){
+      var newRecipe = new Recipe({
+        'yumId': recipe.id,
+        'recipeName': recipe.recipeName,
+        'sourceDisplayName': recipe.sourceDisplayName,
+        'smallImgUrl': recipe.smallImageUrls && recipe.smallImageUrls[0],
+        'mediumImgUrl': recipe.mediumImageUrls && recipe.mediumImageUrls[0],
+        'largeImgUrl': recipe.largeImageUrls && recipe.largeImageUrls[0],
+        'cuisine': recipe.attributes.cuisine,
+        'course': recipe.attributes.course,
+        'holiday': recipe.attributes.holiday,
+        'totalTimeInSeconds': recipe.totalTimeInSeconds,
+        'ingredients':  recipe.ingredients,
+        'rating':recipe.rating,
+        'salty': recipe.flavors && recipe.flavors.salty,
+        'sour': recipe.flavors && recipe.flavors.sour,
+        'sweet':recipe.flavors && recipe.flavors.sweet,
+        'bitter':recipe.flavors && recipe.flavors.bitter,
+        'piquant':recipe.flavors && recipe.flavors.piquant,
+        'meaty': recipe.flavors && recipe.flavors.meaty
 
-}
+      }).save().then(function(recipe){
+        console.log('saved recipe: ', recipe);
+      });
+    }
+  });
+};
+
 module.exports = {
   createRecipes: function (request, response) {
     queryYummly(request, response);
