@@ -1,4 +1,6 @@
-var MealPlanCollection = Backbone.Collection.extend({
+var MealPlansCollection = Backbone.Collection.extend({
+
+  url: 'api/mealplan',
 
   model: MealPlanModel
 
