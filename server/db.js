@@ -46,7 +46,7 @@ db.knex.schema.hasTable('recipes').then(function(exists) {
   if (!exists) {
     db.knex.schema.createTable('recipes', function (recipe) {
       recipe.increments('id').primary();
-      recipe.string('yumId');
+      recipe.string('yumId').unique();
       recipe.string('recipeName');
       recipe.string('sourceDisplayName');
       recipe.string('smallImgUrl');
@@ -76,9 +76,10 @@ db.knex.schema.hasTable('recipes').then(function(exists) {
 *********************************************************/
 db.knex.schema.hasTable('mealPlans').then(function(exists){
   if(!exists){
-    db.knex.schema.createTable('mealPlans', function(userRestriction){
-      userRestriction.increments('id').primary();
-      userRestriction.integer('userId');
+    db.knex.schema.createTable('mealPlans', function(mealPlan){
+      mealPlan.increments('id').primary();
+      mealPlan.integer('userId');
+      mealPlan.timestamps();
     }).then(function(table){
       console.log('Created Table', table);
     });
@@ -86,14 +87,13 @@ db.knex.schema.hasTable('mealPlans').then(function(exists){
 });
 
 /*********************************************************
-  Meal Plan Schema
+  Meal Plan Recipes Schema
 *********************************************************/
-db.knex.schema.hasTable('mealPlanRecipes').then(function(exists){
+db.knex.schema.hasTable('mealPlans_recipes').then(function(exists){
   if(!exists){
-    db.knex.schema.createTable('mealPlanRecipes', function(userRestriction){
-      userRestriction.increments('id').primary();
-      userRestriction.integer('recipeId');
-      userRestriction.integer('mealPlanId');
+    db.knex.schema.createTable('mealPlans_recipes', function(mealPlanRecipe){
+      mealPlanRecipe.integer('mealPlan_id').references('mealPlans.id');
+      mealPlanRecipe.string('recipe_id').references('recipes.yumId');
     }).then(function(table){
       console.log('Created Table', table);
     });
