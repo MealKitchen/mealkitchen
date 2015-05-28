@@ -7,12 +7,17 @@ var AppView = React.createClass({
       queryResults: null,
       planApproved: false,
       query: null,
-      mealPlanSelected: null
+      mealPlanSelected: null,
+      ingredientsList: null
     };
   },
 
   querySubmitted: function(recipesCollection, queryModel){
     this.setState( {querySent: true, queryResults: recipesCollection, query: queryModel } );
+  },
+
+  mealPlanSubmitted: function (ingredients) {
+    this.setState({mealPlanSelected: true, ingredientsList: ingredients});
   },
 
   render: function() {
@@ -22,11 +27,11 @@ var AppView = React.createClass({
       );
     } else if (!this.state.mealPlanSelected) {
       return (
-        <ReviewMeals recipes={this.state.queryResults} query={this.state.query} />
+        <ReviewMeals recipes={this.state.queryResults} query={this.state.query} onSubmit={this.mealPlanSubmitted} />
       );
     } else {
       return (
-        <ShoppingList />
+        <CreateShoppingList ingredients={this.state.ingredientsList}/>
       );
     }
   }

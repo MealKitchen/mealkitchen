@@ -1,5 +1,6 @@
 module.exports = {
   createMealPlan: function (request, response) {
-    response.sendStatus(200);
+    console.log("request.body.recipes: ", request.body.recipes);
+    response.status(200).send(request.body.recipes);
   },
 };
