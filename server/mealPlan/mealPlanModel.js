@@ -4,7 +4,7 @@ var Recipe = require("../recipe/recipeModel")
 var MealPlan = db.Model.extend({
   tableName: 'mealPlans',
   hasTimestamps: true,
-  recipe: function() {
+  recipes: function() {
     return this.belongsToMany(Recipe);
   }
 })
