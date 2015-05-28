@@ -27,18 +27,21 @@ var Login = React.createClass({
   handleSubmit: function(e){
     e.preventDefault();
     var that = this;
-    
-    //Send a POST request to the server with the QueryModel to get a list of recipes that match the query.
-    this.state.fetch({}, {
-      success: function(model, res){
-        console.log("Response from the server: ", res);
 
+    //TODO: This is a temporary call to load the next view without actually logging in. Make sure to fix it and place it inside of the save method.
+    that.props.onSubmit();
+
+    // //Send a POST request to the server with the QueryModel to get a list of recipes that match the query.
+    // this.state.fetch({}, {
+    //   //TODO: set up response handling for rendering the next view after successful login or failed login.
+    //   success: function(model, res){
+    //     console.log("Response from the server: ", res);
         
-      },
-      error: function(model, err){
-        console.error("There was an error with your request! ", err);
-      }
-    }); 
+    //   },
+    //   error: function(model, err){
+    //     console.error("There was an error with your request! ", err);
+    //   }
+    // }); 
   },
 
   render: function() {
