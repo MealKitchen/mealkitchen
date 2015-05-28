@@ -54,7 +54,7 @@ var Login = React.createClass({
       <div>
         <button>Sign Up</button>
         <button>Log In</button>
-        <form name="login" onSubmit={this.handleSubmit}>
+        <form name="signup" onSubmit={this.handleSubmit}>
           <ul>
             <li><label for="firstName">First Name</label>
             <input type="firstName" name="firstName" placeholder="First Name" required /></li>
@@ -65,7 +65,7 @@ var Login = React.createClass({
             <li><label for="password">Password</label>
             <input type="password" name="password" placeholder="password" required /></li>
             <li>
-            <input type="submit" value="Login" /></li>
+            <input type="submit" value="Signup" /></li>
           </ul>
         </form>
       </div>
