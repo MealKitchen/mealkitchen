@@ -3,6 +3,7 @@ var AppView = React.createClass({
   
   getInitialState: function(){
     return {
+      userLoggedIn: false,
       querySent: false,
       queryResults: null,
       planApproved: false,
@@ -20,8 +21,16 @@ var AppView = React.createClass({
     this.setState({mealPlanSelected: true, mealPlanModel: mealPlan});
   },
 
+  loggedIn: function(){
+    this.setState({userLoggedIn: true});
+  },
+
   render: function() {
-    if(!this.state.querySent){
+    if(!this.state.userLoggedIn){
+      return (
+        <Login onSubmit={this.loggedIn} /> 
+      );
+    } else if(!this.state.querySent){
       return (
         <MealQuery onSubmit={this.querySubmitted} />
       );
