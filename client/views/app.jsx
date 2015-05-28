@@ -31,7 +31,7 @@ var AppView = React.createClass({
       );
     } else {
       return (
-        <CreateShoppingList ingredients={this.state.ingredientsList}/>
+        <ShoppingList ingredients={this.state.ingredientsList}/>
       );
     }
   }

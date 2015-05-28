@@ -1,4 +1,4 @@
-var CreateShoppingList = React.createClass({
+var ShoppingList = React.createClass({
 
   mixins: [Backbone.Events],
 
