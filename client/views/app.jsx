@@ -3,7 +3,7 @@ var AppView = React.createClass({
   
   getInitialState: function(){
     return {
-      userLoggedIn: false,
+      userLoggedIn: true,
       querySent: false,
       queryResults: null,
       planApproved: false,
