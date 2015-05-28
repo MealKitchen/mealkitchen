@@ -20,6 +20,6 @@ var saveMealPlan = function(recipes){
 module.exports = {
   createMealPlan: function (request, response) {
     saveMealPlan(request.body.recipes);
-    response.sendStatus(200);
+    response.status(200).send({});
   },
 };
