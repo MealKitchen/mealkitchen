@@ -50,14 +50,12 @@ var ReviewMeals = React.createClass({
     }
     ingredients = ingredients.join().split(',');
     
-    console.log('ingredients', ingredients);
-
     var mealPlan = new MealPlanModel({
       query: this.props.query,
       recipes: this.props.recipes,
       ingredientsList: ingredients
     });
-    this.props.onSubmit(ingredients);
+    this.props.onSubmit(mealPlan);
 
     mealPlan.save({}, {
       success: function(model, res) {
@@ -65,7 +63,7 @@ var ReviewMeals = React.createClass({
 
       },
       error: function(model, err) {
-        console.error("model:", model, "There was an error with your request! ", err);
+        console.error("There was an error with your request! ", err);
       }
     });
   },

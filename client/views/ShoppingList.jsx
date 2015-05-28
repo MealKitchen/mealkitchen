@@ -8,25 +8,32 @@ var ShoppingList = React.createClass({
 
   componentDidMount: function () {
     var that = this;
-    this.listenTo(this.props.ingredients, 'change', function () {
+
+    that.listenTo(this.props.mealPlan, 'change', function () {
+      console.log('change registered!');
       that.forceUpdate();
     });
   },
 
   removeIngredient: function (event) {
-    console.log("clicked on ingredient to remove!");
-    var ingredient = this.props.ingredients.splice(event.target.dataset.id, 0);
+    var ingredientsList = this.props.mealPlan.get("ingredientsList").slice();
+    var id = event.target.dataset.id;
+    ingredientsList.splice(id, 1);
+    this.props.mealPlan.set({ingredientsList: ingredientsList});
+  },
 
+  crossout: function (event) {
+    console.log(event.target.dataset.id);
   },
 
   render: function () {
     var that = this;
     return (
       <div>
-      {this.props.ingredients.map(function(ingredient, i) {
+      {that.props.mealPlan.get('ingredientsList').map(function(ingredient, i) {
         return [
           <button data-id={i} onClick={that.removeIngredient}>X</button>,
-          <div>{ingredient}</div>
+          <div data-id={i}>{ingredient}</div>
           ]
         })
       }
