@@ -42,7 +42,32 @@ var ReviewMeals = React.createClass({
 
   //TODO: Send the state to a backbone model to be sent to Yummly
   handleSubmit: function(e){
-    //TODO: save a MealPlan model to a user's mealplan collection, and to the db
+
+    // extract ingredients from each recipe to save in mealPlanModel
+    var ingredients = [];
+    for (var i = 0; i < this.props.recipes.length; i++) {
+      ingredients.push(this.props.recipes.at(i).get("ingredients"));
+    }
+    ingredients = ingredients.join().split(',');
+    
+    console.log('ingredients', ingredients);
+
+    var mealPlan = new MealPlanModel({
+      query: this.props.query,
+      recipes: this.props.recipes,
+      ingredientsList: ingredients
+    });
+    this.props.onSubmit(ingredients);
+
+    mealPlan.save({}, {
+      success: function(model, res) {
+        console.log("Meal plan saved! Response from server:", res);
+
+      },
+      error: function(model, err) {
+        console.error("model:", model, "There was an error with your request! ", err);
+      }
+    });
   },
 
   // dynamically render recipes on page according to RecipesCollection
@@ -55,6 +80,7 @@ var ReviewMeals = React.createClass({
               <div key={i}>{item.get('recipeName')}</div>
               ];
           }, this)}
+          <button onClick={this.handleSubmit}>Save meal plan</button>
         </div>
       );
     }

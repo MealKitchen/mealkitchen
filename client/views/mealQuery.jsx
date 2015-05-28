@@ -4,7 +4,7 @@ var MealQuery = React.createClass({
   mixins: [Backbone.Events],
 
   getInitialState: function() {
-    return new QueryModel(); 
+    return new QueryModel();
   },
 
   //Set listener on state (which is a backbone model)
@@ -43,8 +43,6 @@ var MealQuery = React.createClass({
         _.each(res.matches, function(recipe){
           recipesCollection.add(new RecipeModel(recipe));
         });
-
-        console.log('Recipes collection: ', recipesCollection);
         
         //Sets the Recipes Collection as a property on the AppView State, and updates the UI to reflect the recipes queried by the user.
         that.props.onSubmit(recipesCollection, that.state);
