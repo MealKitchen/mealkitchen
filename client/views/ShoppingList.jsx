@@ -14,7 +14,7 @@ var ShoppingList = React.createClass({
     });
   },
 
-  //This code exists to remove ingredients from the view altogether.
+  //TODO: This code exists to remove ingredients from the view altogether. We can delete it if we only want users to cross ingredients out but not remove them.
 
   // removeIngredient: function (event) {
   //   var ingredientsList = this.props.mealPlan.get("ingredientsList").slice();
@@ -26,7 +26,7 @@ var ShoppingList = React.createClass({
   //TODO: Refactor to persist checked class after refresh. Currently only adds checked class temporarily.
   crossout: function (event) {
     console.log(event.target.dataset.id);
-    React.findDOMNode(this.refs[event.target.dataset.id]).classList.add("checked");
+    var node = React.findDOMNode(this.refs[event.target.dataset.id]).classList.toggle("checked");
   },
 
   render: function () {
