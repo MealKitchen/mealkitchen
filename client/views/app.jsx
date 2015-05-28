@@ -8,7 +8,7 @@ var AppView = React.createClass({
       planApproved: false,
       query: null,
       mealPlanSelected: null,
-      ingredientsList: null
+      mealPlanModel: null
     };
   },
 
@@ -16,8 +16,8 @@ var AppView = React.createClass({
     this.setState( {querySent: true, queryResults: recipesCollection, query: queryModel } );
   },
 
-  mealPlanSubmitted: function (ingredients) {
-    this.setState({mealPlanSelected: true, ingredientsList: ingredients});
+  mealPlanSubmitted: function (mealPlan) {
+    this.setState({mealPlanSelected: true, mealPlanModel: mealPlan});
   },
 
   render: function() {
@@ -31,7 +31,7 @@ var AppView = React.createClass({
       );
     } else {
       return (
-        <ShoppingList ingredients={this.state.ingredientsList}/>
+        <ShoppingList mealPlan={this.state.mealPlanModel}/>
       );
     }
   }
