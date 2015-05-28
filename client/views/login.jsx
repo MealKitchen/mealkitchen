@@ -44,18 +44,23 @@ var Login = React.createClass({
     // }); 
   },
 
+  //TODO: Add button functionality to switch between Sign Up / Log In
   render: function() {
     return (
-      <form name="login" onSubmit={this.handleSubmit}>
-        <ul>
-          <li><label for="email">Email</label>
-          <input type="email" name="email" placeholder="youremail@email.com" required /></li>
-          <li><label for="password">Password</label>
-          <input type="password" name="password" placeholder="password" required /></li>
-          <li>
-          <input type="submit" value="Login" /></li>
-        </ul>
-      </form>
+      <div>
+        <button>Sign Up</button>
+        <button>Log In</button>
+        <form name="login" onSubmit={this.handleSubmit}>
+          <ul>
+            <li><label for="email">Email</label>
+            <input type="email" name="email" placeholder="youremail@email.com" required /></li>
+            <li><label for="password">Password</label>
+            <input type="password" name="password" placeholder="password" required /></li>
+            <li>
+            <input type="submit" value="Login" /></li>
+          </ul>
+        </form>
+      </div>
     );
   }
 });
