@@ -76,9 +76,9 @@ db.knex.schema.hasTable('recipes').then(function(exists) {
 *********************************************************/
 db.knex.schema.hasTable('mealPlans').then(function(exists){
   if(!exists){
-    db.knex.schema.createTable('mealPlans', function(userRestriction){
-      userRestriction.increments('id').primary();
-      userRestriction.integer('userId');
+    db.knex.schema.createTable('mealPlans', function(mealPlan){
+      mealPlan.increments('id').primary();
+      mealPlan.integer('userId');
     }).then(function(table){
       console.log('Created Table', table);
     });
@@ -86,19 +86,18 @@ db.knex.schema.hasTable('mealPlans').then(function(exists){
 });
 
 /*********************************************************
-  Meal Plan Schema
+  Meal Plan Recipes Schema
 *********************************************************/
-db.knex.schema.hasTable('mealPlanRecipes').then(function(exists){
-  if(!exists){
-    db.knex.schema.createTable('mealPlanRecipes', function(userRestriction){
-      userRestriction.increments('id').primary();
-      userRestriction.integer('recipeId');
-      userRestriction.integer('mealPlanId');
-    }).then(function(table){
-      console.log('Created Table', table);
-    });
-  }
-});
+// db.knex.schema.hasTable('mealPlanRecipes').then(function(exists){
+//   if(!exists){
+//     db.knex.schema.createTable('mealPlanRecipes', function(mealPlanRecipe){
+//       mealPlanRecipe.integer('recipeId');
+//       mealPlanRecipe.integer('mealPlanId');
+//     }).then(function(table){
+//       console.log('Created Table', table);
+//     });
+//   }
+// });
 
 
 // db.knex.schema.hasTable('restrictions').then(function(exists){
