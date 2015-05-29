@@ -19,7 +19,7 @@ db.knex.schema.hasTable('users').then(function(exists) {
   if (!exists) {
     db.knex.schema.createTable('users', function (user) {
       user.increments('id').primary();
-      user.string('email');
+      user.string('email').unique();
       user.string('first');
       user.string('last');
       user.string('username');

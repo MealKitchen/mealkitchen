@@ -16,7 +16,8 @@ module.exports = function(app, express) {
   app.post('/api/mealplan', mealPlanController.createMealPlan);
 
   // 'api/users' routing
-  app.post('/api/users/signup', userController.signUp);
-  app.post('/api/users/signin', userController.signIn);
+  app.post('/api/user', userController.routeUser);
+  // app.post('/api/users/signup', userController.signUp);
+  // app.post('/api/users/signin', userController.signIn);
 };
 
