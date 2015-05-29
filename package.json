@@ -29,6 +29,8 @@
   },
   "homepage": "https://github.com/Unconditional-Chocolate/mealplan",
   "dependencies": {
+    "bcrypt-nodejs": "0.0.3",
+    "bluebird": "^2.9.26",
     "body-parser": "^1.12.4",
     "bookshelf": "^0.8.1",
     "express": "^4.12.4",
