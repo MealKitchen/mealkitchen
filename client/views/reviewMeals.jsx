@@ -1,3 +1,5 @@
+var Navigation = ReactRouter.Navigation;
+
 var ReviewMeals = React.createClass({
 
   mixins: [Backbone.Events],

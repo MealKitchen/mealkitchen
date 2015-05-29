@@ -1,4 +1,7 @@
 /** @jsx React.DOM */
+
+var Navigation = ReactRouter.Navigation;
+
 var MealQuery = React.createClass({
   
   mixins: [Backbone.Events],

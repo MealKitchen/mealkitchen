@@ -1,7 +1,9 @@
 /** @jsx React.DOM */
-var Signup = React.createClass({
+var Navigation = ReactRouter.Navigation;
+
+var SignUp = React.createClass({
   
-  mixins: [Backbone.Events],
+  mixins: [Navigation],
 
   getInitialState: function() {
     return {email: null, password: null, signup: true};
@@ -26,6 +28,7 @@ var Signup = React.createClass({
         console.log("ERROR!");
       }
     });
+    this.transitionTo('login');
   },
 
   render : function() {

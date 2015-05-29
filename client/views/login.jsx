@@ -1,8 +1,11 @@
 /** @jsx React.DOM */
-var Login = React.createClass({
-  
-  mixins: [Backbone.Events],
 
+var Navigation = ReactRouter.Navigation;
+
+var LogIn = React.createClass({
+
+  mixins: [Navigation],
+  
   getInitialState: function() {
     return {email: null, password: null, login: true};
   },
@@ -17,10 +20,11 @@ var Login = React.createClass({
 
   handleLogin: function() {
     var user = new UserModel(this.state);
-    
+    var that = this;
     user.save({}, {
       success: function(model, res){
         console.log("SUCCESS!");
+        that.transitionTo('mealquery');
       },
       error: function(model, err){
         console.log("ERROR!");
