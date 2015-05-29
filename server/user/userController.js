@@ -6,10 +6,10 @@ var signup = function(email, password, response) {
   new User({email: email}).fetch().then(function(user) {
     if (!user) {
       new User({email: email, password: password}).save().then(function(user) {
-        console.log("Created new account for", email);
+        response.status(200).send(user);
       });
     } else {
-      console.log('Account already exists');
+      response.status(409).send({error: 'Account already exists.'});
     }
   });
 };
@@ -17,13 +17,13 @@ var signup = function(email, password, response) {
 var login = function(email, password, response) {
   new User({email: email}).fetch().then(function(user){
     if( !user ){
-      console.log('no such user');
+      response.status(401).send({error: 'No such user.'});
     } else {
       user.comparePassword(password, function(match){
         if (match) {
-          console.log("you got logged in!");
+          response.status(200).send(user);
         } else {
-          console.log("wrong password!");
+          response.status(401).send({error: 'Incorrect password.'});
         }
       });
     }
@@ -38,7 +38,6 @@ module.exports = {
     } else if (request.body.signup) {
       signup(request.body.email, request.body.password, response);
     }
-    response.end();
   }
 };
 
