@@ -59,6 +59,8 @@ var queryYummly = function (request, response) {
     yummlyResponse.on('end', function () {
 
       results = JSON.parse(str);
+      //check acceptability of recipe before saving
+
       for(var i = 0; i < results.matches.length; i++){
         //had to make a call to a function to retain recipe info #async
         console.log(results.matches[i]);
