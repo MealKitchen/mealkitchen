@@ -1,6 +1,6 @@
 var bodyParser = require('body-parser');
 var recipeController = require('../recipe/recipeController.js');
-var mealPlanController = require('../mealplan/mealPlanController.js');
+var mealPlanController = require('../mealPlan/mealPlanController.js');
 var userController = require('../user/userController.js');
 
 module.exports = function(app, express) {
