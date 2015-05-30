@@ -24,6 +24,22 @@ module.exports = function(grunt) {
         ext: '.js'
       }
     },
+
+    watch: {
+      scripts: {
+        files: ['client/**/*.js', 'client/**/*.jsx', 'client/*.js', 'server/**/*.js', 'server/*.js', 'index.js'],
+        tasks: ['jshint', 'react'],
+        options: {
+          spawn: false,
+        },
+      },
+    },
+
+    nodemon: {
+      dev: {
+        script: 'index.js'
+      }
+    }
     
     // browserify: {
     //   options: {
@@ -38,10 +54,12 @@ module.exports = function(grunt) {
   });
 
   grunt.loadNpmTasks('grunt-contrib-jshint');
+  grunt.loadNpmTasks('grunt-contrib-watch');
+  grunt.loadNpmTasks('grunt-nodemon');
   grunt.loadNpmTasks('grunt-react');
   grunt.loadNpmTasks('grunt-browserify');
 
-  grunt.registerTask('default', ['jshint', 'react']);
+  grunt.registerTask('default', ['jshint', 'react', 'watch']);
 
 
 };
