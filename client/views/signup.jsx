@@ -23,12 +23,12 @@ var SignUp = React.createClass({
     user.save({}, {
       success: function(model, res){
         console.log("SUCCESS!");
+        this.transitionTo('login');
       },
       error: function(model, err){
         console.log("ERROR!");
       }
     });
-    this.transitionTo('login');
   },
 
   render : function() {

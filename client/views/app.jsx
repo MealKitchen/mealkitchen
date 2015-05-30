@@ -8,9 +8,30 @@ var Route = Router.Route;
 var RouteHandler = Router.RouteHandler;
 var Navigation = Router.Navigation;
 
+// var MealQueryWrapper = React.createClass({
+//   return (
+//       <MealQuery 
+//     )
+
+// })
+
+
+
 var AppView = React.createClass({
 
   mixins: [Navigation],
+
+  getInitialState: function(){
+    return {
+      queryResults: null,
+      //store query model here if necessarry!?
+    };
+  },
+
+  _setRecipes: function(recipesCollection){
+    console.log('CALLING _setRecipes inside AppView');
+    setState({queryResults: recipesCollection});
+  },
   
   render: function() {
 
@@ -26,7 +47,7 @@ var AppView = React.createClass({
           </ul>
         </header>
 
-        <RouteHandler/>
+        <RouteHandler {...this.state}/>
       </div>
     );
   }
@@ -43,6 +64,8 @@ var routes = (
   </Route>
 );
 
-Router.run(routes, Router.HashLocation, function (Handler) {
-  React.render(<Handler/>, document.body);
+var that = this;
+
+Router.run(routes, Router.HashLocation, function (Handler, state) {
+  React.render(<Handler prop={state}/>, document.body);
 });

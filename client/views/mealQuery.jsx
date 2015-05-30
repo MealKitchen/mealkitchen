@@ -4,7 +4,7 @@ var Navigation = ReactRouter.Navigation;
 
 var MealQuery = React.createClass({
   
-  mixins: [Backbone.Events],
+  mixins: [Backbone.Events, Navigation],
 
   getInitialState: function() {
     return new QueryModel();
@@ -19,6 +19,7 @@ var MealQuery = React.createClass({
 
   //Every time a user interacts with the form, we need to update the state of the view to reflect that change.
   handleChange: function(event) {
+    console.log(this.props);
     var name = event.target.name;
     if(name === 'numMeals'){
       this.state.set({ 'numMeals': event.target.value,
@@ -48,7 +49,9 @@ var MealQuery = React.createClass({
         });
         
         //Sets the Recipes Collection as a property on the AppView State, and updates the UI to reflect the recipes queried by the user.
-        that.props.onSubmit(recipesCollection, that.state);
+        // that.props.sendRecipesToApp(recipesCollection);
+        that.transitionTo('reviewmeals');
+        // that.props.onSubmit(recipesCollection, that.state);
       },
       error: function(model, err){
         console.error("There was an error with your request! ", err);
