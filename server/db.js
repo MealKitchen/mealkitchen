@@ -1,6 +1,8 @@
+var pg = require('pg');
+
 var knex = require('knex')({
   client: 'pg',
-  connection: {
+  connection: HEROKU_POSTGRESQL_COLOR_URL || {
     host: '127.0.0.1',
     port: 5432,
     user: '',
