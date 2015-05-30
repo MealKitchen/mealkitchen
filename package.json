@@ -38,5 +38,11 @@
     "knex": "^0.8.6",
     "nodemon": "^1.3.7",
     "pg": "^4.3.0"
+  },
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-browserify": "^3.8.0",
+    "grunt-contrib-jshint": "^0.11.2",
+    "grunt-react": "^0.12.2"
   }
 }

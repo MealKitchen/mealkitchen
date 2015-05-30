@@ -24,7 +24,7 @@ var MealQuery = React.createClass({
       var newAllergies = _.extend({}, this.state.get('allowedAllergy'));
       newAllergies[name] = event.target.checked;
       this.state.set('allowedAllergy', newAllergies);
-    };
+    }
   },
 
   //Send the state to a backbone model to be sent to Yummly
