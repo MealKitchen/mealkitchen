@@ -33,7 +33,13 @@ var ReviewMeals = React.createClass({
     
     // add new recipe to RecipeCollection
     var that = this;
-    this.props.query.save({}, {
+    //console.log('recipeId: ', this.props.recipes.where({id: recipeId}));
+
+    new RecipePreference({
+      recipeId: recipeId,
+      userId: 0,
+      preference: 0
+    }).save({}, {
       success: function(model, res) {
         console.log("Response from server:", res);
         that.props.recipes.add(new RecipeModel(res.matches[0]), {at: modelId});

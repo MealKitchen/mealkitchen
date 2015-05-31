@@ -32,8 +32,11 @@ var allowedCuisineLibrary = {
 var queryYummly = function (request, response) {
   //var allowedCuisine = request.body.allowedCuisine;
   var allowedAllergyList = request.body.allowedAllergy;
-  var numResults = request.body.rejectedRecipeId ? 1 : request.body.numMeals;
-  var start = request.body.rejectedRecipeId ? request.body.totalRecipesRequested : 0;
+  // generate query for 10x meals requested by user in order to handle batch request 
+  var numResults = 10 * request.body.numMeals;
+
+  //var numResults = request.body.numMeals;
+  var start = request.body.additionalRequest ? request.body.totalRecipesRequested : 0;
   var queryString = "";
   var results = {};
   // add each allowed allergy to query string
@@ -63,7 +66,6 @@ var queryYummly = function (request, response) {
 
       for(var i = 0; i < results.matches.length; i++){
         //had to make a call to a function to retain recipe info #async
-        console.log(results.matches[i]);
         saveRecipe(results.matches[i]);
       }
       response.status(200).send(results);

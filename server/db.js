@@ -14,35 +14,9 @@ var knex = require('knex')({
 
 var db = require('bookshelf')(knex);
 
-/*********************************************************
-  User Schema
-*********************************************************/
-db.knex.schema.hasTable('users').then(function(exists) {
-  if (!exists) {
-    db.knex.schema.createTable('users', function (user) {
-      user.increments('id').primary();
-      user.string('email').unique();
-      user.string('first');
-      user.string('last');
-      user.string('username');
-      user.string('password');
-      user.float('salty');
-      user.float('sour');
-      user.float('sweet');
-      user.float('bitter');
-      user.float('piquant');
-      user.float('meaty');
-      user.timestamps();
-    }).then(function (table) {
-      console.log('Created Table', table);
-    });
-  }
-});
-
-
 
 /*********************************************************
-  Recipe and Meal Plan Schema, Recipe + Meal Plan Junction Table
+  Recipe Schema 
 *********************************************************/
 db.knex.schema.hasTable('recipes').then(function(exists) {
   if (!exists) {
@@ -68,6 +42,9 @@ db.knex.schema.hasTable('recipes').then(function(exists) {
       recipe.timestamps();
     }).then(function (table) {
       console.log('Created Table', table);
+      /*********************************************************
+        Meal Plan Schema
+      *********************************************************/
       db.knex.schema.hasTable('mealPlans').then(function(exists){
         if(!exists){
           db.knex.schema.createTable('mealPlans', function(mealPlan){
@@ -76,6 +53,11 @@ db.knex.schema.hasTable('recipes').then(function(exists) {
             mealPlan.timestamps();
           }).then(function(table){
             console.log('Created Table', table);
+
+            /*********************************************************
+              Meal Plan Recipes Schema
+            *********************************************************/
+
             db.knex.schema.hasTable('mealPlans_recipes').then(function(exists){
               if(!exists){
                 db.knex.schema.createTable('mealPlans_recipes', function(mealPlanRecipe){
@@ -88,20 +70,50 @@ db.knex.schema.hasTable('recipes').then(function(exists) {
             });
           });
         }
+
+      });
+      /*********************************************************
+        User Schema
+      *********************************************************/
+      db.knex.schema.hasTable('users').then(function(exists) {
+        if (!exists) {
+          db.knex.schema.createTable('users', function (user) {
+            user.increments('id').primary();
+            user.string('email').unique();
+            user.string('first');
+            user.string('last');
+            user.string('username');
+            user.string('password');
+            user.float('salty');
+            user.float('sour');
+            user.float('sweet');
+            user.float('bitter');
+            user.float('piquant');
+            user.float('meaty');
+            user.timestamps();
+          }).then(function (table) {
+            console.log('Created Table', table);
+            /*********************************************************
+              Recipe Preference Schema
+            *********************************************************/
+            db.knex.schema.hasTable('recipePreferences').then(function(exists) {
+              if (!exists) {
+                db.knex.schema.createTable('recipePreferences', function (recipePreferences) {
+                  recipePreferences.increments('id').primary();  
+                  recipePreferences.integer('userId').references('users.id');
+                  recipePreferences.string('recipeId').references('recipes.yumId');
+                  recipePreferences.boolean('preference');
+                }).then(function (table) {
+                  console.log('Created Table', table);
+                });
+              }
+            });
+          });
+        }
       });
     });
   }
 });
-
-/*********************************************************
-  Meal Plan Schema
-*********************************************************/
-
-
-/*********************************************************
-  Meal Plan Recipes Schema
-*********************************************************/
-
 
 
 // db.knex.schema.hasTable('restrictions').then(function(exists){
