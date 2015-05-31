@@ -49,12 +49,12 @@ var MealQuery = React.createClass({
         }, this);
         
         that.transitionTo('reviewmeals');
+
       },
       error: function(model, err){
         console.error("There was an error with your Meal Query request! ", err);
       }
     });
-    
   },
 
   render: function() {

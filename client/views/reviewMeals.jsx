@@ -26,6 +26,7 @@ var ReviewMeals = React.createClass({
     var recipe = this.props.recipes.remove(this.props.recipes.at(modelId));
     var recipeId = recipe.get('id');
 
+    console.log('recipeQueue: ', this.props.recipeQueue);
     // update queryModel for rejectedRecipeId and totalRecipesRequested to ensure unique recipes from Yummly query
     var totalRecipesRequested = this.props.query.get('totalRecipesRequested');
     this.props.query.set({ "rejectedRecipeId": recipeId, 
@@ -47,8 +48,7 @@ var ReviewMeals = React.createClass({
       error: function(model, err) {
         console.error("There was an error with your request! ", err);
       }
-    });
-  
+    });  
   },
 
   //TODO: Send the state to a backbone model to be sent to Yummly

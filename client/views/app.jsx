@@ -109,7 +109,6 @@ var AppView = React.createClass({
             <li><Link to="mealplans">Meal Plans</Link></li>
           </ul>
         </header>
-
         <RouteHandler />
       </div>
     );
