@@ -4,7 +4,7 @@
   "description": "Personalize your meal plans and generate custom grocery lists",
   "main": "index.js",
   "scripts": {
-    "test": ""
+    "postinstall": "./node_modules/bower/bin/bower install"
   },
   "repository": {
     "type": "git",
@@ -33,6 +33,7 @@
     "bluebird": "^2.9.26",
     "body-parser": "^1.12.4",
     "bookshelf": "^0.8.1",
+    "bower": "^1.4.1",
     "express": "^4.12.4",
     "http": "0.0.0",
     "knex": "^0.8.6",
@@ -46,8 +47,5 @@
     "grunt-contrib-watch": "^0.6.1",
     "grunt-nodemon": "^0.4.0",
     "grunt-react": "^0.12.2"
-  },
-  "scripts": {
-      "postinstall": "./node_modules/bower/bin/bower install"
   }
 }
