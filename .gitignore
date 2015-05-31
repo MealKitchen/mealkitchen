@@ -32,7 +32,7 @@ client/lib/
 .DS_Store
 
 # Don't want to expose API keys
-# server/config/config.js
+server/config/config.js
 
 # No need to track processed jsx
 # client/dist/
