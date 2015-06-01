@@ -2,6 +2,7 @@ var appId = process.env.APPLICATION_ID || require('../config/config.js').APPLICA
 var apiKey = process.env.APPLICATION_KEY || require('../config/config.js').APPLICATION_KEY;
 var http = require('http');
 var Recipe = require('./recipeModel');
+var RecipePreference = require('../recipePreference/recipePreferenceModel');
 
 var allowedAllergyLibrary = {
   "Egg-Free": "397^Egg-Free",
@@ -32,7 +33,7 @@ var allowedCuisineLibrary = {
 var queryYummly = function (request, response) {
   //var allowedCuisine = request.body.allowedCuisine;
   var allowedAllergyList = request.body.allowedAllergy;
-  // generate query for 10x meals requested by user in order to handle batch request 
+  // generate query for 10x meals requested by user in order to handle batch request
   var numResults = 10 * request.body.numMeals;
 
   //var numResults = request.body.numMeals;
@@ -63,7 +64,7 @@ var queryYummly = function (request, response) {
 
       results = JSON.parse(str);
       //check acceptability of recipe before saving
-
+      kNearestNeighbors(results.matches);
       for(var i = 0; i < results.matches.length; i++){
         //had to make a call to a function to retain recipe info #async
         saveRecipe(results.matches[i]);
@@ -73,10 +74,80 @@ var queryYummly = function (request, response) {
   });
 };
 
+// var previousResults = [
+//   { userId: 0,
+//     recipeId: 'Vegetarian-Cabbage-Soup-Recipezaar',
+//     preference: 0
+//   },
+//   { userId: 0,
+//     recipeId: 'Chunky-Rice-And-Bean-Soup-Recipezaar',
+//     preference: 1
+//   },
+//   { userId: 0,
+//     recipeId: 'Tomato-Lentil-Soup-Recipezaar_3',
+//     preference: 0
+//   }
+// ];
+
+var kNearestNeighbors = function (results) {
+  var sortedResults = [];
+  var previousResults = [];
+  // get previous flavor results from the user
+  RecipePreference.where({'userId': 0})
+  .fetchAll().then(function(preferences){
+    if(preferences){
+      for (var i = 0; i < preferences.models.length; i++) {
+        previousResults.push(preferences.models[i].attributes);
+      }
+    }
+  }).then(function(){
+    previousResults.map(function(val, index, array){
+      //console.log('map', val);
+      return Recipe.where({yumId: val.recipeId}).fetch().then(function(recipe){
+        //console.log(recipe, 'recipe');
+        var attr = recipe.attributes;
+        val.flavors = attr.salty !== null ? {
+          'salty':attr.salty,
+          'sour':attr.sour,
+          'sweet':attr.sweet,
+          'bitter':attr.bitter,
+          'piquant':attr.piquant,
+          'meaty': attr.meaty
+        } : null;
+        return val;
+      });
+    })
+  }).then(function(){
+    console.log('previousResults', previousResults);
+    });
+
+
+  // Recipe.where({})
+
+
+  // compare recipes from results to previous flavor results
+    // for (var j = 0; j < results.length; j++) {
+    //   var recipe = results[j];
+    //   var recipeFlavors = recipe.flavors;
+    //   for (var k = 0; k < previousResults.length; k++) {
+    //     for (var key in recipeFlavors) {
+
+    //     }
+    //   }
+    // }
+
+
+  // calculate preference value from k nearest neighbors
+  // store preference value in recipe object
+  // sort recipe objects by preference values
+
+  return sortedResults;
+};
 
 var saveRecipe = function(recipe){
   new Recipe({'id': recipe.id}).fetch().then(function(found){
     if(!found){
+      console.log(recipe);
       var newRecipe = new Recipe({
         'id': recipe.id,
         'recipeName': recipe.recipeName,
