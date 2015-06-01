@@ -34,14 +34,14 @@ var SignUp = React.createClass({
   },
 
   _transition: function(e){
-    this.transitionTo(e.target.id);
+    this.transitionTo(e.target.dataset.id);
   },
 
   render : function() {
     return (
       <div>
-        <button type='button' id='signup' onClick={this._transition}>Sign Up</button>
-        <button type='button' id='login' onClick={this._transition}>Log In</button>
+        <button type='button' data-id='signup' onClick={this._transition}>Sign Up</button>
+        <button type='button' data-id='login' onClick={this._transition}>Log In</button>
         <form>
           <input type="text" name="email" placeholder="Email" onChange={this.handleEmailChange} />
           <input type="password" name="password" placeholder="Password" onChange={this.handlePasswordChange}/>
