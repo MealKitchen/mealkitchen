@@ -1,3 +1,5 @@
+/** @jsx React.DOM */
+
 var Navigation = ReactRouter.Navigation;
 
 var ShoppingList = React.createClass({

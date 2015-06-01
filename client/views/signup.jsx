@@ -1,4 +1,5 @@
 /** @jsx React.DOM */
+
 var Navigation = ReactRouter.Navigation;
 
 var SignUp = React.createClass({
@@ -17,16 +18,17 @@ var SignUp = React.createClass({
      this.setState({password: e.target.value});
   },
 
-
   handleSignUp: function() {
-    var user = new UserModel(this.state);
+    var that = this;
+    var user = this.props.user;
+    user.set(this.state);
     user.save({}, {
       success: function(model, res){
-        console.log("SUCCESS!");
-        this.transitionTo('login');
+        console.log("Successful sign up!");
+        that.transitionTo('login');
       },
       error: function(model, err){
-        console.log("ERROR!");
+        console.error("I'm sorry, there was an error!");
       }
     });
   },

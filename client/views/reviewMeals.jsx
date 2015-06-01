@@ -1,3 +1,5 @@
+/** @jsx React.DOM */
+
 var Navigation = ReactRouter.Navigation;
 
 var ReviewMeals = React.createClass({

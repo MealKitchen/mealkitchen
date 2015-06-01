@@ -19,8 +19,9 @@ var LogIn = React.createClass({
   },
 
   handleLogin: function() {
-    var user = new UserModel(this.state);
     var that = this;
+    var user = this.props.user;
+    user.set(this.state);
     user.save({}, {
       success: function(model, res){
         console.log("Successful login!");

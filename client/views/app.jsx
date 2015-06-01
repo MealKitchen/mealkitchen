@@ -12,6 +12,8 @@ var Navigation = Router.Navigation;
 ///////// BACKBONE STORES ///////////
 /////////////////////////////////////
 
+var userSignUp = new UserModel();
+var userLogIn = new UserModel();
 var user = new UserModel();
 var recipesCollection = new RecipesCollection();
 var mealPlan = new MealPlanModel();
@@ -20,6 +22,22 @@ var queryModel = new QueryModel();
 /////////////////////////////////////
 //////////// WRAPPERS ///////////////
 /////////////////////////////////////
+
+var SignUpWrapper = React.createClass({
+  render: function(){
+    return(
+      <SignUp user={userSignUp} />
+    );
+  }
+});
+
+var LogInWrapper = React.createClass({
+  render: function(){
+    return(
+      <LogIn user={userLogIn} />
+    );
+  }
+});
 
 var MealQueryWrapper = React.createClass({
   render: function(){
@@ -77,8 +95,8 @@ var AppView = React.createClass({
 
 var routes = (
   <Route handler={AppView} path="/">
-    <Route name="signup" handler={SignUp} />
-    <Route name="login" handler={LogIn} />
+    <Route name="signup" handler={SignUpWrapper} />
+    <Route name="login" handler={LogInWrapper} />
     <Route name="mealquery" handler={MealQueryWrapper} />
     <Route name="reviewmeals" handler={ReviewMealsWrapper} />
     <Route name="shoppinglist" handler={ShoppingListWrapper} />
