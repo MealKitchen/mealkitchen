@@ -23,4 +23,11 @@ module.exports = {
     saveMealPlan(request.body);
     response.status(200).send({});
   },
+  fetchMealPlans: function (request, response) {
+    MealPlan.query("where", "userId", "=", request.query.userId).fetchAll().then(function(collection) {
+      response.status(200).send(collection);
+    }).catch(function(error) {
+      response.status(404).send({error: "Could not find user's meal plans!"});
+    });
+  }
 };
