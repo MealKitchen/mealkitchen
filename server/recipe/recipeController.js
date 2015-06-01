@@ -135,7 +135,6 @@ var getToYummly = function (request, response) {
   });
 };
 
-
 var saveRecipe = function(recipe){
   new Recipe({'id': recipe.id}).fetch().then(function(found){
     if(!found){

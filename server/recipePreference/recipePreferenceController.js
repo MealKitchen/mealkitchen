@@ -21,8 +21,12 @@ module.exports = {
 
   updatePreferences: function (request, response) {
     // update recipe like/dislike table in db
+<<<<<<< HEAD
     savePreference(request);
 
+=======
+    savePreference(request.body);
+>>>>>>> retrieve recipe flavor details from db and store to previous user recipes
     response.status(200).send(request.body);
   },
   getUserPreferences: function (userId) {
