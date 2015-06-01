@@ -28,7 +28,7 @@ var ShoppingList = React.createClass({
 
   //TODO: Refactor to persist checked class after refresh. Currently only adds checked class temporarily.
   crossout: function (event) {
-    var id = event.target.dataset.id);
+    var id = event.target.dataset.id;
     var node = React.findDOMNode(this.refs[id]).classList.toggle("checked");
   },
 
