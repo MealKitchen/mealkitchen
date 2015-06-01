@@ -1,8 +1,11 @@
 /** @jsx React.DOM */
-var Login = React.createClass({
-  
-  mixins: [Backbone.Events],
 
+var Navigation = ReactRouter.Navigation;
+
+var LogIn = React.createClass({
+
+  mixins: [Navigation],
+  
   getInitialState: function() {
     return {email: null, password: null, login: true};
   },
@@ -16,23 +19,29 @@ var Login = React.createClass({
   },
 
   handleLogin: function() {
-    var user = new UserModel(this.state);
-    
+    var that = this;
+    var user = this.props.user;
+    user.set(this.state);
     user.save({}, {
       success: function(model, res){
-        console.log("SUCCESS!");
+        console.log("Successful login!");
+        that.transitionTo('mealquery');
       },
       error: function(model, err){
-        console.log("ERROR!");
+        console.error("ERROR while logging in!");
       }
     });
+  },
+  
+  _transition: function(e){
+    this.transitionTo(e.target.dataset.id);
   },
 
   render : function() {
     return (
       <div>
-        <button>Sign Up</button>
-        <button>Log In</button>
+        <button type='button' data-id='signup' onClick={this._transition}>Sign Up</button>
+        <button type='button' data-id='login' onClick={this._transition}>Log In</button>
         <form>
           <input type="text" name="email" placeholder="Email" onChange={this.handleEmailChange} />
           <input type="password" name="password" placeholder="Password" onChange={this.handlePasswordChange}/>

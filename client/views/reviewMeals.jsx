@@ -1,10 +1,14 @@
+/** @jsx React.DOM */
+
+var Navigation = ReactRouter.Navigation;
+
 var ReviewMeals = React.createClass({
 
-  mixins: [Backbone.Events],
+  mixins: [Navigation, Backbone.Events],
   
   //TODO: state should be the recipes collection returned from yummly
   getInitialState: function() {
-    return null;
+    return {};
   },
 
   componentDidMount: function() {
@@ -18,7 +22,8 @@ var ReviewMeals = React.createClass({
   //Every time a user interacts with the recipes, we need to update the state of the view to reflect that change.
   rejectRecipe: function(event) {
     // save id of recipe, and remove recipe from the RecipeCollection
-    var recipe = this.props.recipes.remove(this.props.recipes.at(event.target.dataset.id));
+    var modelId = event.target.dataset.id;
+    var recipe = this.props.recipes.remove(this.props.recipes.at(modelId));
     var recipeId = recipe.get('id');
 
     // update queryModel for rejectedRecipeId and totalRecipesRequested to ensure unique recipes from Yummly query
@@ -31,7 +36,7 @@ var ReviewMeals = React.createClass({
     this.props.query.save({}, {
       success: function(model, res) {
         console.log("Response from server:", res);
-        that.props.recipes.add(new RecipeModel(res.matches[0]));
+        that.props.recipes.add(new RecipeModel(res.matches[0]), {at: modelId});
       },
       error: function(model, err) {
         console.error("There was an error with your request! ", err);
@@ -50,17 +55,17 @@ var ReviewMeals = React.createClass({
     }
     ingredients = ingredients.join().split(',');
     
-    var mealPlan = new MealPlanModel({
-      query: this.props.query,
-      recipes: this.props.recipes,
-      ingredientsList: ingredients
+    this.props.mealPlan.set({
+      'query': this.props.query,
+      'recipes': this.props.recipes,
+      'ingredientsList': ingredients
     });
-    this.props.onSubmit(mealPlan);
 
-    mealPlan.save({}, {
+    var that = this;
+    this.props.mealPlan.save({}, {
       success: function(model, res) {
         console.log("Meal plan saved! Response from server:", res);
-
+        that.transitionTo('shoppinglist');
       },
       error: function(model, err) {
         console.error("There was an error with your request! ", err);
@@ -76,7 +81,7 @@ var ReviewMeals = React.createClass({
             return [
               <button data-id={i} onClick={this.rejectRecipe}>X</button>,
               <div key={i}>{item.get('recipeName')}</div>
-              ];
+            ];
           }, this)}
           <button onClick={this.handleSubmit}>Save meal plan</button>
         </div>
