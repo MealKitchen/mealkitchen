@@ -7,6 +7,7 @@ var saveMealPlan = function(recipes){
   for (var i = 0; i < recipes.length; i++) {
     recipeIds.push(recipes[i].id);
   }
+
   new MealPlan({
     'userId': 0
   }).save().then(function(mealPlan){
