@@ -5,13 +5,12 @@ var ShoppingList = React.createClass({
   mixins: [Backbone.Events],
 
   getInitialState: function () {
-    return null;
+    return {};
   },
 
   componentDidMount: function () {
     var that = this;
     this.listenTo(this.props.mealPlan, 'change', function () {
-      console.log('change registered!');
       that.forceUpdate();
     });
   },

@@ -23,11 +23,11 @@ var LogIn = React.createClass({
     var that = this;
     user.save({}, {
       success: function(model, res){
-        console.log("SUCCESS!");
+        console.log("Successful login!");
         that.transitionTo('mealquery');
       },
       error: function(model, err){
-        console.log("ERROR!");
+        console.error("ERROR while logging in!");
       }
     });
   },

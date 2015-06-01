@@ -8,29 +8,51 @@ var Route = Router.Route;
 var RouteHandler = Router.RouteHandler;
 var Navigation = Router.Navigation;
 
-// var MealQueryWrapper = React.createClass({
-//   return (
-//       <MealQuery 
-//     )
+/////////////////////////////////////
+///////// BACKBONE STORES ///////////
+/////////////////////////////////////
 
-// })
+var user = new UserModel();
+var recipesCollection = new RecipesCollection();
+var mealPlan = new MealPlanModel();
+var queryModel = new QueryModel();
+
+/////////////////////////////////////
+//////////// WRAPPERS ///////////////
+/////////////////////////////////////
+
+var MealQueryWrapper = React.createClass({
+  render: function(){
+    return(
+      <MealQuery recipes={recipesCollection} query={queryModel} />
+    );
+  }
+});
+
+var ReviewMealsWrapper = React.createClass({
+  render: function(){
+    return(
+      <ReviewMeals recipes={recipesCollection} query={queryModel} mealPlan={mealPlan} />
+    );
+  }
+});
+
+var ShoppingListWrapper = React.createClass({
+  render: function(){
+    return(
+      <ShoppingList mealPlan={mealPlan} />
+    );
+  }
+});
 
 
-
+//The AppView is the main container from which the rest of the App is rendered.
 var AppView = React.createClass({
 
-  mixins: [Navigation],
+  mixins: [Navigation, Backbone.Events],
 
   getInitialState: function(){
-    return {
-      queryResults: null,
-      //store query model here if necessarry!?
-    };
-  },
-
-  _setRecipes: function(recipesCollection){
-    console.log('CALLING _setRecipes inside AppView');
-    setState({queryResults: recipesCollection});
+    return {};
   },
   
   render: function() {
@@ -47,7 +69,7 @@ var AppView = React.createClass({
           </ul>
         </header>
 
-        <RouteHandler {...this.state}/>
+        <RouteHandler />
       </div>
     );
   }
@@ -57,15 +79,14 @@ var routes = (
   <Route handler={AppView} path="/">
     <Route name="signup" handler={SignUp} />
     <Route name="login" handler={LogIn} />
-    <Route name="mealquery" handler={MealQuery} />
-    <Route name="reviewmeals" handler={ReviewMeals} />
-    <Route name="shoppinglist" handler={ShoppingList} />
+    <Route name="mealquery" handler={MealQueryWrapper} />
+    <Route name="reviewmeals" handler={ReviewMealsWrapper} />
+    <Route name="shoppinglist" handler={ShoppingListWrapper} />
     <DefaultRoute handler={LogIn} />
   </Route>
 );
 
-var that = this;
 
-Router.run(routes, Router.HashLocation, function (Handler, state) {
-  React.render(<Handler prop={state}/>, document.body);
+Router.run(routes, Router.HashLocation, function (Handler) {
+  React.render(<Handler />, document.body);
 });

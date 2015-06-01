@@ -7,27 +7,27 @@ var MealQuery = React.createClass({
   mixins: [Backbone.Events, Navigation],
 
   getInitialState: function() {
-    return new QueryModel();
+    return {};
   },
 
   //Set listener on state (which is a backbone model)
   componentDidMount: function(){
-    this.listenTo(this.state, 'change', function(){
+    this.listenTo(this.props.query, 'change', function(){
       console.log('heard a change event!');
     }, this);
+    console.log(this.props);
   },
 
   //Every time a user interacts with the form, we need to update the state of the view to reflect that change.
   handleChange: function(event) {
-    console.log(this.props);
     var name = event.target.name;
     if(name === 'numMeals'){
-      this.state.set({ 'numMeals': event.target.value,
-                       'totalRecipesRequested': event.target.value });
+      this.setState({ numMeals: event.target.value,
+                       totalRecipesRequested: event.target.value });
     } else {
-      var newAllergies = _.extend({}, this.state.get('allowedAllergy'));
+      var newAllergies = _.extend({}, this.state.allowedAllergy);
       newAllergies[name] = event.target.checked;
-      this.state.set('allowedAllergy', newAllergies);
+      this.setState({allowedAllergy: newAllergies});
     }
   },
 
@@ -37,24 +37,21 @@ var MealQuery = React.createClass({
     var that = this;
     
     //Send a POST request to the server with the QueryModel to get a list of recipes that match the query.
-    this.state.save({}, {
+    this.props.query.set(this.state);
+    this.props.query.save({}, {
       success: function(model, res){
         
-        console.log("Response from the server: ", res);
+        console.log("Response from the server on submitting Meal Query: ", res);
 
         //Create a Recipes Collection with Recipe Models for each Recipe returned from the server.
-        var recipesCollection = new RecipesCollection();
         _.each(res.matches, function(recipe){
-          recipesCollection.add(new RecipeModel(recipe));
-        });
+          that.props.recipes.add(new RecipeModel(recipe));
+        }, this);
         
-        //Sets the Recipes Collection as a property on the AppView State, and updates the UI to reflect the recipes queried by the user.
-        // that.props.sendRecipesToApp(recipesCollection);
         that.transitionTo('reviewmeals');
-        // that.props.onSubmit(recipesCollection, that.state);
       },
       error: function(model, err){
-        console.error("There was an error with your request! ", err);
+        console.error("There was an error with your Meal Query request! ", err);
       }
     });
     

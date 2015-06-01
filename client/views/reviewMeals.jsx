@@ -2,11 +2,11 @@ var Navigation = ReactRouter.Navigation;
 
 var ReviewMeals = React.createClass({
 
-  mixins: [Backbone.Events],
+  mixins: [Navigation, Backbone.Events],
   
   //TODO: state should be the recipes collection returned from yummly
   getInitialState: function() {
-    return null;
+    return {};
   },
 
   componentDidMount: function() {
@@ -52,17 +52,17 @@ var ReviewMeals = React.createClass({
     }
     ingredients = ingredients.join().split(',');
     
-    var mealPlan = new MealPlanModel({
-      query: this.props.query,
-      recipes: this.props.recipes,
-      ingredientsList: ingredients
+    this.props.mealPlan.set({
+      'query': this.props.query,
+      'recipes': this.props.recipes,
+      'ingredientsList': ingredients
     });
-    this.props.onSubmit(mealPlan);
 
-    mealPlan.save({}, {
+    var that = this;
+    this.props.mealPlan.save({}, {
       success: function(model, res) {
         console.log("Meal plan saved! Response from server:", res);
-
+        that.transitionTo('shoppinglist');
       },
       error: function(model, err) {
         console.error("There was an error with your request! ", err);
