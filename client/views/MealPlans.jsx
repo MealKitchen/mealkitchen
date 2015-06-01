@@ -11,8 +11,7 @@ var MealPlans = React.createClass({
   },
 
   componentWillMount: function(){
-    // this.props.mealPlans.fetch();
-    console.log(this.props);
+    this.props.mealPlans.fetch({data: {userId: this.props.user.get('id')}});
   },
   
   _transition: function(e){

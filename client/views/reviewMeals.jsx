@@ -58,7 +58,8 @@ var ReviewMeals = React.createClass({
     this.props.mealPlan.set({
       'query': this.props.query,
       'recipes': this.props.recipes,
-      'ingredientsList': ingredients
+      'ingredientsList': ingredients,
+      'userId': this.props.user.get('id')
     });
 
     var that = this;

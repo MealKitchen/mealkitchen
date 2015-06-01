@@ -51,7 +51,7 @@ var MealQueryWrapper = React.createClass({
 var ReviewMealsWrapper = React.createClass({
   render: function(){
     return(
-      <ReviewMeals user={user} recipes={recipesCollection} query={queryModel} mealPlan={mealPlan} />
+      <ReviewMeals recipes={recipesCollection} query={queryModel} mealPlan={mealPlan} user={user} />
     );
   }
 });
@@ -117,7 +117,7 @@ var routes = (
     <Route name="reviewmeals" handler={ReviewMealsWrapper} />
     <Route name="shoppinglist" handler={ShoppingListWrapper} />
     <Route name="mealplans" handler={MealPlansWrapper} />
-    <DefaultRoute handler={LogIn} />
+    <DefaultRoute handler={LogInWrapper} />
   </Route>
 );
 
