@@ -64,12 +64,12 @@ var queryYummly = function (request, response) {
 
       results = JSON.parse(str);
       //check acceptability of recipe before saving
-      kNearestNeighbors(results.matches);
       for(var i = 0; i < results.matches.length; i++){
         //had to make a call to a function to retain recipe info #async
         saveRecipe(results.matches[i]);
       }
-      response.status(200).send(results);
+      getUserPreferences(results.matches, response);
+      //response.status(200).send(results);
     });
   });
 };
@@ -89,22 +89,61 @@ var queryYummly = function (request, response) {
 //   }
 // ];
 
-var kNearestNeighbors = function (results) {
+
+var kNearestNeighbors = function (userPreferences, matches, response) {
+  //console.log('userPreferences: ', userPreferences[0].flavors, "matches: ", matches[2].flavors);
+  for (var i = 0; i < matches.length; i++) {
+    var yummlyMatch = matches[i];
+    var likelihood = 0;
+    for (var j = 0; j < userPreferences.length; j++) {
+      var sumOfSquares = 0;
+
+      var userPreference = userPreferences[j];
+
+      for (var key in yummlyMatch.flavors) {
+        var base = yummlyMatch.flavors[key] - userPreference.flavors[key];
+        console.log('base: ', base);
+        sumOfSquares += Math.pow(base, 2);
+      }
+      console.log('sumOfSquares: ', sumOfSquares);
+      var distance = Math.sqrt(sumOfSquares);
+
+      //if distance === 0 don't use distance as weighting factor
+      likelihood += distance === 0 ? 0:(1 / distance) * userPreference.preference;
+      console.log('distance: ', distance);
+    }
+    console.log('likelihood: ', likelihood);
+    yummlyMatch.likelihood = likelihood;
+  }
+  matches.sort(function (a, b) {
+    if (a.likelihood > b.likelihood) {
+      return -1;
+    }
+    if (a.likelihood < b.likelihood) {
+      return 1;
+    }
+    // a must be equal to b
+    return 0;
+  });
+  console.log('matches: ', matches);
+  response.status(200).send(matches);
+};
+
+var getUserPreferences = function (results, response) {
   var sortedResults = [];
-  var previousResults = [];
+  var userPreferences = [];
+
   // get previous flavor results from the user
   RecipePreference.where({'userId': 0})
   .fetchAll().then(function(preferences){
     if(preferences){
       for (var i = 0; i < preferences.models.length; i++) {
-        previousResults.push(preferences.models[i].attributes);
+        userPreferences.push(preferences.models[i].attributes);
       }
     }
   }).then(function(){
-    previousResults.map(function(val, index, array){
-      //console.log('map', val);
-      return Recipe.where({yumId: val.recipeId}).fetch().then(function(recipe){
-        //console.log(recipe, 'recipe');
+    userPreferences.map(function(val, index, array){
+      Recipe.where({yumId: val.recipeId}).fetch().then(function(recipe){
         var attr = recipe.attributes;
         val.flavors = attr.salty !== null ? {
           'salty':attr.salty,
@@ -114,16 +153,12 @@ var kNearestNeighbors = function (results) {
           'piquant':attr.piquant,
           'meaty': attr.meaty
         } : null;
-        return val;
+        if (index === array.length - 1) {
+          kNearestNeighbors(array, results, response);
+        }
       });
     })
-  }).then(function(){
-    console.log('previousResults', previousResults);
-    });
-
-
-  // Recipe.where({})
-
+  });
 
   // compare recipes from results to previous flavor results
     // for (var j = 0; j < results.length; j++) {
@@ -147,7 +182,7 @@ var kNearestNeighbors = function (results) {
 var saveRecipe = function(recipe){
   new Recipe({'id': recipe.id}).fetch().then(function(found){
     if(!found){
-      console.log(recipe);
+      //console.log(recipe);
       var newRecipe = new Recipe({
         'id': recipe.id,
         'recipeName': recipe.recipeName,
