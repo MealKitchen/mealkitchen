@@ -62,18 +62,27 @@ var MealQuery = React.createClass({
     return (
       <form onSubmit={this.handleSubmit}>
         <input type="number" name="numMeals" placeholder="Enter number of meals" value={value} onChange={this.handleChange} />
-        <label><input type="checkbox" name="Egg-Free" value="Egg-Free" className="checkbox" onChange={this.handleChange} /> Egg-Free</label>
-        <label><input type="checkbox" name="Gluten-Free" value="Gluten-Free" className="checkbox" onChange={this.handleChange} /> Gluten-Free</label>
-        <label><input type="checkbox" name="Peanut-Free" value="Peanut-Free" className="checkbox" onChange={this.handleChange} /> Peanut-Free</label>
-        <label><input type="checkbox" name="Seafood-Free" value="Seafood-Free" className="checkbox" onChange={this.handleChange} /> Seafood-Free</label>
-        <label><input type="checkbox" name="Sesame-Free" value="Sesame-Free" className="checkbox" onChange={this.handleChange} /> Sesame-Free</label>
-        <label><input type="checkbox" name="Soy-Free" value="Soy-Free" className="checkbox" onChange={this.handleChange} /> Soy-Free</label>
-        <label><input type="checkbox" name="Sulfite-Free" value="Sulfite-Free" className="checkbox" onChange={this.handleChange} /> Sulfite-Free</label>
-        <label><input type="checkbox" name="Tree Nut-Free" value="Tree Nut-Free" className="checkbox" onChange={this.handleChange} /> Tree Nut-Free</label>
-        <label><input type="checkbox" name="Wheat-Free" value="Wheat-Free" className="checkbox" onChange={this.handleChange} /> Wheat-Free</label>
+        {allowedAllergies.map(function(item, i){
+          return [
+            <label><input type="checkbox" name={item} value={item} className="checkbox" onChange={this.handleChange} />{item}</label>
+          ];
+        }, this)}
         <input type="submit" />
       </form>
     );
   }
 });
 
+
+//TODO: Store all meal query options below and dynamically generate jsx in the render method above.
+var allowedAllergies = [
+  "Egg-Free",
+  "Gluten-Free",
+  "Peanut-Free",
+  "Seafood-Free",
+  "Sesame-Free",
+  "Soy-Free",
+  "Sulfite-Free", 
+  "Tree Nut-Free",
+  "Wheat-Free"
+];

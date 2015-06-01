@@ -80,7 +80,7 @@ var ReviewMeals = React.createClass({
             return [
               <button data-id={i} onClick={this.rejectRecipe}>X</button>,
               <div key={i}>{item.get('recipeName')}</div>
-              ];
+            ];
           }, this)}
           <button onClick={this.handleSubmit}>Save meal plan</button>
         </div>
