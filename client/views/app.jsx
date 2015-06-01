@@ -17,6 +17,7 @@ var userLogIn = new UserModel();
 var user = new UserModel();
 var recipesCollection = new RecipesCollection();
 var mealPlan = new MealPlanModel();
+var mealPlans = new MealPlansCollection();
 var queryModel = new QueryModel();
 
 /////////////////////////////////////
@@ -63,6 +64,14 @@ var ShoppingListWrapper = React.createClass({
   }
 });
 
+var MealPlansView = React.createClass({
+  render: function(){
+    return(
+      <MealPlans mealPlans={mealPlans} />
+    );
+  }
+});
+
 
 //The AppView is the main container from which the rest of the App is rendered.
 var AppView = React.createClass({
@@ -85,6 +94,7 @@ var AppView = React.createClass({
             <li><Link to="mealquery">Meal Query</Link></li>
             <li><Link to="reviewmeals">Review Meals</Link></li>
             <li><Link to="shoppinglist">Shopping List</Link></li>
+            <li><Link to="mealplans">Meal Plans</Link></li>
           </ul>
         </header>
 
@@ -101,6 +111,7 @@ var routes = (
     <Route name="mealquery" handler={MealQueryWrapper} />
     <Route name="reviewmeals" handler={ReviewMealsWrapper} />
     <Route name="shoppinglist" handler={ShoppingListWrapper} />
+    <Route name="mealplabs" handler={MealPlansWrapper} />
     <DefaultRoute handler={LogIn} />
   </Route>
 );
