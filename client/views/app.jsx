@@ -17,6 +17,7 @@ var userLogIn = new UserModel();
 var user = new UserModel();
 var recipesCollection = new RecipesCollection();
 var mealPlan = new MealPlanModel();
+var mealPlans = new MealPlansCollection();
 var queryModel = new QueryModel();
 
 /////////////////////////////////////
@@ -34,7 +35,7 @@ var SignUpWrapper = React.createClass({
 var LogInWrapper = React.createClass({
   render: function(){
     return(
-      <LogIn user={userLogIn} />
+      <LogIn userLogIn={userLogIn} user={user} />
     );
   }
 });
@@ -42,7 +43,7 @@ var LogInWrapper = React.createClass({
 var MealQueryWrapper = React.createClass({
   render: function(){
     return(
-      <MealQuery recipes={recipesCollection} query={queryModel} />
+      <MealQuery recipes={recipesCollection} query={queryModel} user={user} />
     );
   }
 });
@@ -50,7 +51,7 @@ var MealQueryWrapper = React.createClass({
 var ReviewMealsWrapper = React.createClass({
   render: function(){
     return(
-      <ReviewMeals recipes={recipesCollection} query={queryModel} mealPlan={mealPlan} />
+      <ReviewMeals recipes={recipesCollection} query={queryModel} mealPlan={mealPlan} user={user} />
     );
   }
 });
@@ -58,7 +59,15 @@ var ReviewMealsWrapper = React.createClass({
 var ShoppingListWrapper = React.createClass({
   render: function(){
     return(
-      <ShoppingList mealPlan={mealPlan} />
+      <ShoppingList mealPlan={mealPlan} user={user} />
+    );
+  }
+});
+
+var MealPlansWrapper = React.createClass({
+  render: function(){
+    return(
+      <MealPlans mealPlans={mealPlans} user={user} />
     );
   }
 });
@@ -77,6 +86,11 @@ var AppView = React.createClass({
 
     return (
       <div>
+        <nav>
+          <a><Link to="mealquery">Create Meal Plan</Link></a>
+          <a><Link to="mealplans">View Meal Plans</Link></a>
+          <a><Link to="login">Log Out</Link></a>
+        </nav>
         <header>
           <h1>Meal Plan</h1>
           <ul>
@@ -85,6 +99,7 @@ var AppView = React.createClass({
             <li><Link to="mealquery">Meal Query</Link></li>
             <li><Link to="reviewmeals">Review Meals</Link></li>
             <li><Link to="shoppinglist">Shopping List</Link></li>
+            <li><Link to="mealplans">Meal Plans</Link></li>
           </ul>
         </header>
 
@@ -101,7 +116,8 @@ var routes = (
     <Route name="mealquery" handler={MealQueryWrapper} />
     <Route name="reviewmeals" handler={ReviewMealsWrapper} />
     <Route name="shoppinglist" handler={ShoppingListWrapper} />
-    <DefaultRoute handler={LogIn} />
+    <Route name="mealplans" handler={MealPlansWrapper} />
+    <DefaultRoute handler={LogInWrapper} />
   </Route>
 );
 
