@@ -35,7 +35,7 @@ var SignUpWrapper = React.createClass({
 var LogInWrapper = React.createClass({
   render: function(){
     return(
-      <LogIn user={userLogIn} />
+      <LogIn userLogIn={userLogIn} user={user} />
     );
   }
 });
@@ -43,7 +43,7 @@ var LogInWrapper = React.createClass({
 var MealQueryWrapper = React.createClass({
   render: function(){
     return(
-      <MealQuery recipes={recipesCollection} query={queryModel} />
+      <MealQuery recipes={recipesCollection} query={queryModel} user={user} />
     );
   }
 });
@@ -51,7 +51,7 @@ var MealQueryWrapper = React.createClass({
 var ReviewMealsWrapper = React.createClass({
   render: function(){
     return(
-      <ReviewMeals recipes={recipesCollection} query={queryModel} mealPlan={mealPlan} />
+      <ReviewMeals user={user} recipes={recipesCollection} query={queryModel} mealPlan={mealPlan} />
     );
   }
 });
@@ -59,7 +59,7 @@ var ReviewMealsWrapper = React.createClass({
 var ShoppingListWrapper = React.createClass({
   render: function(){
     return(
-      <ShoppingList mealPlan={mealPlan} />
+      <ShoppingList mealPlan={mealPlan} user={user} />
     );
   }
 });
@@ -67,7 +67,7 @@ var ShoppingListWrapper = React.createClass({
 var MealPlansWrapper = React.createClass({
   render: function(){
     return(
-      <MealPlans mealPlans={mealPlans} />
+      <MealPlans mealPlans={mealPlans} user={user} />
     );
   }
 });

@@ -9,6 +9,11 @@ var MealPlans = React.createClass({
   getInitialState: function() {
     return {};
   },
+
+  componentWillMount: function(){
+    // this.props.mealPlans.fetch();
+    console.log(this.props);
+  },
   
   _transition: function(e){
     this.transitionTo(e.target.dataset.id);
@@ -21,7 +26,6 @@ var MealPlans = React.createClass({
       </div>
     );
   }
-
 });
         // {this.props.mealPlans.map(function(item, i) {
         //   return [
