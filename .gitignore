@@ -35,4 +35,4 @@ client/lib/
 server/config/config.js
 
 # No need to track processed jsx
-# client/dist/
+client/dist/
