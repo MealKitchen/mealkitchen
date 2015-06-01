@@ -64,7 +64,7 @@ var ShoppingListWrapper = React.createClass({
   }
 });
 
-var MealPlansView = React.createClass({
+var MealPlansWrapper = React.createClass({
   render: function(){
     return(
       <MealPlans mealPlans={mealPlans} />
@@ -86,6 +86,11 @@ var AppView = React.createClass({
 
     return (
       <div>
+        <nav>
+          <a><Link to="mealquery">Create Meal Plan</Link></a>
+          <a><Link to="mealplans">View Meal Plans</Link></a>
+          <a><Link to="login">Log Out</Link></a>
+        </nav>
         <header>
           <h1>Meal Plan</h1>
           <ul>
@@ -111,7 +116,7 @@ var routes = (
     <Route name="mealquery" handler={MealQueryWrapper} />
     <Route name="reviewmeals" handler={ReviewMealsWrapper} />
     <Route name="shoppinglist" handler={ShoppingListWrapper} />
-    <Route name="mealplabs" handler={MealPlansWrapper} />
+    <Route name="mealplans" handler={MealPlansWrapper} />
     <DefaultRoute handler={LogIn} />
   </Route>
 );
