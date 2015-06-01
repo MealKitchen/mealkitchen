@@ -1,4 +1,4 @@
-var appCodes = require('../config/config.js');
+// var appCodes = require('../config/config.js');
 var http = require('http');
 var MealPlan = require('./mealPlanModel');
 
