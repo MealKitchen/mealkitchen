@@ -22,7 +22,8 @@ var ReviewMeals = React.createClass({
   //Every time a user interacts with the recipes, we need to update the state of the view to reflect that change.
   rejectRecipe: function(event) {
     // save id of recipe, and remove recipe from the RecipeCollection
-    var recipe = this.props.recipes.remove(this.props.recipes.at(event.target.dataset.id));
+    var modelId = event.target.dataset.id;
+    var recipe = this.props.recipes.remove(this.props.recipes.at(modelId));
     var recipeId = recipe.get('id');
 
     // update queryModel for rejectedRecipeId and totalRecipesRequested to ensure unique recipes from Yummly query
@@ -35,7 +36,7 @@ var ReviewMeals = React.createClass({
     this.props.query.save({}, {
       success: function(model, res) {
         console.log("Response from server:", res);
-        that.props.recipes.add(new RecipeModel(res.matches[0]));
+        that.props.recipes.add(new RecipeModel(res.matches[0]), {at: modelId});
       },
       error: function(model, err) {
         console.error("There was an error with your request! ", err);

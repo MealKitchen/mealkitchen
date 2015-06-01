@@ -32,12 +32,16 @@ var LogIn = React.createClass({
       }
     });
   },
-
+  
+  _transition: function(e){
+    this.transitionTo(e.target.id);
+  },
+  
   render : function() {
     return (
       <div>
-        <button>Sign Up</button>
-        <button>Log In</button>
+        <button type='button' id='signup' onClick={this._transition}>Sign Up</button>
+        <button type='button' id='login' onClick={this._transition}>Log In</button>
         <form>
           <input type="text" name="email" placeholder="Email" onChange={this.handleEmailChange} />
           <input type="password" name="password" placeholder="Password" onChange={this.handlePasswordChange}/>

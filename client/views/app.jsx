@@ -78,6 +78,7 @@ var AppView = React.createClass({
     return (
       <div>
         <header>
+          <h1>Meal Plan</h1>
           <ul>
             <li><Link to="signup">Sign Up</Link></li>
             <li><Link to="login">Log In</Link></li>
