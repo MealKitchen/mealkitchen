@@ -1,5 +1,5 @@
 var appId = process.env.APPLICATION_ID || require('../config/config.js').APPLICATION_ID;
-var apiKey = process.env.APPLICATION_KEY || require('../config/config.js');
+var apiKey = process.env.APPLICATION_KEY || require('../config/config.js').APPLICATION_KEY;
 var http = require('http');
 var Recipe = require('./recipeModel');
 
