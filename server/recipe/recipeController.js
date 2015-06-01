@@ -1,4 +1,5 @@
-var appCodes = require('../config/config.js');
+var appId = process.env.APPLICATION_ID || require('../config/config.js').APPLICATION_ID;
+var apiKey = process.env.APPLICATION_KEY || require('../config/config.js').APPLICATION_KEY;
 var http = require('http');
 var Recipe = require('./recipeModel');
 
@@ -43,8 +44,8 @@ var queryYummly = function (request, response) {
   }
   //var query = "&allowedCuisine[]" + allowedCuisineLibrary[allowedCuisine] + "&allowedAllergy[]" + allowedAllergyLibrary[allowedAllergy] +"&requirePictures=true";
   var query =
-    "http://api.yummly.com/v1/api/recipes?_app_id=" + appCodes.APPLICATION_ID +
-    "&_app_key=" + appCodes.APPLICATION_KEY +
+    "http://api.yummly.com/v1/api/recipes?_app_id=" + appId +
+    "&_app_key=" + apiKey +
     queryString + "&allowedCourse[]=course^course-Main Dishes" + "&requirePictures=true" +
     "&maxResult=" + numResults + "&start=" + start;
 

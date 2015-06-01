@@ -1,4 +1,3 @@
-var appCodes = require('../config/config.js');
 var http = require('http');
 var User = require('./userModel');
 
