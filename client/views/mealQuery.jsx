@@ -59,15 +59,28 @@ var MealQuery = React.createClass({
   render: function() {
     var value = this.state.value;
     return (
-      <form onSubmit={this.handleSubmit}>
-        <input type="number" name="numMeals" placeholder="Enter number of meals" value={value} onChange={this.handleChange} />
-        {allowedAllergies.map(function(item, i){
-          return [
-            <label><input type="checkbox" name={item} value={item} className="checkbox" onChange={this.handleChange} />{item}</label>
-          ];
-        }, this)}
-        <input type="submit" />
-      </form>
+      <div className="mealQuery">
+        <h2>Create a Meal Plan</h2>
+        <form onSubmit={this.handleSubmit}>
+          <div className="form-group">
+            <label htmlFor="numMeals">Number of Meals</label>
+            <input type="number" className="form-control" name="numMeals" placeholder="Enter number of meals" value={value} onChange={this.handleChange} />
+          </div>
+          <div className="allergyPreferences">
+            <h5>Allergy Preferences</h5>
+            {allowedAllergies.map(function(item, i){
+              return [
+                <div className="checkbox">
+                  <label>
+                    <input type="checkbox" name={item} value={item} className="checkbox" onChange={this.handleChange} />{item}
+                  </label>
+                </div>
+              ];
+            }, this)}
+            <input type="submit" />
+          </div>
+        </form>
+      </div>
     );
   }
 });
