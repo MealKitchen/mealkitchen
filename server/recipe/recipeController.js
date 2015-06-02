@@ -3,6 +3,7 @@ var apiKey = process.env.APPLICATION_KEY || require('../config/config.js').APPLI
 var http = require('http');
 var Recipe = require('./recipeModel');
 var RecipePreference = require('../recipePreference/recipePreferenceModel');
+var db = require('../db');
 
 var allowedAllergyLibrary = {
   "Egg-Free": "397^Egg-Free",
@@ -28,6 +29,14 @@ var allowedCuisineLibrary = {
   "Japanese": "cuisine^cuisine-japanese",
   "Hawaiian": "cuisine^cuisine-hawaiian",
   "Swedish": "cuisine^cuisine-swedish",
+};
+
+var seedUserPreference = function (results, request, response) {
+  new RecipePreference({'userId': request.body.id || 1, 'recipeId': 'Vegetarian-Cabbage-Soup-Recipezaar', 'preference': true }).save().then(function(model) {
+    console.log('new recipe saved');
+    getUserPreferences(results, request, response);
+  })
+
 };
 
 var queryYummly = function (request, response) {
@@ -68,13 +77,14 @@ var queryYummly = function (request, response) {
         //had to make a call to a function to retain recipe info #async
         saveRecipe(results.matches[i]);
       }
-      getUserPreferences(results.matches, request, response);
+      seedUserPreference(results.matches, request, response);
       //response.status(200).send(results);
     });
   });
 };
 
 var kNearestNeighbors = function (userPreferences, matches, request, response) {
+  console.log('matches: ', matches);
   //console.log('userPreferences: ', userPreferences[0].flavors, "matches: ", matches[2].flavors);
   for (var i = 0; i < matches.length; i++) {
     var yummlyMatch = matches[i];
@@ -117,9 +127,10 @@ var kNearestNeighbors = function (userPreferences, matches, request, response) {
 var getUserPreferences = function (results, request, response) {
   var sortedResults = [];
   var userPreferences = [];
+  console.log('results: ', results);
 
   // get previous flavor results from the user
-  RecipePreference.where({'userId': request.body.userId})
+  RecipePreference.where({'userId': request.body.userId || 1})
   .fetchAll().then(function(preferences){
     if(preferences){
       for (var i = 0; i < preferences.models.length; i++) {
@@ -128,7 +139,7 @@ var getUserPreferences = function (results, request, response) {
     }
   }).then(function(){
     userPreferences.map(function(val, index, array){
-      Recipe.where({yumId: val.recipeId}).fetch().then(function(recipe){
+      Recipe.where({id: val.recipeId}).fetch().then(function(recipe){
         var attr = recipe.attributes;
         val.flavors = attr.salty !== null ? {
           'salty':attr.salty,
