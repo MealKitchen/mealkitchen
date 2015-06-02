@@ -101,18 +101,19 @@ var kNearestNeighbors = function (userPreferences, matches, response) {
       var userPreference = userPreferences[j];
 
       for (var key in yummlyMatch.flavors) {
+        
+        if (userPreference.flavors === null){
+          break;
+        }
+
         var base = yummlyMatch.flavors[key] - userPreference.flavors[key];
-        console.log('base: ', base);
         sumOfSquares += Math.pow(base, 2);
       }
-      console.log('sumOfSquares: ', sumOfSquares);
       var distance = Math.sqrt(sumOfSquares);
 
       //if distance === 0 don't use distance as weighting factor
       likelihood += distance === 0 ? 0:(1 / distance) * userPreference.preference;
-      console.log('distance: ', distance);
     }
-    console.log('likelihood: ', likelihood);
     yummlyMatch.likelihood = likelihood;
   }
   matches.sort(function (a, b) {
