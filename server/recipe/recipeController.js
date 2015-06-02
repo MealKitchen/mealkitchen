@@ -71,10 +71,10 @@ var queryYummly = function (request, response) {
 
 
 var saveRecipe = function(recipe){
-  new Recipe({'yumId': recipe.id}).fetch().then(function(found){
+  new Recipe({'id': recipe.id}).fetch().then(function(found){
     if(!found){
       var newRecipe = new Recipe({
-        'yumId': recipe.id,
+        'id': recipe.id,
         'recipeName': recipe.recipeName,
         'sourceDisplayName': recipe.sourceDisplayName,
         'smallImgUrl': recipe.smallImageUrls && recipe.smallImageUrls[0],
@@ -92,9 +92,10 @@ var saveRecipe = function(recipe){
         'bitter':recipe.flavors && recipe.flavors.bitter,
         'piquant':recipe.flavors && recipe.flavors.piquant,
         'meaty': recipe.flavors && recipe.flavors.meaty
-
-      }).save().then(function(recipe){
+      }).save({}, {method: 'insert'}).then(function(recipe){
         console.log('saved recipe: ', recipe);
+      }).catch(function(error) {
+        console.log('got error', error);
       });
     }
   });
