@@ -1,4 +1,5 @@
 var bodyParser = require('body-parser');
+var session = require('express-session');
 var recipeController = require('../recipe/recipeController.js');
 var mealPlanController = require('../mealPlan/mealPlanController.js');
 var userController = require('../user/userController.js');
@@ -9,6 +10,12 @@ module.exports = function(app, express) {
   app.use(bodyParser.json());
 
   app.use(express.static(__dirname + '/../../client'));
+
+  app.use(session({
+    secret: 'pizza boat with anchovies',
+    resave: false,
+    saveUninitialized: true
+  }));
 
   // 'api/recipes' routing
   app.post('/api/recipes', recipeController.createRecipes);
