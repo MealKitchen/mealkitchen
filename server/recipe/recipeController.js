@@ -96,7 +96,7 @@ var kNearestNeighbors = function (userPreferences, matches, request, response) {
 
       for (var key in yummlyMatch.flavors) {
         
-        if (userPreference.flavors === null){
+        if (userPreference.flavors === null || userPreference.flavors === undefined){
           break;
         }
 
