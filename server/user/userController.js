@@ -31,7 +31,6 @@ var login = function(email, password, response) {
 
 module.exports = {
   routeUser: function(request, response) {
-    console.log("Request body is", request.body);
     if (request.body.login) {
       login(request.body.email, request.body.password, response);
     } else if (request.body.signup) {

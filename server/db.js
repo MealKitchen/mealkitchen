@@ -47,8 +47,7 @@ db.knex.schema.hasTable('users').then(function(exists) {
 db.knex.schema.hasTable('recipes').then(function(exists) {
   if (!exists) {
     db.knex.schema.createTable('recipes', function (recipe) {
-      recipe.increments('id').primary();
-      recipe.string('yumId').unique();
+      recipe.string('id').primary();
       recipe.string('recipeName');
       recipe.string('sourceDisplayName');
       recipe.string('smallImgUrl');
@@ -81,7 +80,7 @@ db.knex.schema.hasTable('recipes').then(function(exists) {
               if(!exists){
                 db.knex.schema.createTable('mealPlans_recipes', function(mealPlanRecipe){
                   mealPlanRecipe.integer('mealPlan_id').references('mealPlans.id');
-                  mealPlanRecipe.string('recipe_id').references('recipes.yumId');
+                  mealPlanRecipe.string('recipe_id').references('recipes.id');
                 }).then(function(table){
                   console.log('Created Table', table);
                 });
