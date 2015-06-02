@@ -42,6 +42,18 @@ db.knex.schema.hasTable('recipes').then(function(exists) {
       recipe.timestamps();
     }).then(function (table) {
       console.log('Created Table', table);
+
+      knex.insert({
+        'id': 'Vegetarian-Cabbage-Soup-Recipezaar',
+        "salty": 0.6666666666666666,
+        "sour": 0.8333333333333334,
+        "sweet": 0.6666666666666666,
+        "bitter": 0.5,
+        "meaty": 0.16666666666666666,
+        "piquant": 0.5}).into('recipes').then(function(column) {
+          console.log('column: ', column);
+        });
+
       /*********************************************************
         Meal Plan Schema
       *********************************************************/
@@ -101,7 +113,7 @@ db.knex.schema.hasTable('recipes').then(function(exists) {
                 db.knex.schema.createTable('recipePreferences', function (recipePreferences) {
                   recipePreferences.increments('id').primary();  
                   recipePreferences.integer('userId').references('users.id');
-                  recipePreferences.string('recipeId').references('recipes.yumId');
+                  recipePreferences.string('recipeId').references('recipes.id');
                   recipePreferences.boolean('preference');
                 }).then(function (table) {
                   console.log('Created Table', table);

@@ -68,29 +68,13 @@ var queryYummly = function (request, response) {
         //had to make a call to a function to retain recipe info #async
         saveRecipe(results.matches[i]);
       }
-      getUserPreferences(results.matches, response);
+      getUserPreferences(results.matches, request, response);
       //response.status(200).send(results);
     });
   });
 };
 
-// var previousResults = [
-//   { userId: 0,
-//     recipeId: 'Vegetarian-Cabbage-Soup-Recipezaar',
-//     preference: 0
-//   },
-//   { userId: 0,
-//     recipeId: 'Chunky-Rice-And-Bean-Soup-Recipezaar',
-//     preference: 1
-//   },
-//   { userId: 0,
-//     recipeId: 'Tomato-Lentil-Soup-Recipezaar_3',
-//     preference: 0
-//   }
-// ];
-
-
-var kNearestNeighbors = function (userPreferences, matches, response) {
+var kNearestNeighbors = function (userPreferences, matches, request, response) {
   //console.log('userPreferences: ', userPreferences[0].flavors, "matches: ", matches[2].flavors);
   for (var i = 0; i < matches.length; i++) {
     var yummlyMatch = matches[i];
@@ -130,12 +114,12 @@ var kNearestNeighbors = function (userPreferences, matches, response) {
   response.status(200).send(matches);
 };
 
-var getUserPreferences = function (results, response) {
+var getUserPreferences = function (results, request, response) {
   var sortedResults = [];
   var userPreferences = [];
 
   // get previous flavor results from the user
-  RecipePreference.where({'userId': 0})
+  RecipePreference.where({'userId': request.body.userId})
   .fetchAll().then(function(preferences){
     if(preferences){
       for (var i = 0; i < preferences.models.length; i++) {
@@ -155,7 +139,7 @@ var getUserPreferences = function (results, response) {
           'meaty': attr.meaty
         } : null;
         if (index === array.length - 1) {
-          kNearestNeighbors(array, results, response);
+          kNearestNeighbors(array, results, request, response);
         }
       });
     })
