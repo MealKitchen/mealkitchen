@@ -72,6 +72,13 @@ var MealPlansWrapper = React.createClass({
   }
 });
 
+var MealPlanWrapper = React.createClass({
+  render: function(){
+    return(
+      <MealPlan mealPlans={mealPlans} user={user} />
+    );
+  }
+});
 
 //The AppView is the main container from which the rest of the App is rendered.
 var AppView = React.createClass({
