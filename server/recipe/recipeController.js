@@ -232,11 +232,9 @@ var saveRecipe = function(recipe){
 
 module.exports = {
   createRecipes: function (request, response) {
-    console.log('createRecipes heard!', request.body);
     postToYummly(request, response);
   },
   getRecipe: function (request, response) {
-    console.log('getRecipe heard!');
     getToYummly(request, response);
   }
 };
