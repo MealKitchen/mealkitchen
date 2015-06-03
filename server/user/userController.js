@@ -1,7 +1,8 @@
 var http = require('http');
+var createSession = require('../config/utility').createSession;
 var User = require('./userModel');
 
-var signup = function(email, password, response) {
+var signup = function(email, password, request, response) {
   new User({email: email}).fetch().then(function(user) {
     if (!user) {
       new User({email: email, password: password}).save().then(function(user) {
@@ -13,14 +14,15 @@ var signup = function(email, password, response) {
   });
 };
 
-var login = function(email, password, response) {
+var login = function(email, password, request, response) {
   new User({email: email}).fetch().then(function(user){
     if( !user ){
       response.status(401).send({error: 'No such user.'});
     } else {
       user.comparePassword(password, function(match){
         if (match) {
-          response.status(200).send(user);
+          createSession(request, response, user);
+          // response.status(200).send(user);
         } else {
           response.status(401).send({error: 'Incorrect password.'});
         }
@@ -32,9 +34,9 @@ var login = function(email, password, response) {
 module.exports = {
   routeUser: function(request, response) {
     if (request.body.login) {
-      login(request.body.email, request.body.password, response);
+      login(request.body.email, request.body.password, request, response);
     } else if (request.body.signup) {
-      signup(request.body.email, request.body.password, response);
+      signup(request.body.email, request.body.password, request, response);
     }
   }
 };
