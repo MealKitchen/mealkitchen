@@ -39,16 +39,16 @@ var seedUserPreference = function (results, request, response) {
 
 };
 
-var queryYummly = function (request, response) {
+var postToYummly = function (request, response) {
   //var allowedCuisine = request.body.allowedCuisine;
   var allowedAllergyList = request.body.allowedAllergy;
   // generate query for 10x meals requested by user in order to handle batch request
   var numResults = 10 * request.body.numMeals;
 
-  //var numResults = request.body.numMeals;
   var start = request.body.additionalRequest ? request.body.totalRecipesRequested : 0;
   var queryString = "";
   var results = {};
+  
   // add each allowed allergy to query string
   for (var key in allowedAllergyList) {
     if (allowedAllergyList[key]) {
@@ -72,14 +72,37 @@ var queryYummly = function (request, response) {
     yummlyResponse.on('end', function () {
 
       results = JSON.parse(str);
-      //check acceptability of recipe before saving
+
       for(var i = 0; i < results.matches.length; i++){
         //had to make a call to a function to retain recipe info #async
         saveRecipe(results.matches[i]);
       }
       seedUserPreference(results.matches, request, response);
-      //response.status(200).send(results);
     });
+  });
+};
+
+var getToYummly = function (request, response) {
+  //var recipeId = request.header.recipeId;
+  var recipeId = request.header.recipeId;
+  console.log('recipeId: ', recipeId);
+  var str = "";
+  var results;
+
+  var query = "http://api.yummly.com/v1/api/recipe/" + recipeId + 
+  "?_app_id=" + appId + "&_app_key=" + apiKey;
+
+  http.get(query, function(yummlyResponse) {
+
+    yummlyResponse.on('data', function (chunk) {
+      str += chunk;
+    });
+
+    yummlyResponse.on('end', function () {
+      results = JSON.parse(str);
+      response.status(200).send(results);    
+    });
+
   });
 };
 
@@ -209,7 +232,10 @@ var saveRecipe = function(recipe){
 
 module.exports = {
   createRecipes: function (request, response) {
-    queryYummly(request, response);
+    postToYummly(request, response);
+  },
+  getRecipe: function (request, response) {
+    getToYummly(request, response);
   }
 };
 
