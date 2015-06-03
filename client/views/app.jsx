@@ -105,13 +105,10 @@ var AppView = React.createClass({
 
           </div>
         </nav>
-<<<<<<< HEAD
         <header>
           <h1>Meal Plan</h1>
         </header>
-=======
-
->>>>>>> more bootstrap updates
+        
         <RouteHandler />
       </div>
     );
