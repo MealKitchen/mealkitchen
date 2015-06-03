@@ -21,6 +21,7 @@ module.exports = function(app, express) {
   // 'api/recipes' routing
   app.post('/api/recipes', utils.checkUser, recipeController.createRecipes);
   app.get('/api/recipes', utils.checkUser, recipeController.getRecipe);
+  app.post('/api/recipes/ingredients', recipeController.createIngredientsList);
   
   // 'api/mealplan' routing
   app.post('/api/mealplan', utils.checkUser, mealPlanController.createMealPlan);

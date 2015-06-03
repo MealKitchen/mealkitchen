@@ -85,7 +85,6 @@ var postToYummly = function (request, response) {
 var getToYummly = function (request, response) {
   //var recipeId = request.header.recipeId;
   var recipeId = request.header.recipeId;
-  console.log('recipeId: ', recipeId);
   var str = "";
   var results;
 
@@ -178,23 +177,6 @@ var getUserPreferences = function (results, request, response) {
       });
     })
   });
-
-  // compare recipes from results to previous flavor results
-    // for (var j = 0; j < results.length; j++) {
-    //   var recipe = results[j];
-    //   var recipeFlavors = recipe.flavors;
-    //   for (var k = 0; k < previousResults.length; k++) {
-    //     for (var key in recipeFlavors) {
-
-    //     }
-    //   }
-    // }
-
-
-  // calculate preference value from k nearest neighbors
-  // store preference value in recipe object
-  // sort recipe objects by preference values
-
   return sortedResults;
 };
 
@@ -230,12 +212,20 @@ var saveRecipe = function(recipe){
   });
 };
 
+var processIngredients = function (request, response) {
+  var recipes = request.body.recipes;
+  console.log("process Ingredients: ", request.body.recipes);
+};
+
 module.exports = {
   createRecipes: function (request, response) {
     postToYummly(request, response);
   },
   getRecipe: function (request, response) {
     getToYummly(request, response);
+  },
+  createIngredientsList: function (request, response) {
+    processIngredients(request, response);
   }
 };
 
