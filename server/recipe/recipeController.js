@@ -84,7 +84,7 @@ var postToYummly = function (request, response) {
 
 var getToYummly = function (request, response) {
   //var recipeId = request.header.recipeId;
-  var recipeId = 'French-Onion-Soup-1067606';
+  var recipeId = request.header.recipeId;
   console.log('recipeId: ', recipeId);
   var str = "";
   var results;
