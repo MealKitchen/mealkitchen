@@ -19,7 +19,6 @@ var recipesCollection = new RecipesCollection();
 var mealPlan = new MealPlanModel();
 var mealPlans = new MealPlansCollection();
 var queryModel = new QueryModel();
-var recipePreference = new PreferenceModel();
 
 /////////////////////////////////////
 //////////// WRAPPERS ///////////////
@@ -52,7 +51,7 @@ var MealQueryWrapper = React.createClass({
 var ReviewMealsWrapper = React.createClass({
   render: function(){
     return(
-      <ReviewMeals recipes={recipesCollection} preference={recipePreference} query={queryModel} mealPlan={mealPlan} user={user} />
+      <ReviewMeals recipes={recipesCollection} query={queryModel} mealPlan={mealPlan} user={user} />
     );
   }
 });
