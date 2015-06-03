@@ -86,29 +86,29 @@ var AppView = React.createClass({
   mixins: [Navigation, Backbone.Events],
 
   getInitialState: function(){
-    return {};
+    return {loggedIn: false};
   },
   
   render: function() {
 
     return (
-      <div>
-        <nav>
-          <a><Link to="mealquery">Create Meal Plan</Link></a>
-          <a><Link to="mealplans">View Meal Plans</Link></a>
-          <a><Link to="login">Log Out</Link></a>
+      <div className="container-fluid">
+        <nav className="navbar navbar-default">
+          <div className="container-fluid">
+            <div className="navbar-header">
+              <a className="navbar-brand"><Link to="login">Meal Plan</Link></a>
+              <button type="button" className="btn btn-default"><Link to="mealquery">Create Meal Plan</Link></button>
+              <button type="button" className="btn btn-default"><Link to="mealplans">View Meal Plans</Link></button>
+              <button type="button" className="btn btn-default"><Link to="login">Log Out</Link></button>
+              <button type="button" className="btn btn-default"><Link to="login">Log In</Link></button>
+            </div>
+
+          </div>
         </nav>
         <header>
           <h1>Meal Plan</h1>
-          <ul>
-            <li><Link to="signup">Sign Up</Link></li>
-            <li><Link to="login">Log In</Link></li>
-            <li><Link to="mealquery">Meal Query</Link></li>
-            <li><Link to="reviewmeals">Review Meals</Link></li>
-            <li><Link to="shoppinglist">Shopping List</Link></li>
-            <li><Link to="mealplans">Meal Plans</Link></li>
-          </ul>
         </header>
+
         <RouteHandler />
       </div>
     );

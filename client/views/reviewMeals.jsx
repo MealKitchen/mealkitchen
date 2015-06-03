@@ -21,28 +21,25 @@ var ReviewMeals = React.createClass({
 
   //Every time a user interacts with the recipes, we need to update the state of the view to reflect that change.
   rejectRecipe: function(event) {
-    // save id of recipe, and remove recipe from the RecipeCollection
     var modelId = event.target.dataset.id;
-    var recipe = this.props.recipes.remove(this.props.recipes.at(modelId));
-    var recipeId = recipe.get('id');
-
-    // update queryModel for rejectedRecipeId and totalRecipesRequested to ensure unique recipes from Yummly query
-    var totalRecipesRequested = this.props.query.get('totalRecipesRequested');
-    this.props.query.set({ "rejectedRecipeId": recipeId, 
-                           "totalRecipesRequested": ++totalRecipesRequested });
+    var rejectedRecipe = new PreferenceModel(this.props.recipes.remove(this.props.recipes.at(modelId)));
     
-    // add new recipe to RecipeCollection
-    var that = this;
-    //console.log('recipeId: ', this.props.recipes.where({id: recipeId}));
-    this.props.query.save({}, {
-      success: function(model, res) {
-        console.log("Response from server:", res);
-        that.props.recipes.add(new RecipeModel(res.matches[0]), {at: modelId});
-      },
-      error: function(model, err) {
-        console.error("There was an error with your request! ", err);
-      }
-    });  
+    rejectedRecipe.set({
+      'preference': false,
+      'recipeId': rejectedRecipe.get('id'),
+      'userId': this.props.user.get('id')
+    });
+
+    //Send rejected recipe preference to the server as POST request for user preferences update
+    rejectedRecipe.save();
+
+    // Add new recipe to RecipeCollection from the queue of recipes.
+    //TODO: add handling in case recipeQueue is empty!
+    var recipeQueue = this.props.query.get('recipeQueue');
+    this.props.recipes.add(new RecipeModel(recipeQueue.shift()), {at: modelId});
+
+    //Update the queue to reflect the recipe that was added to the recipes collection.
+    this.props.query.set({ 'recipeQueue': recipeQueue });
   },
 
   //TODO: Send the state to a backbone model to be sent to Yummly
@@ -80,8 +77,11 @@ var ReviewMeals = React.createClass({
         <div>
           {this.props.recipes.map(function(item, i) {
             return [
-              <button data-id={i} onClick={this.rejectRecipe}>X</button>,
-              <div key={i}>{item.get('recipeName')}</div>
+              <div className="recipe" key={i}>
+                <button data-id={i} type="button" className="btn btn-default" onClick={this.rejectRecipe}>Reject</button>
+                <div>{item.get('recipeName')}</div>
+                <img src={item.get('smallImgUrl')}></img>
+              </div>
             ];
           }, this)}
           <button onClick={this.handleSubmit}>Save meal plan</button>
