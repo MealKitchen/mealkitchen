@@ -33,6 +33,7 @@ var ReviewMeals = React.createClass({
     
     // add new recipe to RecipeCollection
     var that = this;
+    //console.log('recipeId: ', this.props.recipes.where({id: recipeId}));
     this.props.query.save({}, {
       success: function(model, res) {
         console.log("Response from server:", res);
@@ -41,8 +42,7 @@ var ReviewMeals = React.createClass({
       error: function(model, err) {
         console.error("There was an error with your request! ", err);
       }
-    });
-  
+    });  
   },
 
   //TODO: Send the state to a backbone model to be sent to Yummly

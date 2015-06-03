@@ -35,7 +35,7 @@ var MealQuery = React.createClass({
   handleSubmit: function(e){
     e.preventDefault();
     var that = this;
-    
+
     //Send a POST request to the server with the QueryModel to get a list of recipes that match the query.
     this.props.query.set(this.state);
     this.props.query.save({}, {
@@ -54,7 +54,6 @@ var MealQuery = React.createClass({
         console.error("There was an error with your Meal Query request! ", err);
       }
     });
-    
   },
 
   render: function() {
