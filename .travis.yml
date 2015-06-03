@@ -1,0 +1,10 @@
+language: node_js
+node_js:
+- '0.12'
+- '0.11'
+- '0.10'
+deploy:
+  provider: heroku
+  api_key:
+    secure: iQdNHAnzgYj1iMTebH3BKRy1/mUTPD4okWh8gpTkjHcZeDLQOsi/B60TqsZr6tI8QSa/HNAXlLGsPpyFOjtGmyQEhyyA+9gzakwiEeXMqqJ5KjFhraSv8iIwJhvIdalg8q++352dhNKmKCcXXKuldV1ICh4pB1FUSsrbLoquxSrRxSKsfiaQVRaewS8Sqntn1je0TwQyy89uP5xgt/B/G03t1N5Y/ovaj1Md74ZdANLPjeNzVSl5zEG97ClLdMEf8sxxOBOi1UjIm46jlBdD7v6fdXx7DxrpJr/I1im9NtTDhJUNc5BaTkiKCokH2Dw0Kf7t70kdWR1b4eFkC2YAND16z96WlLMw1QriGougVSQXw/xW4KaEMfkQen4MzBjtqY80eMCjKA9aZ12H8vxd0PVF/ZCz3nLK89zbdEDV23Eb1EQxKLcqzOjJz3+diKoGZGe2VHWCVBftnCYIKhzMDxtn31wg9h4kpS4OYyVBE+gyYMxlJ7Cuhy0NHq991HEbGNu7f3OgaiRARpyJ3IPZ1yBklYPrbpg1l1r1CphKWKb1iJR3+yyLeK6yMC11MEOFMqwxmLorshUCJt1Sd9/oEAViNFWD1uxTxEvsOvajQ7kjmTMeQG1YVISh5qL6snWPnIwAQqEcGwLRKEDbB1uHjpOq592V87ZjTTN5VsIaXzc=
+  app: safe-cliffs-7475
