@@ -80,8 +80,11 @@ var ReviewMeals = React.createClass({
         <div>
           {this.props.recipes.map(function(item, i) {
             return [
-              <button data-id={i} onClick={this.rejectRecipe}>X</button>,
-              <div key={i}>{item.get('recipeName')}</div>
+              <div className="recipe" key={i}>
+                <button data-id={i} type="button" className="btn btn-default" onClick={this.rejectRecipe}>Reject</button>
+                <div>{item.get('recipeName')}</div>
+                <img src={item.get('smallImgUrl')}></img>
+              </div>
             ];
           }, this)}
           <button onClick={this.handleSubmit}>Save meal plan</button>

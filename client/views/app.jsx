@@ -86,7 +86,7 @@ var AppView = React.createClass({
   mixins: [Navigation, Backbone.Events],
 
   getInitialState: function(){
-    return {};
+    return {loggedIn: false};
   },
   
   render: function() {
@@ -96,16 +96,22 @@ var AppView = React.createClass({
         <nav className="navbar navbar-default">
           <div className="container-fluid">
             <div className="navbar-header">
+              <a className="navbar-brand"><Link to="login">Meal Plan</Link></a>
               <button type="button" className="btn btn-default"><Link to="mealquery">Create Meal Plan</Link></button>
               <button type="button" className="btn btn-default"><Link to="mealplans">View Meal Plans</Link></button>
               <button type="button" className="btn btn-default"><Link to="login">Log Out</Link></button>
               <button type="button" className="btn btn-default"><Link to="login">Log In</Link></button>
             </div>
+
           </div>
         </nav>
+<<<<<<< HEAD
         <header>
           <h1>Meal Plan</h1>
         </header>
+=======
+
+>>>>>>> more bootstrap updates
         <RouteHandler />
       </div>
     );

@@ -66,7 +66,7 @@ var MealQuery = React.createClass({
             <label htmlFor="numMeals">Number of Meals</label>
             <input type="number" className="form-control" name="numMeals" placeholder="Enter number of meals" value={value} onChange={this.handleChange} />
           </div>
-          <div className="allergyPreferences">
+          <div className="form-group allergyPreferences">
             <h5>Allergy Preferences</h5>
             {allowedAllergies.map(function(item, i){
               return [
