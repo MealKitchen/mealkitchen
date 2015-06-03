@@ -25,11 +25,6 @@ var ReviewMeals = React.createClass({
     var modelId = event.target.dataset.id;
     var recipe = this.props.recipes.remove(this.props.recipes.at(modelId));
     var recipeId = recipe.get('id');
-
-    // update queryModel for rejectedRecipeId and totalRecipesRequested to ensure unique recipes from Yummly query
-    var totalRecipesRequested = this.props.query.get('totalRecipesRequested');
-    this.props.query.set({ "rejectedRecipeId": recipeId, 
-                           "totalRecipesRequested": ++totalRecipesRequested });
     
     // add new recipe to RecipeCollection
     var that = this;

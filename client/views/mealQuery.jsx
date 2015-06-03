@@ -42,11 +42,18 @@ var MealQuery = React.createClass({
       success: function(model, res){
         
         console.log("Response from the server on submitting Meal Query: ", res);
-
+        var recipeQueue = res;
+        console.log(that.props);
+        for(var i=0; i<that.props.query.get('numMeals'); i++){
+          that.props.recipes.add(new RecipeModel(recipeQueue.shift()));
+        }
+        console.log(that.props.recipes);
         //Create a Recipes Collection with Recipe Models for each Recipe returned from the server.
-        _.each(res.matches, function(recipe){
-          that.props.recipes.add(new RecipeModel(recipe));
-        }, this);
+        // _.each(res.matches, function(recipe){
+        //   that.props.recipes.add(new RecipeModel(recipe));
+        // }, this);
+
+
         
         that.transitionTo('reviewmeals');
       },
