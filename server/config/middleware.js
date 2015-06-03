@@ -28,6 +28,7 @@ module.exports = function(app, express) {
 
   // 'api/preferences' routing
   app.post('/api/recipePreferences', recipePreferenceController.updatePreferences);
+  app.put('/api/recipePreferences', recipePreferenceController.updatePreferences);
 
   // 'api/users' routing
   app.get('/api/user', utils.checkUser, utils.sendLoggedInStatus);
