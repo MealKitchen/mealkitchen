@@ -5,6 +5,7 @@ var recipeController = require('../recipe/recipeController.js');
 var mealPlanController = require('../mealPlan/mealPlanController.js');
 var userController = require('../user/userController.js');
 var recipePreferenceController = require('../recipePreference/recipePreferenceController');
+var appController = require('../app/appController');
 
 module.exports = function(app, express) {
 
@@ -19,8 +20,8 @@ module.exports = function(app, express) {
   }));
 
   // 'api/recipes' routing
-  app.post('/api/recipes', utils.checkUser, recipeController.createRecipes);
-  app.get('/api/recipes', utils.checkUser, recipeController.getRecipe);
+  app.post('/api/recipes', utils.checkUser, appController.getUserRecipes);
+  app.get('/api/recipes', utils.checkUser, recipeController.getYummlyRecipe);
   app.post('/api/recipes/ingredients', recipeController.createIngredientsList);
   
   // 'api/mealplan' routing
