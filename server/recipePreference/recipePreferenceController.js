@@ -31,11 +31,9 @@ module.exports = {
       RecipePreference.where({'userId': userId || 1})
       .fetchAll().then(function(preferences){
         if(preferences){
-          console.log(preferences.models);
           resolve(preferences.models);
         }
         else{
-          console.log('no user prefs', preferences);
           resolve([]);
         }
       });
