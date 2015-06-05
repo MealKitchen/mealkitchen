@@ -6,7 +6,7 @@ node_js:
 addons:
   postgresql: "9.4"
 before_script:
-  - psql -c 'create database mealplan;' -U postgres && node server/db.js
+  - psql -c 'create database mealplan;' -U postgres
 deploy:
   provider: heroku
   api_key:
