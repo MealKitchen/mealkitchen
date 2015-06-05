@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/Unconditional-Chocolate/mealplan.svg?branch=master)](https://travis-ci.org/Unconditional-Chocolate/mealplan)
+
 # MealPlan
 
 Mealplan helps you cook better food.
