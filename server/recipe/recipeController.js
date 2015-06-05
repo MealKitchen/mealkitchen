@@ -10,6 +10,7 @@ catch (e) {
   appId = 12345;
   apiKey = 98765;
 }
+
 var http = require('http');
 var Recipe = require('./recipeModel');
 var RecipePreference = require('../recipePreference/recipePreferenceModel');
