@@ -1,9 +1,12 @@
+var Promise = require('bluebird');
 var http = require('http');
 var RecipePreference = require('./recipePreferenceModel');
+var Recipe = require('../recipe/recipeModel');
 
-var savePreference = function(preference){
+var savePreference = function(request){
+  var preference = request.body;
   new RecipePreference({
-    //'userId': preference.userId,
+    'userId': request.session.user.id,
     'recipeId': preference.recipeId,
     'preference': preference.preference
   }).save().then(function(recipePreference){
@@ -11,14 +14,56 @@ var savePreference = function(preference){
   }).catch(function(err){
     console.error('error saving recipe preference: ', err);
   });
-};
+}
+
 
 module.exports = {
 
   updatePreferences: function (request, response) {
     // update recipe like/dislike table in db
-    savePreference(request.body);
+    savePreference(request);
     response.status(200).send(request.body);
+  },
+  getUserPreferences: function (userId) {
+
+    return new Promise(function(resolve, reject){
+
+      RecipePreference.where({'userId': userId || 1})
+      .fetchAll().then(function(preferences){
+        if(preferences){
+          console.log(preferences.models);
+          resolve(preferences.models);
+        }
+        else{
+          console.log('no user prefs', preferences);
+          resolve([]);
+        }
+      });
+    });
   }
+  // mapUserPreferences: function(userId){
+  //   return new Promise(function(resolve, reject){
+
+  //     module.exports.getUserPreferences(userId).then(function(userPreferences){
+
+  //       userPreferences.map(function(val, index, array){
+
+  //         Recipe.where({id: val.recipeId}).fetch().then(function(recipe){
+  //           var attr = recipe.attributes;
+  //           val.flavors = attr.salty !== null ? {
+  //             'salty':attr.salty,
+  //             'sour':attr.sour,
+  //             'sweet':attr.sweet,
+  //             'bitter':attr.bitter,
+  //             'piquant':attr.piquant,
+  //             'meaty': attr.meaty
+  //           } : null;
+  //           if (index === array.length - 1) {
+  //             kNearestNeighbors(array, results, request, response);
+  //           }
+  //         });
+  //     })
+  //   });
+  // }
 
 };
