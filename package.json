@@ -4,7 +4,7 @@
   "description": "Personalize your meal plans and generate custom grocery lists",
   "main": "index.js",
   "scripts": {
-    "test": "mocha test",
+    "test": "./node_modules/.bin/mocha --reporter nyan test/serverSpec.js",
     "postinstall": "./node_modules/bower/bin/bower install && ./node_modules/grunt-cli/bin/grunt build"
   },
   "repository": {
@@ -51,6 +51,7 @@
   },
   "devDependencies": {
     "chai": "^3.0.0",
-    "mocha": "^2.2.5"
+    "mocha": "^2.2.5",
+    "request": "^2.57.0"
   }
 }
