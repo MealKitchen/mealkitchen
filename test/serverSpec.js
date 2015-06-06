@@ -2,6 +2,7 @@ var expect = require('../node_modules/chai/chai').expect;
 var request = require('request');
 var app = require('../server/server');
 var User = require('../server/user/userModel');
+var Recipe = require('../server/recipe/recipeModel');
 var db = require('../server/db');
 
 var ensureTableCreated = function(table, cb) {
@@ -39,14 +40,50 @@ describe('Node server', function() {
           expect(response.statusCode).to.equal(200);
           new User({email: 'aoeui@aoeui.com'}).fetch().then(function(user) {
             expect(user).to.exist;
-            if (user) {
-              user.destroy().then(function() {
-                done();
-              });
-            }
+            done();
           });
         });
     };
     ensureTableCreated('users', testSignup);
+
+
+  });
+
+  it('should save recipes to the database', function(done) {
+    new Recipe({
+      "id": "New-Orleans-Jambalaya-TEST",
+      "recipeName": "New Orleans Jambalaya",
+      "sourceDisplayName": "Johnsonville Brand",
+      "smallImgUrl": "http://lh3.googleusercontent.com/7sj2IkdCtlc0rGAf0Iv1k4sHscofg9OsdsyCnzcAilTguacsOwt_CLVU_WvE_YANu3t8w6ZIX11zdn4vsmoCAg=s90",
+      "mediumImgUrl": null,
+      "largeImgUrl": null,
+      "cuisine": null,
+      "course": "{}",
+      "holiday": null,
+      "totalTimeInSeconds": 1500,
+      "ingredients": "{\"JOHNSONVILLE® Hot 'N Spicy Brats\",\"diced tomatoes and green chilies\",\"stewed tomatoes\",\"onions\",\"green pepper\",\"water\",\"rice\"}",
+      "rating": 3,
+      "salty": 0.166667,
+      "sour": 0.833333,
+      "sweet": 0.166667,
+      "bitter": 0.166667,
+      "piquant": 0.166667,
+      "meaty": 0.166667
+    })
+      .save({}, {method: 'insert'})
+      .then(function(recipe) {
+        expect(recipe.id).to.equal("New-Orleans-Jambalaya-TEST");
+        done();
+      });
+  });
+
+  after(function(done) {
+    new User({email: 'aoeui@aoeui.com'}).fetch().then(function(user) {
+      if (user) {
+        user.destroy().then(function() {
+          done();
+        });
+      }
+    });
   });
 });
