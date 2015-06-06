@@ -1,12 +1,6 @@
 /** @jsx React.DOM */
 
 var MealPlan = React.createClass({
-  
-  mixins: [],
-
-  _transition: function(e){
-    this.transitionTo(e.target.dataset.id);
-  },
 
   render : function() {
     return (

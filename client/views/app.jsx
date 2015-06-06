@@ -20,7 +20,7 @@ var AppView = React.createClass({
   },
 
   _transitionTo: function(route){
-    var that = this;
+    var that=this;
     this._isAuth(function(){
       if(!that.state.loggedIn && route !== '/signup'){
         window.location.hash = '/login';

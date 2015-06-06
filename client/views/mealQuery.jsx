@@ -8,14 +8,6 @@ var MealQuery = React.createClass({
     return {};
   },
 
-  //Set listener on state (which is a backbone model)
-  componentDidMount: function(){
-    this.listenTo(this.props.query, 'change', function(){
-      console.log('heard a change event!');
-    }, this);
-    console.log(this.props);
-  },
-
   //Every time a user interacts with the form, we need to update the state of the view to reflect that change.
   handleChange: function(event) {
     var name = event.target.name;

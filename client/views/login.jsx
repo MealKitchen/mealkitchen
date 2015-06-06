@@ -1,8 +1,6 @@
 /** @jsx React.DOM */
 
 var LogIn = React.createClass({
-
-  mixins: [],
   
   getInitialState: function() {
     return {email: null, password: null, login: true};
