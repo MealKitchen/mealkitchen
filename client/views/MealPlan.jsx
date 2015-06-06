@@ -1,14 +1,6 @@
 /** @jsx React.DOM */
 
-var Navigation = ReactRouter.Navigation;
-
 var MealPlan = React.createClass({
-  
-  mixins: [Navigation],
-
-  _transition: function(e){
-    this.transitionTo(e.target.dataset.id);
-  },
 
   render : function() {
     return (

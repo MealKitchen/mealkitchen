@@ -1,21 +1,11 @@
 /** @jsx React.DOM */
 
-var Navigation = ReactRouter.Navigation;
-
 var MealQuery = React.createClass({
   
-  mixins: [Backbone.Events, Navigation],
+  mixins: [Backbone.Events],
 
   getInitialState: function() {
     return {};
-  },
-
-  //Set listener on state (which is a backbone model)
-  componentDidMount: function(){
-    this.listenTo(this.props.query, 'change', function(){
-      console.log('heard a change event!');
-    }, this);
-    console.log(this.props);
   },
 
   //Every time a user interacts with the form, we need to update the state of the view to reflect that change.
@@ -49,7 +39,7 @@ var MealQuery = React.createClass({
         //Set the recipeQueue as an attribute on the query model to pass to the reviewmeals view for reference.
         that.props.query.set({ 'recipeQueue': recipeQueue });
       
-        that.transitionTo('reviewmeals');
+        that.props.transitionTo('/reviewmeals');
       },
       error: function(model, err){
         console.error("There was an error with your Meal Query request! ", err);

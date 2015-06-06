@@ -1,10 +1,8 @@
 /** @jsx React.DOM */
 
-var Navigation = ReactRouter.Navigation;
-
 var ReviewMeals = React.createClass({
 
-  mixins: [Navigation, Backbone.Events],
+  mixins: [Backbone.Events],
   
   //TODO: state should be the recipes collection returned from yummly
   getInitialState: function() {
@@ -63,7 +61,7 @@ var ReviewMeals = React.createClass({
     this.props.mealPlan.save({}, {
       success: function(model, res) {
         console.log("Meal plan saved! Response from server:", res);
-        that.transitionTo('shoppinglist');
+        that.props.transitionTo('/shoppinglist');
       },
       error: function(model, err) {
         console.error("There was an error with your request! ", err);

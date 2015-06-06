@@ -1,10 +1,6 @@
 /** @jsx React.DOM */
 
-var Navigation = ReactRouter.Navigation;
-
 var LogIn = React.createClass({
-
-  mixins: [Navigation],
   
   getInitialState: function() {
     return {email: null, password: null, login: true};
@@ -20,30 +16,24 @@ var LogIn = React.createClass({
 
   handleLogin: function() {
     var that = this;
-    var userLogIn = this.props.userLogIn;
-    console.log(this.props);
-    userLogIn.set(this.state);
-    userLogIn.save({}, {
+    var user = new UserModel(this.state);
+    user.save({}, {
       success: function(model, res){
         console.log("Successful login!", res);
         that.props.user.set({id: res.id});
-        that.transitionTo('mealquery');
+        that.props.transitionTo('/mealquery');
       },
       error: function(model, err){
         console.error("ERROR while logging in!");
       }
     });
   },
-  
-  _transition: function(e){
-    this.transitionTo(e.target.dataset.id);
-  },
 
   render : function() {
     return (
       <div>
-        <button type='button' data-id='signup' onClick={this._transition}>Sign Up</button>
-        <button type='button' data-id='login' onClick={this._transition}>Log In</button>
+        <button type='button' data-route='/signup' onClick={this.props.linkHandler}>Sign Up</button>
+        <button type='button' data-route='/login' onClick={this.props.linkHandler}>Log In</button>
         <form>
           <input type="text" name="email" placeholder="Email" onChange={this.handleEmailChange} />
           <input type="password" name="password" placeholder="Password" onChange={this.handlePasswordChange}/>

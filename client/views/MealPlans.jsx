@@ -1,11 +1,7 @@
 /** @jsx React.DOM */
 
-var Navigation = ReactRouter.Navigation;
-
 var MealPlans = React.createClass({
   
-  mixins: [Navigation],
-
   getInitialState: function(){
     return {mealPlans: []};
   },
@@ -26,10 +22,6 @@ var MealPlans = React.createClass({
         console.error('There was an error fetching your mealplans!');
       }
     });
-  },
-  
-  _transition: function(e){
-    this.transitionTo(e.target.dataset.id);
   },
 
   render : function() {
