@@ -1,10 +1,8 @@
 /** @jsx React.DOM */
 
-var Navigation = ReactRouter.Navigation;
-
 var MealQuery = React.createClass({
   
-  mixins: [Backbone.Events, Navigation],
+  mixins: [Backbone.Events],
 
   getInitialState: function() {
     return {};
@@ -49,7 +47,7 @@ var MealQuery = React.createClass({
         //Set the recipeQueue as an attribute on the query model to pass to the reviewmeals view for reference.
         that.props.query.set({ 'recipeQueue': recipeQueue });
       
-        that.transitionTo('reviewmeals');
+        that.props.transitionTo('/reviewmeals');
       },
       error: function(model, err){
         console.error("There was an error with your Meal Query request! ", err);
