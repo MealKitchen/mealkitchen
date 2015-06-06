@@ -18,8 +18,8 @@ var LogIn = React.createClass({
 
   handleLogin: function() {
     var that=this;
-    this.props.user.set(this.state);
-    this.props.user.save({}, {
+    var user = new UserModel(this.state);
+    user.save({}, {
       success: function(model, res){
         console.log("Successful login!", res);
         that.props.user.set({id: res.id});
@@ -34,8 +34,8 @@ var LogIn = React.createClass({
   render : function() {
     return (
       <div>
-        <button type='button' data-route='/signup' onClick={this.props._linkHandler}>Sign Up</button>
-        <button type='button' data-route='/login' onClick={this.props._linkHandler}>Log In</button>
+        <button type='button' data-route='/signup' onClick={this.props.linkHandler}>Sign Up</button>
+        <button type='button' data-route='/login' onClick={this.props.linkHandler}>Log In</button>
         <form>
           <input type="text" name="email" placeholder="Email" onChange={this.handleEmailChange} />
           <input type="password" name="password" placeholder="Password" onChange={this.handlePasswordChange}/>

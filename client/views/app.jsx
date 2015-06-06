@@ -19,10 +19,10 @@ var AppView = React.createClass({
     return {loggedIn: false};
   },
 
-  _transitionTo: function(route, props){
+  _transitionTo: function(route){
     var that = this;
     this._isAuth(function(){
-      if(!that.state.loggedIn){
+      if(!that.state.loggedIn && route !== '/signup'){
         window.location.hash = '/login';
       } else {
         window.location.hash = route;
@@ -34,7 +34,7 @@ var AppView = React.createClass({
     var that=this;
     var route = e.target.dataset.route;
     this._isAuth(function(){
-      if(!that.state.loggedIn){
+      if(!that.state.loggedIn && route !== '/signup'){
         window.location.hash = '/login';
       } else {
         window.location.hash = route;
