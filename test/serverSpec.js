@@ -105,54 +105,59 @@ describe('Node server', function() {
 
   it('should log in users if they have the correct password', function(done) {
     request
-      .post({url: 'http://127.0.0.1:3000/api/user', json: true, body: {login: true, email: 'aoeui@aoeui.com', password: 'asdf'}})
+      .post({url: 'http://127.0.0.1:3000/api/user', json: true, body: {login: true, email: 'aoeui@aoeui.com', password: 'aoeui'}})
       .on('response', function(response) {
-        expect(response.statusCode).to.equal(401);
+        expect(response.statusCode).to.equal(200);
         expect(response.headers['set-cookie']).to.exist;
         testCookie = response.headers['set-cookie'][0].split(';')[0];
-        console.log(typeof testCookie);
         done();
       });
   });
 
-  // it('should verify a user is checked in by hitting api/users with a GET', function(done) {
-  //   request({
-  //     url: 'http://127.0.0.1:3000/api/user', 
-  //     method: 'GET',
-  //     headers: {
-  //       'Cookie': testCookie
-  //     }
-  //   })
-  //     .on('response', function(response) {
-  //       console.log(response);
-  //       expect(response.statusCode).to.equal(200);
-  //       done();
-  //     });
-  // });
+  it('should verify a user is checked in by hitting api/users with a GET', function(done) {
+    request({
+      url: 'http://127.0.0.1:3000/api/user', 
+      method: 'GET',
+      headers: {
+        'Cookie': testCookie
+      }
+    })
+      .on('response', function(response) {
+        expect(response.statusCode).to.equal(200);
+        done();
+      });
+  });
 
-  // it('should save meal plans', function(done) {
-  //   request
-  //     .post({url: 'http://127.0.0.1:3000/api/mealplan', json: true, body: {userId: testUserId, recipes: [{id: testRecipeId}]}})
-  //     .on('response', function(response) {
-  //       expect(response.statusCode).to.equal(200);
-  //       new MealPlan({userId: testUserId}).fetch().then(function(mealPlan) {
-  //         expect(mealPlan).to.exist;
-  //         done();
-  //       });
-  //     });
-  // });
+  it('should save meal plans', function(done) {
+    request
+      .post({
+        url: 'http://127.0.0.1:3000/api/mealplan',
+        headers: { 'Cookie': testCookie },
+        json: true, 
+        body: {userId: testUserId, recipes: [{id: testRecipeId}]}
+      })
+      .on('response', function(response) {
+        expect(response.statusCode).to.equal(200);
+        new MealPlan({userId: testUserId}).fetch().then(function(mealPlan) {
+          expect(mealPlan).to.exist;
+          done();
+        });
+      });
+  });
 
   after(function(done) {
-    new User({email: 'aoeui@aoeui.com'}).fetch().then(function(user) {
-      if (user) {
-        user.destroy().then(function() {
-          new Recipe({"id": "New-Orleans-Jambalaya-TEST"}).fetch().then(function(recipe) {
-            recipe.destroy().then(function() {
+    db.knex.select('id').from('mealPlans').where('userId', testUserId).then(function(resp) {
+      var mealPlanId = resp[0].id;
+      db.knex('mealPlans_recipes').where('mealPlan_id', mealPlanId).del().then(function(resp) {
+        db.knex('mealPlans').where('id', mealPlanId).del().then(function(resp) {
+          db.knex('recipes').where('id', 'New-Orleans-Jambalaya-TEST').del().then(function(resp) {
+            db.knex('users').where('id', testUserId).del().then(function(resp) {
               done();
             });
           });
         });
-      }
+      });
     });
+
   });
 });
