@@ -40,7 +40,7 @@ describe('Node server', function() {
           new User({email: 'aoeui@aoeui.com'}).fetch().then(function(user) {
             expect(user).to.exist;
             if (user) {
-              user.destroy().then(function(model) {
+              user.destroy().then(function() {
                 done();
               });
             }
