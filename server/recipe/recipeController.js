@@ -112,9 +112,8 @@ var queryYummly = function(queryString){
   });
 };
 
-var getToYummly = function (request, response) {
+var getToYummly = function (recipeId, callback) {
   //var recipeId = request.header.recipeId;
-  var recipeId = request.header.recipeId;
   var str = "";
   var results;
 
@@ -129,7 +128,7 @@ var getToYummly = function (request, response) {
 
     yummlyResponse.on('end', function () {
       results = JSON.parse(str);
-      response.status(200).send(results);    
+      callback(results);
     });
 
   });
@@ -167,10 +166,45 @@ var saveRecipe = function(recipe){
   });
 };
 
-var processIngredients = function (request, response) {
-  var recipes = request.body.recipes;
-  console.log("process Ingredients: ", request.body.recipes);
+var handleMultipleRecipes = function (recipeIds) {
+
+  var fnsToExecute = [];
+  for (var i = 0; i < recipeIds.length; i++) {
+    getToYummly(recipeId, function(results) {
+
+    })   
+  }
+
+  return fnsToExecute;
+}
+
+var processIngredientsList = function (recipeIds, callback) {
+  var ingredientsList = [];
+
+  var functionsToRun = [];
+  Promise.all(function(){
+    for (var i = 0; i < recipeIds.length; i++) {
+      functionsToRun.push(getToYummly(recipeIds[i], function(results) {
+        return results;
+      }));
+    }
+    return functionsToRun;
+  }).then(function(results) {
+    console.log(results);
+    // change array of ingredients into a single array
+    //callback(results);
+  });
+  // for every recipe in recipeIds, call getToYummly 
+  // pull out the ingredients
+  // save the ingredients and add to total ingredients array
+  // send ingredients array back to 
+
 };
+
+var getRecipeId = function (request) {
+  var recipeId = request.headers.recipeId || request.body.recipeIds;
+  return recipeId;
+}
 
 module.exports = {
 
@@ -216,10 +250,16 @@ module.exports = {
   },
 
   getYummlyRecipe: function (request, response) {
-    getToYummly(request, response);
+    var recipeId = getRecipeId(request);
+    getToYummly(recipeId, function(results) {
+      response.status(200).send(results);
+    })
   },
   createIngredientsList: function (request, response) {
-    processIngredients(request, response);
+    var recipeIds = getRecipeId(request);
+    processIngredientsList(recipeIds, function(ingredientsList){
+      response.status(200).send(ingredientsList);
+    });
   }
 };
 
