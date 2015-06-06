@@ -1,12 +1,19 @@
 var Promise = require('bluebird');
-var appId = process.env.APPLICATION_ID || require('../config/config.js').APPLICATION_ID;
-var apiKey = process.env.APPLICATION_KEY || require('../config/config.js').APPLICATION_KEY;
 var http = require('http');
 var Recipe = require('./recipeModel');
 var RecipePreference = require('../recipePreference/recipePreferenceModel');
 var db = require('../db');
 var lib = require('../config/libraries');
 
+var appId, apiKey;
+try {
+  appId = process.env.APPLICATION_ID || require('../config/config.js').APPLICATION_ID;
+  apiKey = process.env.APPLICATION_KEY || require('../config/config.js').APPLICATION_KEY;
+} 
+catch (e) {
+  appId = 12345;
+  apiKey = 98765;
+}
 
 var writeQuery = function(queryModel){
   var allowedAllergyList = queryModel.allowedAllergy;
