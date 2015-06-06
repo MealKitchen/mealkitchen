@@ -20,7 +20,7 @@ var AppView = React.createClass({
   },
 
   _transitionTo: function(route){
-    var that=this;
+    var that = this;
     this._isAuth(function(){
       if(!that.state.loggedIn && route !== '/signup'){
         window.location.hash = '/login';
@@ -31,7 +31,7 @@ var AppView = React.createClass({
   },
 
   _linkHandler: function(e){
-    var that=this;
+    var that = this;
     var route = e.target.dataset.route;
     this._isAuth(function(){
       if(!that.state.loggedIn && route !== '/signup'){
@@ -44,7 +44,7 @@ var AppView = React.createClass({
 
   _isAuth: function(callback){
     callback = callback || function(){};
-    var that=this;
+    var that = this;
     user.fetch({
       success: function(){
         console.log('user logged in');
@@ -62,8 +62,8 @@ var AppView = React.createClass({
   },
 
   _logOut: function(){
-    var that=this;
-    $.get( "api/logout", function( data ) {
+    var that = this;
+    $.get("api/logout", function(data) {
       that._transitionTo('/login');
     });
   },
