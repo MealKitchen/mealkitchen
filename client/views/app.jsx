@@ -10,26 +10,6 @@ var mealPlan = new MealPlanModel();
 var queryModel = new QueryModel();
 var recipesCollection = new RecipesCollection();
 
-// var makeUser = function(attr){
-//   return new UserModel(attr);
-// };
-
-// var makeMealPlan = function(attr){
-//   return new MealPlanModel(attr);
-// };
-
-// var makeQuery = function(attr){
-//   return new QueryModel(attr);
-// };
-
-// var makeRecipe = function(attr){
-//   return new RecipeModel(attr);
-// };
-
-// var makeRecipes = function(attr){
-//   return new RecipesCollection(attr);
-// };
-
 //The AppView is the main container from which the rest of the App is rendered.
 var AppView = React.createClass({
 
