@@ -7,7 +7,6 @@ exports.createSession = function(req, res, newUser) {
 };
 
 exports.isLoggedIn = function(req) {
-  console.log("is logged in?", req.session);
   return req.session ? !!req.session.user : false;
 };
 
