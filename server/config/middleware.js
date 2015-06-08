@@ -20,7 +20,7 @@ module.exports = function(app, express) {
   }));
 
   // 'api/recipes' routing
-  app.post('/api/recipes', utils.checkUser, appController.getUserRecipes);
+  app.post('/api/recipes', appController.getUserRecipes);
   app.get('/api/recipes', utils.checkUser, recipeController.getYummlyRecipe);
   app.post('/api/recipes/ingredients', recipeController.createIngredientsList);
   
