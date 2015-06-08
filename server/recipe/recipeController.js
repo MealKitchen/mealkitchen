@@ -15,29 +15,96 @@ catch (e) {
   apiKey = 98765;
 }
 
-var writeQuery = function(queryModel){
+var writeQueries = function(queryModel){
   var allowedAllergyList = queryModel.allowedAllergy;
-  // generate query for 10x meals requested by user in order to handle batch request
-  var numResults = 10 * queryModel.numMeals;
+  var allowedCuisineList = queryModel.allowedCuisine;
+  var allowedDietList = queryModel.allowedDiet;
 
+  // If number of course meals specified, add 10 meals for queueing functionality
+  var numBreakfasts = queryModel.numBreakfasts && queryModel.numBreakfasts + 10;
+  var numLunches =  queryModel.numLunches && queryModel.numLunches + 10;
+  var numDinners =  queryModel.numDinners && queryModel.numDinners + 10;
+
+
+  //will likely have to track additional requests for each course
   var start = queryModel.additionalRequest ? queryModel.totalRecipesRequested : 0;
-  var queryString = "";
-  var results = {};
-  
-  // add each allowed allergy to query string
+
+  var breakfastQueryString, lunchQueryString, dinnerQueryString;
+  var queryString = ''; 
+
+  // add each allowed allergy/cuisine/diet to query string
   for (var key in allowedAllergyList) {
     if (allowedAllergyList[key]) {
-      queryString += "&allowedAllergy[]" + lib.allowedAllergyLibrary[key];
+      queryString += "&allowedAllergy[]" + "=" + lib.allowedAllergyLibrary[key];
     }
   }
-  //var query = "&allowedCuisine[]" + allowedCuisineLibrary[allowedCuisine] + "&allowedAllergy[]" + allowedAllergyLibrary[allowedAllergy] +"&requirePictures=true";
-  var query =
+  for (key in allowedCuisineList) {
+    if (allowedCuisineList[key]) {
+      queryString += "&allowedCuisine[]" + "=" + lib.allowedCuisineLibrary[key];
+    }
+  }
+  for (key in allowedDietList) {
+    if (allowedDietList[key]) {
+      queryString += "&allowedDiet[]" +  "=" + lib.allowedDietLibrary[key];
+    }
+  }
+
+  breakfastQueryString = numBreakfasts ?
     "http://api.yummly.com/v1/api/recipes?_app_id=" + appId +
     "&_app_key=" + apiKey +
-    queryString + "&allowedCourse[]=course^course-Main Dishes" + "&requirePictures=true" +
-    "&maxResult=" + numResults + "&start=" + start;
+    queryString + "&allowedCourse[]=" + lib.course.Breakfast + "&requirePictures=true" +
+    "&maxResult=" + numBreakfasts + "&start=" + start : "";
 
-  return query;
+  lunchQueryString = numLunches ?
+    "http://api.yummly.com/v1/api/recipes?_app_id=" + appId +
+    "&_app_key=" + apiKey +
+    queryString + "&allowedCourse[]=" + lib.course.Lunch + "&requirePictures=true" +
+    "&maxResult=" + numLunches + "&start=" + start : "";
+
+  dinnerQueryString = numDinners ?
+    "http://api.yummly.com/v1/api/recipes?_app_id=" + appId +
+    "&_app_key=" + apiKey +
+    queryString + "&allowedCourse[]=" + lib.course.Breakfast + "&requirePictures=true" +
+    "&maxResult=" + numDinners + "&start=" + start : "";
+
+  return {
+    'breakfastQuery': breakfastQueryString, 
+    'lunchQuery': lunchQueryString, 
+    'dinnerQuery': dinnerQueryString
+  };
+};
+
+var queryYummly = function(queryString){
+
+  return new Promise(function(resolve, reject){
+    var results;
+    //no meals entered for param; query is empty string
+    if(!queryString){
+      console.log('hello error query');
+      resolve([]);
+    } else{
+
+      http.get(queryString, function(yummlyResponse){
+        var str = '';
+        
+        yummlyResponse.on('data', function (chunk) {
+          str += chunk;
+        });
+
+        yummlyResponse.on('end', function () {
+          results = JSON.parse(str);
+          resolve(results.matches);
+
+        });
+        yummlyResponse.on('error', function(error){
+          reject(error);
+
+        })
+      });
+    }
+
+
+  });
 };
 
 var getToYummly = function (request, response) {
@@ -107,34 +174,42 @@ module.exports = {
 
     return new Promise(function(resolve, reject){
 
-      var query = writeQuery(queryModel);
+      //queries takes form of 
+      //{
+      //  breakfastQuery: "...", 
+      //  lunchQuery: "...", 
+      //  dinnerQuery: "..."
+      //}
+      //if course has 0 meals, that query will result in empty string
+      var queries = writeQueries(queryModel);
 
-      http.get(query, function(yummlyResponse){
-        var str = '';
-        
-        yummlyResponse.on('data', function (chunk) {
-          str += chunk;
+      console.log('queries', queries)
+
+      Promise.all([
+        queryYummly(queries.breakfastQuery),
+        queryYummly(queries.lunchQuery),
+        queryYummly(queries.dinnerQuery)
+      ])
+      .then(function(results){
+        console.log(results);
+        //resolved value will be empty array if empty string is passed in 
+        var breakfasts = results[0] || results[0].matches;
+        var lunches = results[1] || results[1].matches;
+        var dinners = results[2] || results[2].matches;
+        console.log(dinners);
+        resolve({
+          'breakfastRecipes': breakfasts,
+          'lunchRecipes': lunches,
+          'dinnerRecipes': dinners
         });
 
-        yummlyResponse.on('end', function () {
-
-          var results = JSON.parse(str);
-
-          for(var i = 0; i < results.matches.length; i++){
-            //had to make a call to a function to retain recipe info #async
-            saveRecipe(results.matches[i]);
-          }
-
-          resolve(results.matches);
-
-        });
-        yummlyResponse.on('error', function(error){
-
-          reject(error);
-
-        })
+      })
+      .catch(function(error){
+        console.log('error in create recipes:', error);
+        reject({'error': error});
       });
-    })
+      
+    });
   },
 
   getYummlyRecipe: function (request, response) {
