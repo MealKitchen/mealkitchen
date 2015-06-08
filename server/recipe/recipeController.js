@@ -4,6 +4,8 @@ var Recipe = require('./recipeModel');
 var RecipePreference = require('../recipePreference/recipePreferenceModel');
 var db = require('../db');
 var lib = require('../config/libraries');
+var MealPlan = require('../mealPlan/mealPlanModel');
+
 
 var appId, apiKey;
 try {
@@ -256,10 +258,17 @@ module.exports = {
     })
   },
   createIngredientsList: function (request, response) {
-    var recipeIds = getRecipeId(request);
-    processIngredientsList(recipeIds, function(ingredientsList){
-      response.status(200).send(ingredientsList);
-    });
+    var mealPlanId = request.body.mealPlanId || 1 ;
+
+    new MealPlan({id: mealPlanId}).fetch({withRelated: 'recipes'}).then(function(model){
+      var ingredients = [];
+      model.related('recipes').forEach(function(item){
+        var recipeIngredients = item.get('ingredients');
+        var editedIngredients = recipeIngredients.substring(2, recipeIngredients.length - 2).split('","');
+        ingredients = ingredients.concat(editedIngredients);
+      });
+      response.status(200).send(ingredients);
+    })
   }
 };
 
