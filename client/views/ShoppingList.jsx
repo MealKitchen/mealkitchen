@@ -8,6 +8,10 @@ var ShoppingList = React.createClass({
     return {};
   },
 
+  componentWillMount: function(){
+    this.props.setBGImg(false);
+  },
+
   //TODO: Refactor to persist checked class after refresh. Currently only adds checked class temporarily.
   crossout: function (event) {
     var id = event.target.dataset.id;

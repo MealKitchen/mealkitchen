@@ -6,6 +6,10 @@ var LogIn = React.createClass({
     return {email: null, password: null, login: true};
   },
   
+  componentWillMount: function(){
+    this.props.setBGImg(true);
+  },
+  
   handleEmailChange: function(e) {
      this.setState({email: e.target.value});
   },

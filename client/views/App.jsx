@@ -8,14 +8,9 @@ var user = new UserModel();
 var mealPlans = new MealPlansCollection();
 var mealPlan = new MealPlanModel();
 var queryModel = new QueryModel();
-var recipesCollection = new RecipesCollection();
-
-var Store = {
-  user: null,
-  query: null,
-  recipesQueue: null,
-  mealPlans: null
-};
+var breakfastCollection = new RecipesCollection();
+var lunchCollection = new RecipesCollection();
+var dinnerCollection = new RecipesCollection();
 
 //The AppView is the main container from which the rest of the App is rendered.
 var AppView = React.createClass({
@@ -23,7 +18,14 @@ var AppView = React.createClass({
   mixins: [Backbone.Events],
   
   getInitialState: function(){
-    return {loggedIn: false};
+    return {
+      loggedIn: false,
+      bgImage: true
+    };
+  },
+
+  _setBGImg: function(bool){
+    this.setState({bgImage: bool});
   },
 
   //Checks authentication before allowing a user to transition to any new location in the application. If a user is not logged in, they are redirected to the login page.
@@ -67,8 +69,9 @@ var AppView = React.createClass({
   //Ends a user's session and redirects them to the login page.
   _logOut: function(){
     var that = this;
+    console.log('logout clicked');
     $.get("api/logout", function(data) {
-      that._transitionTo('/login');
+      window.location.hash = '/login';
     });
   },
   
@@ -76,40 +79,26 @@ var AppView = React.createClass({
 
     var Child;
     switch (this.props.route) {
+      case '': Child = LandingPage; break;
       case '/signup': Child = SignUp; break;
       case '/login': Child = LogIn; break;
-      case '/mealquery': Child = MealQuery; break;
+      case '/mealquery': Child = Query; break;
       case '/reviewmeals': Child = ReviewMeals; break;
       case '/mealplans': Child = MealPlans; break;
       case '/shoppinglist': Child = ShoppingList; break;
       default:      Child = this.state.loggedIn ? MealQuery : LogIn;
     }
 
-    if(Child !== SignUp && Child !== LogIn && !this.state.loggedIn){
+    if(Child !== SignUp && Child !== LogIn && Child !== LandingPage && !this.state.loggedIn){
       this._transitionTo('/login');
     }
 
     return (
       <div className="container-fluid">
         
-        <nav className="navbar navbar-default">
-          <div className="container-fluid">
-            <div className="navbar-header">
-              <a href="/#/login" className="navbar-brand">Meal Kitchen</a>
-              <button data-route="/mealquery" type="button" className="btn btn-default" onClick={this._linkHandler}>Create Meal Plan</button>
-              <button data-route="/mealplans" type="button" className="btn btn-default" onClick={this._linkHandler}>View Meal Plans</button>
-              <button data-route="/login" type="button" className="btn btn-default" onClick={this._linkHandler}>Log In</button>
-              <button data-route="/logout" type="button" className="btn btn-default" onClick={this._logOut}>Log Out</button>
-            </div>
+        <Navbar bgImage={this.state.bgImage} linkHandler={this._linkHandler} logOut={this._logOut} />
 
-          </div>
-        </nav>
-
-        <header>
-          <h1>Meal Kitchen</h1>
-        </header>
-
-        <Child isAuth={this._isAuth} linkHandler={this._linkHandler} transitionTo={this._transitionTo} recipes={recipesCollection} query={queryModel} user={user} mealPlan={mealPlan} mealPlans={mealPlans} />
+        <Child setBGImg={this._setBGImg} isAuth={this._isAuth} linkHandler={this._linkHandler} transitionTo={this._transitionTo} breakfastCollection={breakfastCollection} lunchCollection={lunchCollection} dinnerCollection={dinnerCollection} query={queryModel} user={user} mealPlan={mealPlan} mealPlans={mealPlans} />
 
       </div>
     );

@@ -9,23 +9,39 @@ var ReviewMeals = React.createClass({
     return {};
   },
 
+  componentWillMount: function(){
+    this.props.setBGImg(false);
+  },
+
   componentDidMount: function() {
     // set listener on RecipeCollection to re-render view when user rejects recipe
     var that = this;
-    this.listenTo(this.props.recipes, 'add remove', function() {
+    this.listenTo(this.props.breakfastCollection, 'add remove', function() {
+      that.forceUpdate();
+    });
+    this.listenTo(this.props.lunchCollection, 'add remove', function() {
+      that.forceUpdate();
+    });
+    this.listenTo(this.props.dinnerCollection, 'add remove', function() {
       that.forceUpdate();
     });
   },
 
   //Every time a user interacts with the recipes, we need to update the state of the view to reflect that change.
-  rejectRecipe: function(event) {
+  _rejectRecipe: function(event) {
     var modelId = event.target.dataset.id;
     var rejectedRecipe = new PreferenceModel(this.props.recipes.remove(this.props.recipes.at(modelId)));
     
     rejectedRecipe.set({
       'preference': false,
       'recipeId': rejectedRecipe.get('id'),
-      'userId': this.props.user.get('id')
+      'userId': this.props.user.get('id'),
+      'salty': '',
+      'sour': '',
+      'bitter': '',
+      'sweet': '',
+      'meaty': '',
+      'piquant': ''
     });
 
     //Send rejected recipe preference to the server as POST request for user preferences update
@@ -44,16 +60,16 @@ var ReviewMeals = React.createClass({
   handleSubmit: function(e){
 
     // extract ingredients from each recipe to save in mealPlanModel
-    var ingredients = [];
-    for (var i = 0; i < this.props.recipes.length; i++) {
-      ingredients.push(this.props.recipes.at(i).get("ingredients"));
-    }
-    ingredients = ingredients.join().split(',');
+    // var ingredients = [];
+    // for (var i = 0; i < this.props.recipes.length; i++) {
+    //   ingredients.push(this.props.recipes.at(i).get("ingredients"));
+    // }
+    // ingredients = ingredients.join().split(',');
     
     this.props.mealPlan.set({
-      'query': this.props.query,
-      'recipes': this.props.recipes,
-      'ingredientsList': ingredients,
+      'breakfastRecipes': this.props.breakfastCollection,
+      'lunchRecipes': this.props.lunchCollection,
+      'dinnerRecipes': this.props.dinnerCollection,
       'userId': this.props.user.get('id')
     });
 
@@ -73,16 +89,32 @@ var ReviewMeals = React.createClass({
   render: function() {
       return (
         <div>
-          {this.props.recipes.map(function(item, i) {
-            return [
-              <div className="recipe" key={i}>
-                <button data-id={i} type="button" className="btn btn-default" onClick={this.rejectRecipe}>Reject</button>
-                <div>{item.get('recipeName')}</div>
-                <img src={item.get('smallImgUrl')}></img>
-              </div>
-            ];
-          }, this)}
+          <div className="container breakfast">
+            {this.props.breakfastCollection.map(function(item, i) {
+              return [
+                <Recipe recipe={item} rejectRecipe={this._rejectRecipe} />
+              ];
+            }, this)}
+          </div>
+
+          <div className="container lunch">
+            {this.props.lunchCollection.map(function(item, i) {
+              return [
+                <Recipe recipe={item} rejectRecipe={this._rejectRecipe} />
+              ];
+            }, this)}
+          </div>
+
+          <div className="container dinner">
+            {this.props.dinnerCollection.map(function(item, i) {
+              return [
+                <Recipe recipe={item} rejectRecipe={this._rejectRecipe} />
+              ];
+            }, this)}
+          </div>
+
           <button onClick={this.handleSubmit}>Save meal plan</button>
+
         </div>
       );
     }

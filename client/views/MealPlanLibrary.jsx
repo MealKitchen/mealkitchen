@@ -6,6 +6,10 @@ var MealPlans = React.createClass({
     return {mealPlans: []};
   },
 
+  componentWillMount: function(){
+    this.props.setBGImg(false);
+  },
+
   componentDidMount: function(){
     var that = this;
 
