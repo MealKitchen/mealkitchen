@@ -42,5 +42,4 @@ var LogIn = React.createClass({
       </div>
     );
   }
-
 });

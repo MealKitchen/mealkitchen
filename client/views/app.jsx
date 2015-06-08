@@ -10,6 +10,13 @@ var mealPlan = new MealPlanModel();
 var queryModel = new QueryModel();
 var recipesCollection = new RecipesCollection();
 
+var Store = {
+  user: null,
+  query: null,
+  recipesQueue: null,
+  mealPlans: null
+};
+
 //The AppView is the main container from which the rest of the App is rendered.
 var AppView = React.createClass({
 
@@ -19,6 +26,7 @@ var AppView = React.createClass({
     return {loggedIn: false};
   },
 
+  //Checks authentication before allowing a user to transition to any new location in the application. If a user is not logged in, they are redirected to the login page.
   _transitionTo: function(route){
     var that = this;
     this._isAuth(function(){
@@ -30,18 +38,13 @@ var AppView = React.createClass({
     });
   },
 
-  _linkHandler: function(e){
-    var that = this;
-    var route = e.target.dataset.route;
-    this._isAuth(function(){
-      if(!that.state.loggedIn && route !== '/signup'){
-        window.location.hash = '/login';
-      } else {
-        window.location.hash = route;
-      }
-    });
+  //Triggered when a user clicks a link. The event represents the clicked link, and all links have a data-route property with the appropriate route, which gets sent to the _transitionTo method.
+  _linkHandler: function(event){
+    var route = event.target.dataset.route;
+    this._transitionTo(route);
   },
 
+  //Checks the server to see if a user is logged in before executing a callback function.
   _isAuth: function(callback){
     callback = callback || function(){};
     var that = this;
@@ -61,6 +64,7 @@ var AppView = React.createClass({
     });
   },
 
+  //Ends a user's session and redirects them to the login page.
   _logOut: function(){
     var that = this;
     $.get("api/logout", function(data) {
