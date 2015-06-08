@@ -72,11 +72,11 @@ var Query = React.createClass({
           that.props.breakfastCollection.add(new RecipeModel(breakfastQ.pop()));
         }
         
-        for(var i=0; i<that.props.query.get('numLunches'); i++){
-          that.props.lunchesCollection.add(new RecipeModel(lunchQ.pop()));
+        for(i=0; i<that.props.query.get('numLunches'); i++){
+          that.props.lunchCollection.add(new RecipeModel(lunchQ.pop()));
         }
 
-        for(var i=0; i<that.props.query.get('numDinners'); i++){
+        for(i=0; i<that.props.query.get('numDinners'); i++){
           that.props.dinnerCollection.add(new RecipeModel(dinnerQ.pop()));
         }
 

@@ -11,6 +11,7 @@ var ReviewMeals = React.createClass({
 
   componentWillMount: function(){
     this.props.setBGImg(false);
+    console.log(this.props);
   },
 
   componentDidMount: function() {
@@ -29,8 +30,22 @@ var ReviewMeals = React.createClass({
 
   //Every time a user interacts with the recipes, we need to update the state of the view to reflect that change.
   _rejectRecipe: function(event) {
-    var modelId = event.target.dataset.id;
-    var rejectedRecipe = new PreferenceModel(this.props.recipes.remove(this.props.recipes.at(modelId)));
+    var modelId = event.target.dataset.position;
+    var collection = event.target.dataset.collection;
+    debugger;
+
+    var courseQueue;
+
+    switch (collection){
+      case "breakfastCollection": courseQueue = this.props.query.get('breakfastQ');
+      break;
+      case "lunchCollection": courseQueue = this.props.query.get('lunchQ');
+      break;
+      case "dinnerCollection": courseQueue = this.props.query.get('dinnerQ');
+      break;
+    }
+    
+    var rejectedRecipe = new PreferenceModel(this.props[collection].remove(this.props[collection].at(modelId)));
     
     rejectedRecipe.set({
       'preference': false,
@@ -49,11 +64,17 @@ var ReviewMeals = React.createClass({
 
     // Add new recipe to RecipeCollection from the queue of recipes.
     //TODO: add handling in case recipeQueue is empty!
-    var recipeQueue = this.props.query.get('recipeQueue');
-    this.props.recipes.add(new RecipeModel(recipeQueue.shift()), {at: modelId});
+    this.props[collection].add(new RecipeModel(courseQueue.pop()), {at: modelId});
 
     //Update the queue to reflect the recipe that was added to the recipes collection.
-    this.props.query.set({ 'recipeQueue': recipeQueue });
+    switch (collection){
+      case "breakfastCollection": this.props.query.set({ 'breakfastQ': courseQueue });
+      break;
+      case "lunchCollection": this.props.query.set({ 'lunchQ': courseQueue });
+      break;
+      case "dinnerCollection": this.props.query.set({ 'dinnerQ': courseQueue });
+      break;
+    }
   },
 
   //TODO: Send the state to a backbone model to be sent to Yummly
@@ -92,7 +113,7 @@ var ReviewMeals = React.createClass({
           <div className="container breakfast">
             {this.props.breakfastCollection.map(function(item, i) {
               return [
-                <Recipe recipe={item} rejectRecipe={this._rejectRecipe} />
+                <Recipe recipe={item} position={i} collection='breakfastCollection' rejectRecipe={this._rejectRecipe} />
               ];
             }, this)}
           </div>
@@ -100,7 +121,7 @@ var ReviewMeals = React.createClass({
           <div className="container lunch">
             {this.props.lunchCollection.map(function(item, i) {
               return [
-                <Recipe recipe={item} rejectRecipe={this._rejectRecipe} />
+                <Recipe recipe={item} position={i} collection='lunchCollection' rejectRecipe={this._rejectRecipe} />
               ];
             }, this)}
           </div>
@@ -108,7 +129,7 @@ var ReviewMeals = React.createClass({
           <div className="container dinner">
             {this.props.dinnerCollection.map(function(item, i) {
               return [
-                <Recipe recipe={item} rejectRecipe={this._rejectRecipe} />
+                <Recipe recipe={item} position={i} collection='dinnerCollection' rejectRecipe={this._rejectRecipe} />
               ];
             }, this)}
           </div>
