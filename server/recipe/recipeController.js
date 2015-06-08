@@ -20,6 +20,11 @@ var writeQueries = function(queryModel){
   var allowedCuisineList = queryModel.allowedCuisine;
   var allowedDietList = queryModel.allowedDiet;
 
+  //handling stringified number values from client so as to not concatenate 10 
+  queryModel.numBreakfasts *= 1;
+  queryModel.numLunches *= 1;
+  queryModel.numDinners *= 1;
+  
   // If number of course meals specified, add 10 meals for queueing functionality
   var numBreakfasts = queryModel.numBreakfasts && queryModel.numBreakfasts + 10;
   var numLunches =  queryModel.numLunches && queryModel.numLunches + 10;
@@ -49,19 +54,19 @@ var writeQueries = function(queryModel){
     }
   }
 
-  breakfastQueryString = numBreakfasts ?
+  breakfastQueryString = numBreakfasts > 0 ?
     "http://api.yummly.com/v1/api/recipes?_app_id=" + appId +
     "&_app_key=" + apiKey +
     queryString + "&allowedCourse[]=" + lib.course.Breakfast + "&requirePictures=true" +
     "&maxResult=" + numBreakfasts + "&start=" + start : "";
 
-  lunchQueryString = numLunches ?
+  lunchQueryString = numLunches > 0 ?
     "http://api.yummly.com/v1/api/recipes?_app_id=" + appId +
     "&_app_key=" + apiKey +
     queryString + "&allowedCourse[]=" + lib.course.Lunch + "&requirePictures=true" +
     "&maxResult=" + numLunches + "&start=" + start : "";
 
-  dinnerQueryString = numDinners ?
+  dinnerQueryString = numDinners > 0 ?
     "http://api.yummly.com/v1/api/recipes?_app_id=" + appId +
     "&_app_key=" + apiKey +
     queryString + "&allowedCourse[]=" + lib.course.Breakfast + "&requirePictures=true" +
