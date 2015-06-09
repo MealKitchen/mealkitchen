@@ -252,9 +252,12 @@ module.exports = {
     })
   },
   createIngredientsList: function (request, response) {
-    var mealPlanId = request.body.mealPlanId || 1 ;
+    if (!request.body.mealPlanId) {
+      response.status(404).send({error: "Meal plan not found!"});
+    }
+    var mealPlanId = request.body.mealPlanId;
 
-    new MealPlan({id: mealPlanId}).fetch({withRelated: ['breakfastRecipes', 'lunchRecipes', 'dinnerRecipes']}).then(function(model){
+    new MealPlan({id: mealPlanId}).fetch({withRelated: 'recipes'}).then(function(model){
       var ingredients = [];
       model.related('recipes').forEach(function(item){
         var recipeIngredients = item.get('ingredients');
@@ -263,6 +266,9 @@ module.exports = {
       });
       response.status(200).send(ingredients);
     })
+    .catch(function(error) {
+      response.status(404).send({error: "Meal plan not found!"});
+    });
   }
 };
 

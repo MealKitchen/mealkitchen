@@ -24,7 +24,7 @@ module.exports = {
 
     ])
     .then(function(results){
-      
+
       //temporary solution
       var matches = results[0];
       // var userPreferences = results[1];
@@ -32,7 +32,7 @@ module.exports = {
 
       // for(var i = 0; i < userPreferences.length; i++){
       //   var pref = userPreferences[i].attributes;
-        
+
       //   pref.salty = Math.random();
       //   pref.sour = Math.random();
       //   pref.sweet = Math.random();
@@ -66,10 +66,10 @@ module.exports = {
     mealPlanController.saveRecipes(req.session.user.id, req.body).then(function(recipes){
       console.log("just saved all recipes");
       mealPlanController.createMealPlan(req.session.user.id, recipes)
-      .then(function(){
+      .then(function(mealPlanId){
         console.log("just created the meal plan");
         //client side takes an empty object as a proper response. Will error without
-        res.status(200).send({});
+        res.status(200).send({mealPlanId: mealPlanId});
       })
       .catch(function(error){
         res.status(500).send(error);
