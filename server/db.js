@@ -20,7 +20,7 @@ process.stderr.on('data', function(data) {
   console.log(data);
 });
 /*********************************************************
-  Recipe Schema 
+  Recipe Schema
 *********************************************************/
 db.knex.schema.hasTable('recipes').then(function(exists) {
   if (!exists) {
@@ -35,7 +35,7 @@ db.knex.schema.hasTable('recipes').then(function(exists) {
       recipe.string('course');
       recipe.string('holiday');
       recipe.integer('totalTimeInSeconds');
-      recipe.text('ingredients'); 
+      recipe.text('ingredients');
       recipe.float('rating');
       recipe.float('salty');
       recipe.float('sour');
@@ -46,17 +46,6 @@ db.knex.schema.hasTable('recipes').then(function(exists) {
       recipe.timestamps();
     }).then(function (table) {
       console.log('Created Table', table);
-
-      knex.insert({
-        'id': 'Vegetarian-Cabbage-Soup-Recipezaar',
-        "salty": 0.6666666666666666,
-        "sour": 0.8333333333333334,
-        "sweet": 0.6666666666666666,
-        "bitter": 0.5,
-        "meaty": 0.16666666666666666,
-        "piquant": 0.5}).into('recipes').then(function(column) {
-          console.log('column: ', column);
-        });
 
       /*********************************************************
         Meal Plan Schema
@@ -116,9 +105,8 @@ db.knex.schema.hasTable('recipes').then(function(exists) {
             db.knex.schema.hasTable('recipePreferences').then(function(exists) {
               if (!exists) {
                 db.knex.schema.createTable('recipePreferences', function (recipePreferences) {
-                  recipePreferences.increments('id').primary();  
+                  recipePreferences.increments('id').primary();
                   recipePreferences.integer('userId').references('users.id');
-                  recipePreferences.string('recipeId').references('recipes.id');
                   recipePreferences.boolean('preference');
                   recipePreferences.float('salty');
                   recipePreferences.float('sour');
@@ -138,29 +126,6 @@ db.knex.schema.hasTable('recipes').then(function(exists) {
   }
 });
 
-
-// db.knex.schema.hasTable('restrictions').then(function(exists){
-//   if(!exists){
-//     db.knex.schema.createTable('restrictions', function(restriction){
-//       restriction.increments('id').primary();
-//       restriction.string('name');
-//     }).then(function(table){
-//       console.log('Created Table', table);
-//     });
-//   }
-// });
-
-// db.knex.schema.hasTable('userRestrictions').then(function(exists){
-//   if(!exists){
-//     db.knex.schema.createTable('userRestrictions', function(userRestriction){
-//       userRestriction.increments('id').primary();
-//       userRestriction.integer('userId');
-//       userRestriction.integer('restrictionId');
-//     }).then(function(table){
-//       console.log('Created Table', table);
-//     });
-//   }
-// });
 
 
 
