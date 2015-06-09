@@ -3,7 +3,7 @@
 var ReviewMeals = React.createClass({
 
   mixins: [Backbone.Events],
-  
+
   //TODO: state should be the recipes collection returned from yummly
   getInitialState: function() {
     return { mealPlanTitle: '' };
@@ -42,9 +42,9 @@ var ReviewMeals = React.createClass({
       case "dinnerCollection": courseQueue = this.props.query.get('dinnerQ');
       break;
     }
-    
+
     var rejectedRecipe = new PreferenceModel(this.props[collection].remove(this.props[collection].at(modelId)));
-    
+
     rejectedRecipe.set({
       'preference': false,
       'recipeId': rejectedRecipe.get('id'),
@@ -88,7 +88,7 @@ var ReviewMeals = React.createClass({
     //   ingredients.push(this.props.recipes.at(i).get("ingredients"));
     // }
     // ingredients = ingredients.join().split(',');
-    
+
     this.props.mealPlan.set({
       'title': this.state.mealPlanTitle,
       'userId': this.props.user.get('id'),

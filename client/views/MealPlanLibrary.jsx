@@ -1,7 +1,7 @@
 /** @jsx React.DOM */
 
 var MealPlanLibrary = React.createClass({
-  
+
   getInitialState: function(){
     return {mealPlans: []};
   },

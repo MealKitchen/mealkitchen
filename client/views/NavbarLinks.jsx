@@ -1,7 +1,7 @@
 /** @jsx React.DOM */
 
 var NavbarLinks = React.createClass({
-  
+
   componentWillMount: function(){
     console.log(this.props);
   },

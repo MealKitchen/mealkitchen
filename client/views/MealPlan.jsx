@@ -3,7 +3,7 @@
 var MealPlan = React.createClass({
 
   mixins: [Backbone.Events],
-  
+
   //TODO: state should be the recipes collection returned from yummly
   getInitialState: function() {
     return {};
@@ -18,10 +18,10 @@ var MealPlan = React.createClass({
   // },
 
 
-  _createShoppingList: function(){
+  // _createShoppingList: function(){
 
-  },
-  
+  // },
+
   // dynamically render recipes on page according to RecipesCollection
   render: function() {
       return (

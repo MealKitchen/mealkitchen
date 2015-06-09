@@ -1,15 +1,15 @@
 /** @jsx React.DOM */
 
 var LogIn = React.createClass({
-  
+
   getInitialState: function() {
     return {email: null, password: null, login: true};
   },
-  
+
   componentWillMount: function(){
     this.props.setBGImg(true);
   },
-  
+
   handleEmailChange: function(e) {
      this.setState({email: e.target.value});
   },

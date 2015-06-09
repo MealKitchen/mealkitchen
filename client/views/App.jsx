@@ -16,7 +16,7 @@ var dinnerCollection = new RecipesCollection();
 var AppView = React.createClass({
 
   mixins: [Backbone.Events],
-  
+
   getInitialState: function(){
     return {
       loggedIn: false,
@@ -65,7 +65,7 @@ var AppView = React.createClass({
       }
     });
   },
-  
+
   render: function() {
 
     var Child;
@@ -87,7 +87,7 @@ var AppView = React.createClass({
 
     return (
       <div className="container-fluid">
-        
+
         <Navbar bgImage={this.state.bgImage} linkHandler={this._linkHandler} />
 
         <Child setBGImg={this._setBGImg} isAuth={this._isAuth} linkHandler={this._linkHandler} transitionTo={this._transitionTo} breakfastCollection={breakfastCollection} lunchCollection={lunchCollection} dinnerCollection={dinnerCollection} query={queryModel} user={user} mealPlan={mealPlan} mealPlans={mealPlans} />

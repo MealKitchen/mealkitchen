@@ -1,11 +1,11 @@
 /** @jsx React.DOM */
 
 var SignUp = React.createClass({
-  
+
   getInitialState: function() {
     return {email: null, password: null, signup: true};
   },
-  
+
   componentWillMount: function(){
     this.props.setBGImg(true);
   },

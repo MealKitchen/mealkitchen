@@ -1,7 +1,7 @@
 /** @jsx React.DOM */
 
 var Query = React.createClass({
-  
+
   mixins: [Backbone.Events],
 
   getInitialState: function() {
@@ -62,7 +62,7 @@ var Query = React.createClass({
     this.props.query.save({}, {
       success: function(model, res){
         console.log("Response from the server on submitting Meal Query: ", res);
-        
+
         //Generate recipe queues for breakfast, lunch, and dinner. The queues are sorted from 0-length where length is the closest to the user's palate. When a user rejects a recipe, the next recipe in the queue will be shown.
         var breakfastQ = res.breakfastRecipes;
         var lunchQ = res.lunchRecipes;
@@ -71,7 +71,7 @@ var Query = React.createClass({
         for(var i=0; i<that.props.query.get('numBreakfasts'); i++){
           that.props.breakfastCollection.add(new RecipeModel(breakfastQ.pop()));
         }
-        
+
         for(i=0; i<that.props.query.get('numLunches'); i++){
           that.props.lunchCollection.add(new RecipeModel(lunchQ.pop()));
         }
@@ -86,7 +86,7 @@ var Query = React.createClass({
           'lunchQ': lunchQ,
           'dinnerQ': dinnerQ
         });
-      
+
         that.props.transitionTo('/reviewmeals');
       },
       error: function(model, err){
@@ -101,12 +101,12 @@ var Query = React.createClass({
       <div className="query">
         <h2>Create Meal Plan</h2>
         <form onSubmit={this.handleSubmit}>
-          
+
           <div className="form-group breakfasts">
             <label htmlFor="breakfasts">Number of Breakfasts</label>
             <input type="number" className="form-control" name="numBreakfasts" placeholder="Enter number of breakfasts" value={value} onChange={this.handleChange} />
           </div>
-          
+
           <div className="form-group lunches">
             <label htmlFor="lunches">Number of Lunches</label>
             <input type="number" className="form-control" name="numLunches" placeholder="Enter number of lunches" value={value} onChange={this.handleChange} />
@@ -173,7 +173,7 @@ var allowedAllergies = [
   "Seafood-Free",
   "Sesame-Free",
   "Soy-Free",
-  "Sulfite-Free", 
+  "Sulfite-Free",
   "Tree Nut-Free",
   "Wheat-Free"
 ];
