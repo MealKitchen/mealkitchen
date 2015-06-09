@@ -146,22 +146,20 @@ var getRecipeId = function (request) {
 module.exports = {
 
   saveRecipe: function(recipe, course, callback){
-  console.log(recipe);
   new Recipe({'id': recipe.id}).fetch().then(function(found){
     if(!found){
       //console.log(recipe);
       var newRecipe = new Recipe({
         'id': recipe.id,
-        'recipeName': recipe.recipeName,
+        'recipeName': recipe.name,
         'sourceDisplayName': recipe.sourceDisplayName,
-        'smallImgUrl': recipe.smallImageUrls && recipe.smallImageUrls[0],
-        'mediumImgUrl': recipe.mediumImageUrls && recipe.mediumImageUrls[0],
-        'largeImgUrl': recipe.largeImageUrls && recipe.largeImageUrls[0],
+        'smallImgUrl': recipe.images && recipe.images[0].hostedSmallUrl,
+        'largeImgUrl': recipe.images && recipe.images[0].hostedLargeUrl,
         'cuisine': recipe.attributes.cuisine,
         'course': course,
         'holiday': recipe.attributes.holiday,
         'totalTimeInSeconds': recipe.totalTimeInSeconds,
-        'ingredients':  recipe.ingredients,
+        'ingredients':  recipe.ingredientLines.join(),
         'rating':recipe.rating,
         'salty': recipe.flavors && recipe.flavors.salty,
         'sour': recipe.flavors && recipe.flavors.sour,

@@ -63,9 +63,7 @@ module.exports = {
       })
   },
   saveUserMealPlan: function(req, res){
-    //console.log("getUserMealPlans request", req.body);
     mealPlanController.saveRecipes(req.body.session.user, req.body).then(function(recipes){
-      console.log("completed saving of Recipes and inside 'then' ");
       mealPlanController.createMealPlan(req.body.session.user.id, recipes)
       .then(function(){
         //client side takes an empty object as a proper response. Will error without
