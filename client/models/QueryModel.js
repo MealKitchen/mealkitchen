@@ -9,5 +9,4 @@ var QueryModel = Backbone.Model.extend({
       allowedDiet: {}
     });
   }
-  
 });

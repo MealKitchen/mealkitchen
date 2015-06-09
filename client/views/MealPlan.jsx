@@ -13,16 +13,11 @@ var MealPlan = React.createClass({
     this.props.setBGImg(false);
   },
 
-  // componentDidMount: function() {
-  //   // set listener on RecipeCollection to re-render view when user rejects recipe
-  // },
-
-
   // _createShoppingList: function(){
 
   // },
 
-  // dynamically render recipes on page according to RecipesCollection
+  // dynamically render recipes on page according to Meal Plan
   render: function() {
       return (
         <div>
@@ -31,7 +26,7 @@ var MealPlan = React.createClass({
 
           <div className="container breakfast">
             <h3>Breakfast</h3>
-            {this.props.mealPlan.breakfastRecipes.map(function(item, i) {
+            {this.props.mealPlan.breakfastCollection.map(function(item, i) {
               return [
                 <Recipe recipe={item} position={i} forReview={false} collection='breakfastCollection' />
               ];
@@ -40,7 +35,7 @@ var MealPlan = React.createClass({
 
           <div className="container lunch">
             <h3>Lunch</h3>
-            {this.props.lunchRecipes.map(function(item, i) {
+            {this.props.mealPlan.lunchCollection.map(function(item, i) {
               return [
                 <Recipe recipe={item} position={i} forReview={false} collection='lunchCollection' />
               ];
@@ -49,7 +44,7 @@ var MealPlan = React.createClass({
 
           <div className="container dinner">
             <h3>Dinner</h3>
-            {this.props.dinnerRecipes.map(function(item, i) {
+            {this.props.mealPlan.dinnerCollection.map(function(item, i) {
               return [
                 <Recipe recipe={item} position={i} forReview={false} collection='dinnerCollection' />
               ];

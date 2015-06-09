@@ -41,22 +41,47 @@ var ReviewMeals = React.createClass({
       break;
     }
 
-    var rejectedRecipe = new PreferenceModel(this.props[collection].remove(this.props[collection].at(modelId)));
+    var rejectedRecipe = this.props[collection].remove(this.props[collection].at(modelId));
 
-    rejectedRecipe.set({
-      'preference': false,
-      'recipeId': rejectedRecipe.get('id'),
-      'userId': this.props.user.get('id'),
-      'salty': '',
-      'sour': '',
-      'bitter': '',
-      'sweet': '',
-      'meaty': '',
-      'piquant': ''
-    });
+    var preference = new PreferenceModel();
+
+
+    if(!rejectedRecipe.get('flavors')){
+      preference.set({
+        'preference': false,
+        'recipeId': rejectedRecipe.get('id'),
+        'userId': this.props.user.get('id')
+      });
+    } else {
+      preference.set({
+        'preference': false,
+        'recipeId': rejectedRecipe.get('id'),
+        'userId': this.props.user.get('id'),
+        'salty': rejectedRecipe.get('flavors').salty,
+        'sour': rejectedRecipe.get('flavors').sour,
+        'sweet': rejectedRecipe.get('flavors').sweet,
+        'bitter': rejectedRecipe.get('flavors').bitter,
+        'meaty': rejectedRecipe.get('flavors').meaty,
+        'piquant': rejectedRecipe.get('flavors').piquant
+      });
+    }
+
+    console.log('rejectedRecipe: ', rejectedRecipe);
+    console.log('preference: ', preference);
 
     //Send rejected recipe preference to the server as POST request for user preferences update.
-    rejectedRecipe.save();
+    preference.save({}, {
+      success: function(model, res){
+        console.log('success!');
+        console.log('model', model);
+        console.log('res', res);
+      },
+      error: function(model, err){
+        console.log('error!');
+        console.log('model', model);
+        console.log('err', err);
+      }
+    });
 
     // Add new recipe to collection from the queue of recipes.
     //TODO: add handling in case queues are empty!
@@ -92,7 +117,7 @@ var ReviewMeals = React.createClass({
       success: function(model, res) {
         console.log("Meal plan saved! Response from server:", res);
         that.props.setMealPlan(mealPlan);
-        that.props.transitionTo('/shoppinglist');
+        that.props.transitionTo('/mealplan');
       },
       error: function(model, err) {
         console.error("There was an error with your request! ", err);
