@@ -7,11 +7,11 @@ label {
   text-decoration:line-through;
 }
 
-#hide {
+.hide {
   display: none;
 }
 
-#show {
+.show {
   display: inline;
 }
 

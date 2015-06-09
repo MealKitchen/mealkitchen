@@ -9,7 +9,7 @@ var Navbar = React.createClass({
         <div className="container-fluid">
           <div className="navbar-header">
             <a href="/#/login" className="navbar-brand">Meal Kitchen</a>
-            <div id={this.props.bgImage ? 'hide' : 'show'}>
+            <div className={this.props.bgImage ? 'hide' : 'show'}>
               <NavbarLinks linkHandler={this.props.linkHandler} logOut={this.props.logOut} />
             </div>
           </div>

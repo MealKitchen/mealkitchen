@@ -13,9 +13,19 @@ var MealPlan = React.createClass({
     this.props.setBGImg(false);
   },
 
-  // _createShoppingList: function(){
-
-  // },
+  _createShoppingList: function(){
+    var that = this;
+    $.ajax({
+      type: "POST",
+      url: "api/recipes/ingredients",
+      data: JSON.stringify(that.props.mealPlan.get('mealPlanId')),
+      dataType: "json",
+      contentType: "application/json",
+      success: function(res){
+        console.log("response: ", res);
+      }
+    });
+  },
 
   // dynamically render recipes on page according to Meal Plan
   render: function() {
@@ -23,6 +33,8 @@ var MealPlan = React.createClass({
         <div>
 
           <h1>Meal Plan: {this.props.mealPlan.get('title')}</h1>
+
+          <button className="btn btn-default" type='button' onClick={this._createShoppingList}>Create Shopping List</button>
 
           <div className="container breakfast">
             <h3>Breakfast</h3>
