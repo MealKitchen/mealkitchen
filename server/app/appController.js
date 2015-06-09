@@ -63,7 +63,10 @@ module.exports = {
       })
   },
   saveUserMealPlan: function(req, res){
-    mealPlanController.createMealPlan(req.session.user.id, req.body.recipes)
+    //console.log("getUserMealPlans request", req.body);
+    mealPlanController.saveRecipes(req.body.session.user, req.body).then(function(recipes){
+      console.log("completed saving of Recipes and inside 'then' ");
+      mealPlanController.createMealPlan(req.body.session.user.id, recipes)
       .then(function(){
         //client side takes an empty object as a proper response. Will error without
         res.status(200).send({});
@@ -71,6 +74,7 @@ module.exports = {
       .catch(function(error){
         res.status(500).send(error);
       })
-  }
+    }
+  )}
 };
 

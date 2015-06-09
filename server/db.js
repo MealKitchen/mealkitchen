@@ -8,13 +8,17 @@ var knex = require('knex')({
     user: '',
     password: '',
     database: 'mealplan',
-    charset: 'utf8'
+    charset: 'utf8',
+    debug: true
   }
 });
 
 var db = require('bookshelf')(knex);
 
 
+process.stderr.on('data', function(data) {
+  console.log(data);
+});
 /*********************************************************
   Recipe Schema 
 *********************************************************/
@@ -75,6 +79,7 @@ db.knex.schema.hasTable('recipes').then(function(exists) {
                 db.knex.schema.createTable('mealPlans_recipes', function(mealPlanRecipe){
                   mealPlanRecipe.integer('mealPlan_id').references('mealPlans.id');
                   mealPlanRecipe.string('recipe_id').references('recipes.id');
+                  mealPlanRecipe.string('mealPlanCourse');
                 }).then(function(table){
                   console.log('Created Table', table);
                 });
