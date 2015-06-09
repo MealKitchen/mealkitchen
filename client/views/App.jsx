@@ -129,13 +129,13 @@ var AppView = React.createClass({
     }
 
     if(Child !== SignUp && Child !== LogIn && Child !== LandingPage && !this.state.loggedIn){
-      this._transitionTo('/login');
+      window.location.hash = '/login';
     }
 
     return (
-      <div className="container-fluid">
+      <div>
 
-        <Navbar bgImage={this.state.bgImage} linkHandler={this._linkHandler} logOut={this._logOut} />
+        <Navbar className="container-fluid" bgImage={this.state.bgImage} linkHandler={this._linkHandler} logOut={this._logOut} />
 
         <Child
           setBGImg={this._setBGImg}

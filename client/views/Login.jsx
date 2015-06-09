@@ -18,7 +18,8 @@ var LogIn = React.createClass({
      this.setState({password: e.target.value});
   },
 
-  handleLogin: function() {
+  handleLogin: function(e) {
+    e.preventDefault();
     var that = this;
     var user = new UserModel(this.state);
     user.save({}, {
@@ -36,14 +37,22 @@ var LogIn = React.createClass({
 
   render : function() {
     return (
-      <div>
-        <button type='button' data-route='/signup' onClick={this.props.linkHandler}>Sign Up</button>
-        <button type='button' data-route='/login' onClick={this.props.linkHandler}>Log In</button>
-        <form>
-          <input type="text" name="email" placeholder="Email" onChange={this.handleEmailChange} />
-          <input type="password" name="password" placeholder="Password" onChange={this.handlePasswordChange}/>
-          <button type="button" onClick={this.handleLogin}>Login</button>
-        </form>
+      <div className="container">
+        <div className="jumbotron">
+        <h2 className="heading">Log In</h2>
+          <form onSubmit={this.handleLogin}>
+            <div className="form-group">
+              <label htmlFor="email">Email</label>
+              <input className="form-control" type="text" name="email" placeholder="Enter email" onChange={this.handleEmailChange} />
+            </div>
+            <div className="form-group">
+              <label htmlFor="password">Password</label>
+              <input className="form-control" type="password" name="password" placeholder="Enter password" onChange={this.handlePasswordChange}/>
+            </div>
+            <input type="submit" value="Log In"></input>
+          </form>
+          <p>Don&#39;t have an account with us? <a href="/#/signup">Sign up here.</a></p>
+        </div>
       </div>
     );
   }

@@ -9,8 +9,15 @@ var LandingPage = React.createClass({
   render : function() {
     return (
       <div>
-        <CallToAction linkHandler={this.props.linkHandler} />
-        <HowItWorks />
+        <div className="container">
+          <CallToAction linkHandler={this.props.linkHandler} />
+        </div>
+        <div className="container-fluid">
+          <div className="row">
+            <h2>How it works</h2>
+            <HowItWorks />
+          </div>
+        </div>
       </div>
     );
   }

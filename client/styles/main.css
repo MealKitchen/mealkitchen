@@ -14,3 +14,21 @@ label {
 #show {
   display: inline;
 }
+
+.slogan {
+  text-align: center;
+}
+
+.subSlogan {
+  text-align: center;
+}
+
+.logInOrSignUp {
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+
+.heading {
+  text-align: center;
+}
