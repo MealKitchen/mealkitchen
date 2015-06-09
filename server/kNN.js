@@ -67,7 +67,7 @@ module.exports = {
       //otherwise return matches in regular order (maybe randomized in someway(?))
       else{
 
-        resolve(matches)
+        resolve(matches);
       }     
     })
   }

@@ -4,6 +4,8 @@ var Recipe = require('./recipeModel');
 var RecipePreference = require('../recipePreference/recipePreferenceModel');
 var db = require('../db');
 var lib = require('../config/libraries');
+var MealPlan = require('../mealPlan/mealPlanModel');
+
 
 var appId, apiKey;
 try {
@@ -112,68 +114,93 @@ var queryYummly = function(queryString){
   });
 };
 
-var getToYummly = function (request, response) {
-  //var recipeId = request.header.recipeId;
-  var recipeId = request.header.recipeId;
-  var str = "";
-  var results;
 
-  var query = "http://api.yummly.com/v1/api/recipe/" + recipeId + 
-  "?_app_id=" + appId + "&_app_key=" + apiKey;
+// var processIngredientsList = function (recipeIds, callback) {
+//   var ingredientsList = [];
 
-  http.get(query, function(yummlyResponse) {
+//   var functionsToRun = [];
+//   Promise.all(function(){
+//     for (var i = 0; i < recipeIds.length; i++) {
+//       functionsToRun.push(getToYummly(recipeIds[i], function(results) {
+//         return results;
+//       }));
+//     }
+//     return functionsToRun;
+//   }).then(function(results) {
+//     console.log(results);
+//     // change array of ingredients into a single array
+//     //callback(results);
+//   });
+//   // for every recipe in recipeIds, call getToYummly 
+//   // pull out the ingredients
+//   // save the ingredients and add to total ingredients array
+//   // send ingredients array back to 
 
-    yummlyResponse.on('data', function (chunk) {
-      str += chunk;
-    });
+// };
 
-    yummlyResponse.on('end', function () {
-      results = JSON.parse(str);
-      response.status(200).send(results);    
-    });
-
-  });
-};
-
-
-var saveRecipe = function(recipe){
-  new Recipe({'id': recipe.id}).fetch().then(function(found){
-    if(!found){
-      //console.log(recipe);
-      var newRecipe = new Recipe({
-        'id': recipe.id,
-        'recipeName': recipe.recipeName,
-        'sourceDisplayName': recipe.sourceDisplayName,
-        'smallImgUrl': recipe.smallImageUrls && recipe.smallImageUrls[0],
-        'mediumImgUrl': recipe.mediumImageUrls && recipe.mediumImageUrls[0],
-        'largeImgUrl': recipe.largeImageUrls && recipe.largeImageUrls[0],
-        'cuisine': recipe.attributes.cuisine,
-        'course': recipe.attributes.course,
-        'holiday': recipe.attributes.holiday,
-        'totalTimeInSeconds': recipe.totalTimeInSeconds,
-        'ingredients':  recipe.ingredients,
-        'rating':recipe.rating,
-        'salty': recipe.flavors && recipe.flavors.salty,
-        'sour': recipe.flavors && recipe.flavors.sour,
-        'sweet':recipe.flavors && recipe.flavors.sweet,
-        'bitter':recipe.flavors && recipe.flavors.bitter,
-        'piquant':recipe.flavors && recipe.flavors.piquant,
-        'meaty': recipe.flavors && recipe.flavors.meaty
-      }).save({}, {method: 'insert'}).then(function(recipe){
-        // console.log('saved recipe: ', recipe);
-      }).catch(function(error) {
-        console.log('got error', error);
-      });
-    }
-  });
-};
-
-var processIngredients = function (request, response) {
-  var recipes = request.body.recipes;
-  console.log("process Ingredients: ", request.body.recipes);
-};
+var getRecipeId = function (request) {
+  var recipeId = request.headers.recipeId || request.body.recipeIds;
+  return recipeId;
+}
 
 module.exports = {
+
+  saveRecipe: function(recipe, course, callback){
+    new Recipe({'id': recipe.id}).fetch().then(function(found){
+      if(!found){
+        //console.log(recipe);
+        var newRecipe = new Recipe({
+          'id': recipe.id,
+          'recipeName': recipe.name,
+          'sourceDisplayName': recipe.sourceDisplayName,
+          'smallImgUrl': recipe.images && recipe.images[0].hostedSmallUrl,
+          'largeImgUrl': recipe.images && recipe.images[0].hostedLargeUrl,
+          'cuisine': recipe.attributes.cuisine,
+          'course': course,
+          'holiday': recipe.attributes.holiday,
+          'totalTimeInSeconds': recipe.totalTimeInSeconds,
+          'ingredients':  recipe.ingredientLines.join(),
+          'rating':recipe.rating,
+          'salty': recipe.flavors && recipe.flavors.salty,
+          'sour': recipe.flavors && recipe.flavors.sour,
+          'sweet':recipe.flavors && recipe.flavors.sweet,
+          'bitter':recipe.flavors && recipe.flavors.bitter,
+          'piquant':recipe.flavors && recipe.flavors.piquant,
+          'meaty': recipe.flavors && recipe.flavors.meaty
+        }).save({}, {method: 'insert'}).then(callback)
+        .catch(function(error) {
+          console.log('got error', error);
+        });
+      }
+    });
+  },
+
+  getToYummly: function (recipeId, course, callback) {
+    //var recipeId = request.header.recipeId;
+    var str = "";
+    var results;
+
+    var query = "http://api.yummly.com/v1/api/recipe/" + recipeId + 
+    "?_app_id=" + appId + "&_app_key=" + apiKey;
+
+    http.get(query, function(yummlyResponse) {
+
+      yummlyResponse.on('data', function (chunk) {
+        str += chunk;
+      });
+
+      yummlyResponse.on('end', function () {
+        results = JSON.parse(str);
+        console.log('original recipe id was ' + recipeId + " and new recipe id " + results.id);
+        callback(results, course);
+      });
+
+      yummlyResponse.on('error', function(error) {
+        console.log('error on get to yummly', error);
+      });
+
+    });
+  },
 
   createRecipes: function (queryModel) {
 
@@ -217,10 +244,23 @@ module.exports = {
   },
 
   getYummlyRecipe: function (request, response) {
-    getToYummly(request, response);
+    var recipeId = getRecipeId(request);
+    this.getToYummly(recipeId, function(results) {
+      response.status(200).send(results);
+    })
   },
   createIngredientsList: function (request, response) {
-    processIngredients(request, response);
+    var mealPlanId = request.body.mealPlanId || 1 ;
+
+    new MealPlan({id: mealPlanId}).fetch({withRelated: ['breakfastRecipes', 'lunchRecipes', 'dinnerRecipes']}).then(function(model){
+      var ingredients = [];
+      model.related('recipes').forEach(function(item){
+        var recipeIngredients = item.get('ingredients');
+        var editedIngredients = recipeIngredients.substring(2, recipeIngredients.length - 2).split('","');
+        ingredients = ingredients.concat(editedIngredients);
+      });
+      response.status(200).send(ingredients);
+    })
   }
 };
 
