@@ -32,22 +32,24 @@ module.exports = {
       };
 
       var recipes = [];
+      var newRecipes = [];
       var counter = 0;
-      for (var key in recipeObject) {
-        recipes = recipes.concat(recipeObject[key]);
+      for (var meal in recipeObject) {
+        recipes = recipes.concat(recipeObject[meal]);
       }
 
-      for (var key in recipeObject) {
-        for (var i = 0; i < recipeObject[key].length; i++) {
-          recipeController.getToYummly(recipeObject[key][i], function(results, key){
-            recipeController.saveRecipe(results, key, function(){
+      for (var course in recipeObject) {
+        for (var i = 0; i < recipeObject[course].length; i++) {
+          recipeController.getToYummly(recipeObject[course][i], course, function(results, course){
+            newRecipes.push(results.id);
+            recipeController.saveRecipe(results, course, function(){
               counter++;
-              console.log("counter: ", counter);
-              if (counter === recipes.length - 1) {
-                resolve(recipes);
+              console.log("counter: ", counter, 'course is ', course);
+              if (counter === recipes.length) {
+                resolve(newRecipes);
               }
             });
-          }, key);
+          });
         }
       }
     });
@@ -57,10 +59,15 @@ module.exports = {
   createMealPlan: function (userId, recipes) {
 
     return new Promise(function(resolve, reject){
-      new MealPlan({ 'userId': userId }).save()
+      new MealPlan({ 'userId': userId }).save({}, {method: 'insert'})
       .then(function(mealPlan){
-        mealPlan.recipes().attach(recipes);
-        resolve();
+        console.log('recipes in create meal plan are', recipes);
+        mealPlan.recipes().attach(recipes).then(function() {
+          resolve();
+        })
+        .catch(function(error) {
+          console.error("On attaching recipes to meal plan got:", error);
+        });
       })
       .catch(function(error) {
         console.error("On associating recipes with meal plan got error:", error);

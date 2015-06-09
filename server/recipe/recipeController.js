@@ -146,35 +146,36 @@ var getRecipeId = function (request) {
 module.exports = {
 
   saveRecipe: function(recipe, course, callback){
-  new Recipe({'id': recipe.id}).fetch().then(function(found){
-    if(!found){
-      //console.log(recipe);
-      var newRecipe = new Recipe({
-        'id': recipe.id,
-        'recipeName': recipe.name,
-        'sourceDisplayName': recipe.sourceDisplayName,
-        'smallImgUrl': recipe.images && recipe.images[0].hostedSmallUrl,
-        'largeImgUrl': recipe.images && recipe.images[0].hostedLargeUrl,
-        'cuisine': recipe.attributes.cuisine,
-        'course': course,
-        'holiday': recipe.attributes.holiday,
-        'totalTimeInSeconds': recipe.totalTimeInSeconds,
-        'ingredients':  recipe.ingredientLines.join(),
-        'rating':recipe.rating,
-        'salty': recipe.flavors && recipe.flavors.salty,
-        'sour': recipe.flavors && recipe.flavors.sour,
-        'sweet':recipe.flavors && recipe.flavors.sweet,
-        'bitter':recipe.flavors && recipe.flavors.bitter,
-        'piquant':recipe.flavors && recipe.flavors.piquant,
-        'meaty': recipe.flavors && recipe.flavors.meaty
-      }).save({}, {method: 'insert'}).then(callback)
-      .catch(function(error) {
-        console.log('got error', error);
-      });}
+    new Recipe({'id': recipe.id}).fetch().then(function(found){
+      if(!found){
+        //console.log(recipe);
+        var newRecipe = new Recipe({
+          'id': recipe.id,
+          'recipeName': recipe.name,
+          'sourceDisplayName': recipe.sourceDisplayName,
+          'smallImgUrl': recipe.images && recipe.images[0].hostedSmallUrl,
+          'largeImgUrl': recipe.images && recipe.images[0].hostedLargeUrl,
+          'cuisine': recipe.attributes.cuisine,
+          'course': course,
+          'holiday': recipe.attributes.holiday,
+          'totalTimeInSeconds': recipe.totalTimeInSeconds,
+          'ingredients':  recipe.ingredientLines.join(),
+          'rating':recipe.rating,
+          'salty': recipe.flavors && recipe.flavors.salty,
+          'sour': recipe.flavors && recipe.flavors.sour,
+          'sweet':recipe.flavors && recipe.flavors.sweet,
+          'bitter':recipe.flavors && recipe.flavors.bitter,
+          'piquant':recipe.flavors && recipe.flavors.piquant,
+          'meaty': recipe.flavors && recipe.flavors.meaty
+        }).save({}, {method: 'insert'}).then(callback)
+        .catch(function(error) {
+          console.log('got error', error);
+        });
+      }
     });
   },
 
-  getToYummly: function (recipeId, callback, key) {
+  getToYummly: function (recipeId, course, callback) {
     //var recipeId = request.header.recipeId;
     var str = "";
     var results;
@@ -190,7 +191,12 @@ module.exports = {
 
       yummlyResponse.on('end', function () {
         results = JSON.parse(str);
-        callback(results, key);
+        console.log('original recipe id was ' + recipeId + " and new recipe id " + results.id);
+        callback(results, course);
+      });
+
+      yummlyResponse.on('error', function(error) {
+        console.log('error on get to yummly', error);
       });
 
     });
