@@ -1,6 +1,6 @@
 /** @jsx React.DOM */
 
-var MealPlans = React.createClass({
+var MealPlanLibrary = React.createClass({
   
   getInitialState: function(){
     return {mealPlans: []};
@@ -34,7 +34,7 @@ var MealPlans = React.createClass({
         <h1>Your Meal Plan Library</h1>
         {this.state.mealPlans.map(function(mealPlan, i) {
             return (
-              <MealPlan key={i} mealPlan={mealPlan}/>
+              <MealPlanLink key={i} mealPlan={mealPlan}/>
             )
           }, this)}
       </div>

@@ -6,7 +6,7 @@ var ReviewMeals = React.createClass({
   
   //TODO: state should be the recipes collection returned from yummly
   getInitialState: function() {
-    return {};
+    return { mealPlanTitle: '' };
   },
 
   componentWillMount: function(){
@@ -32,8 +32,6 @@ var ReviewMeals = React.createClass({
   _rejectRecipe: function(event) {
     var modelId = event.target.dataset.position;
     var collection = event.target.dataset.collection;
-    debugger;
-
     var courseQueue;
 
     switch (collection){
@@ -77,6 +75,10 @@ var ReviewMeals = React.createClass({
     }
   },
 
+  handleChange: function(e){
+    this.setState({ "mealPlanTitle": e.target.value });
+  },
+
   //TODO: Send the state to a backbone model to be sent to Yummly
   handleSubmit: function(e){
 
@@ -88,10 +90,11 @@ var ReviewMeals = React.createClass({
     // ingredients = ingredients.join().split(',');
     
     this.props.mealPlan.set({
+      'title': this.state.mealPlanTitle,
+      'userId': this.props.user.get('id'),
       'breakfastRecipes': this.props.breakfastCollection,
       'lunchRecipes': this.props.lunchCollection,
-      'dinnerRecipes': this.props.dinnerCollection,
-      'userId': this.props.user.get('id')
+      'dinnerRecipes': this.props.dinnerCollection
     });
 
     var that = this;
@@ -110,6 +113,12 @@ var ReviewMeals = React.createClass({
   render: function() {
       return (
         <div>
+
+          <h1>Review Meal Plan</h1>
+
+          <label htmlFor="breakfasts">Number of Breakfasts</label>
+          <input type="text" className="form-control" name="mealPlanTitle" placeholder="Enter Meal Plan Name" value={value} onChange={this.handleChange} />
+
           <div className="container breakfast">
             {this.props.breakfastCollection.map(function(item, i) {
               return [
