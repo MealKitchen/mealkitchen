@@ -15,14 +15,20 @@ var Recipe = React.createClass({
   },
 
   render : function() {
+    var imgUrl = this.props.recipe.get('smallImageUrls')[0];
+    var bgStyle = {
+      backgroundImage: 'url(' + imgUrl + ')',
+      backgroundSize: 'cover',
+      height: '250px'
+    };
+
     return (
-      <div className="recipeContainer" key={this.props.recipe}>
-        <div id={this.state.forReview ? 'show' : 'hide'}>
+      <div className="recipeContainer col-md-2" style={bgStyle} key={this.props.recipe}>
+        <div id={this.state.forReview ? 'show' : 'hide'} >
           <button type='button' onClick={this._navigateToRecipe}>View</button>
           <button type='button' data-position={this.props.position} data-collection={this.props.collection} onClick={this.props.rejectRecipe}>Reject</button>
         </div>
-        <div className="recipe">{this.props.recipe.get('recipeName')}</div>
-        <img className="recipeImage" src={this.props.recipe.get('smallImageUrls')[0]}></img>
+        <div className="recipe recipeName">{this.props.recipe.get('recipeName')}</div>
       </div>
     );
   }

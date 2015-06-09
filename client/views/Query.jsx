@@ -106,66 +106,105 @@ var Query = React.createClass({
   render: function() {
     var value = this.state.value;
     return (
-      <div className="query">
+      <div className="query container">
         <h2>Create Meal Plan</h2>
+
         <form onSubmit={this.handleSubmit}>
 
-          <div className="form-group breakfasts">
-            <label htmlFor="breakfasts">Number of Breakfasts</label>
-            <input type="number" className="form-control" name="numBreakfasts" placeholder="Enter number of breakfasts" value={value} onChange={this.handleChange} />
+          <h3>Select Number of Meals by Type</h3>
+
+          <div className="row">
+
+            <div className="form-group breakfasts col-md-3">
+              <label htmlFor="numBreakfasts">Number of Breakfasts</label>
+              <select className="form-control" name="numBreakfasts" id="numBreakfasts" value={value} onChange={this.handleChange} type="number">
+                <option value="0">0</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+              </select>
+            </div>
+
+            <div className="form-group lunches col-md-3">
+              <label htmlFor="numLunches">Number of Lunches</label>
+              <select className="form-control" name="numLunches" id="numLunches" value={value} onChange={this.handleChange} type="number">
+                <option>0</option>
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+                <option>5</option>
+                <option>6</option>
+                <option>7</option>
+              </select>
+            </div>
+
+            <div className="form-group dinners col-md-3">
+              <label htmlFor="numDinners">Number of Dinners</label>
+              <select className="form-control" name="numDinners" id="numDinners" value={value} onChange={this.handleChange} type="number">
+                <option>0</option>
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+                <option>5</option>
+                <option>6</option>
+                <option>7</option>
+              </select>
+            </div>
+
+            <input type="submit" className="btn btn-default col-md-3" />
+
           </div>
 
-          <div className="form-group lunches">
-            <label htmlFor="lunches">Number of Lunches</label>
-            <input type="number" className="form-control" name="numLunches" placeholder="Enter number of lunches" value={value} onChange={this.handleChange} />
+          <h3>Additional Filters</h3>
+
+          <div className="row">
+
+            <div className="form-group diet col-md-3">
+              <h5>Food Preferences</h5>
+              {allowedDiet.map(function(item, i){
+                return [
+                  <div className="checkbox">
+                    <label>
+                      <input type="checkbox" name='allowedDiet' value={item} className="checkbox" onChange={this.handleChange} />{item}
+                    </label>
+                  </div>
+                ];
+              }, this)}
+            </div>
+
+            <div className="form-group allergies col-md-3">
+              <h5>Allergy Restrictions</h5>
+              {allowedAllergies.map(function(item, i){
+                return [
+                  <div className="checkbox">
+                    <label>
+                      <input type="checkbox" name='allowedAllergies' value={item} className="checkbox" onChange={this.handleChange} />{item}
+                    </label>
+                  </div>
+                ];
+              }, this)}
+            </div>
+
+            <div className="form-group cuisines col-md-3">
+              <h5>Cuisine Preferences</h5>
+              {allowedCuisines.map(function(item, i){
+                return [
+                  <div className="checkbox">
+                    <label>
+                      <input type="checkbox" name='allowedCuisines' value={item} className="checkbox" onChange={this.handleChange} />{item}
+                    </label>
+                  </div>
+                ];
+              }, this)}
+            </div>
+
           </div>
-
-          <div className="form-group dinners">
-            <label htmlFor="dinners">Number of Dinners</label>
-            <input type="number" className="form-control" name="numDinners" placeholder="Enter number of dinners" value={value} onChange={this.handleChange} />
-          </div>
-
-          <input type="submit" />
-
-          <div className="form-group diet">
-            <h5>Food Preferences</h5>
-            {allowedDiet.map(function(item, i){
-              return [
-                <div className="checkbox">
-                  <label>
-                    <input type="checkbox" name='allowedDiet' value={item} className="checkbox" onChange={this.handleChange} />{item}
-                  </label>
-                </div>
-              ];
-            }, this)}
-          </div>
-
-          <div className="form-group allergies">
-            <h5>Allergy Restrictions</h5>
-            {allowedAllergies.map(function(item, i){
-              return [
-                <div className="checkbox">
-                  <label>
-                    <input type="checkbox" name='allowedAllergies' value={item} className="checkbox" onChange={this.handleChange} />{item}
-                  </label>
-                </div>
-              ];
-            }, this)}
-          </div>
-
-          <div className="form-group cuisines">
-            <h5>Cuisine Preferences</h5>
-            {allowedCuisines.map(function(item, i){
-              return [
-                <div className="checkbox">
-                  <label>
-                    <input type="checkbox" name='allowedCuisines' value={item} className="checkbox" onChange={this.handleChange} />{item}
-                  </label>
-                </div>
-              ];
-            }, this)}
-          </div>
-
         </form>
       </div>
     );
