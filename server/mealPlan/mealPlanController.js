@@ -63,7 +63,7 @@ module.exports = {
       .then(function(mealPlan){
         console.log('recipes in create meal plan are', recipes);
         mealPlan.recipes().attach(recipes).then(function() {
-          resolve();
+          resolve(mealPlan.id);
         })
         .catch(function(error) {
           console.error("On attaching recipes to meal plan got:", error);
