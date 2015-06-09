@@ -24,7 +24,8 @@ var LogIn = React.createClass({
     user.save({}, {
       success: function(model, res){
         console.log("Successful login!", res);
-        that.props.user.set({id: res.id});
+        user.set({id: res.id});
+        that.props.setUser(user);
         that.props.transitionTo('/mealquery');
       },
       error: function(model, err){

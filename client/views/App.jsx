@@ -4,13 +4,13 @@
 ///////// BACKBONE STORES ///////////
 /////////////////////////////////////
 
-var user = new UserModel();
-var mealPlans = new MealPlansCollection();
-var mealPlan = new MealPlanModel();
-var queryModel = new QueryModel();
-var breakfastCollection = new RecipesCollection();
-var lunchCollection = new RecipesCollection();
-var dinnerCollection = new RecipesCollection();
+// var user = new UserModel();
+// var mealPlans = new MealPlansCollection();
+// var mealPlan = new MealPlanModel();
+// var queryModel = new QueryModel();
+// var breakfastCollection = new RecipesCollection();
+// var lunchCollection = new RecipesCollection();
+// var dinnerCollection = new RecipesCollection();
 
 //The AppView is the main container from which the rest of the App is rendered.
 var AppView = React.createClass({
@@ -20,8 +20,43 @@ var AppView = React.createClass({
   getInitialState: function(){
     return {
       loggedIn: false,
-      bgImage: true
+      bgImage: true,
+      user: null,
+      mealPlans: null,
+      mealPlan: null,
+      queryModel: null,
+      breakfastCollection: null,
+      lunchCollection: null,
+      dinnerCollection: null
     };
+  },
+
+  _setUser: function(user){
+    this.setState({user: user});
+  },
+
+  _setMealPlans: function(mealPlans){
+    this.setState({mealplans: mealPlans});
+  },
+
+  _setMealPlan: function(mealPlan){
+    this.setState({mealPlan: mealPlan});
+  },
+
+  _setQueryModel: function(queryModel){
+    this.setState({queryModel: queryModel});
+  },
+
+  _setBreakfastCollection: function(breakfastCollection){
+    this.setState({breakfastCollection: breakfastCollection});
+  },
+
+  _setLunchCollection: function(lunchCollection){
+    this.setState({lunchCollection: lunchCollection});
+  },
+
+  _setDinnerCollection: function(dinnerCollection){
+    this.setState({dinnerCollection: dinnerCollection});
   },
 
   _setBGImg: function(bool){
@@ -29,8 +64,7 @@ var AppView = React.createClass({
   },
 
   _logOut: function(){
-    var that = this;
-    this.setState({ loggedIn: false });
+    this.replaceState(this.getInitialState());
     $.get("api/logout", function(data) {
       window.location.hash = '/login';
     });
@@ -58,23 +92,28 @@ var AppView = React.createClass({
   _isAuth: function(callback){
     callback = callback || function(){};
     var that = this;
-    user.fetch({
-      success: function(){
-        console.log('user logged in');
-        that.setState({loggedIn: true}, function(){
-          callback();
-        });
-      },
-      error: function(){
-        console.log('user not logged in');
-        that.setState({loggedIn: false}, function(){
-          callback();
-        });
-      }
-    });
+    if(!this.state.user){
+      window.location.hash = '/login';
+    } else {
+      this.state.user.fetch({
+        success: function(){
+          console.log('user logged in');
+          that.setState({loggedIn: true}, function(){
+            callback();
+          });
+        },
+        error: function(){
+          console.log('user not logged in');
+          that.setState({loggedIn: false}, function(){
+            callback();
+          });
+        }
+      });
+    }
   },
 
   render: function() {
+    console.log(this.state);
 
     var Child;
     switch (this.props.route) {
@@ -98,7 +137,25 @@ var AppView = React.createClass({
 
         <Navbar bgImage={this.state.bgImage} linkHandler={this._linkHandler} logOut={this._logOut} />
 
-        <Child setBGImg={this._setBGImg} isAuth={this._isAuth} linkHandler={this._linkHandler} transitionTo={this._transitionTo} breakfastCollection={breakfastCollection} lunchCollection={lunchCollection} dinnerCollection={dinnerCollection} query={queryModel} user={user} mealPlan={mealPlan} mealPlans={mealPlans} />
+        <Child
+          setBGImg={this._setBGImg}
+          isAuth={this._isAuth}
+          linkHandler={this._linkHandler}
+          transitionTo={this._transitionTo}
+          breakfastCollection={this.state.breakfastCollection}
+          lunchCollection={this.state.lunchCollection}
+          dinnerCollection={this.state.dinnerCollection}
+          query={this.state.queryModel}
+          user={this.state.user}
+          mealPlan={this.state.mealPlan}
+          mealPlans={this.state.mealPlans}
+          setUser={this._setUser}
+          setMealPlans={this._setMealPlans}
+          setMealPlan={this._setMealPlan}
+          setQueryModel={this._setQueryModel}
+          setBreakfastCollection={this._setBreakfastCollection}
+          setLunchCollection={this._setLunchCollection}
+          setDinnerCollection={this._setDinnerCollection} />
 
       </div>
     );

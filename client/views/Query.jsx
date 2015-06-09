@@ -57,35 +57,43 @@ var Query = React.createClass({
     var that = this;
 
     //Send a POST request to the server with the QueryModel to get a list of recipes that match the query.
-    this.props.query.set(this.state);
-    console.log(this.props.query);
-    this.props.query.save({}, {
+    var query = new QueryModel(this.state);
+    query.save({}, {
       success: function(model, res){
         console.log("Response from the server on submitting Meal Query: ", res);
+
+        var breakfastCollection = new RecipesCollection();
+        var lunchCollection = new RecipesCollection();
+        var dinnerCollection = new RecipesCollection();
 
         //Generate recipe queues for breakfast, lunch, and dinner. The queues are sorted from 0-length where length is the closest to the user's palate. When a user rejects a recipe, the next recipe in the queue will be shown.
         var breakfastQ = res.breakfastRecipes;
         var lunchQ = res.lunchRecipes;
         var dinnerQ = res.dinnerRecipes;
 
-        for(var i=0; i<that.props.query.get('numBreakfasts'); i++){
-          that.props.breakfastCollection.add(new RecipeModel(breakfastQ.pop()));
+        for(var i=0; i<query.get('numBreakfasts'); i++){
+          breakfastCollection.add(new RecipeModel(breakfastQ.pop()));
         }
 
-        for(i=0; i<that.props.query.get('numLunches'); i++){
-          that.props.lunchCollection.add(new RecipeModel(lunchQ.pop()));
+        for(i=0; i<query.get('numLunches'); i++){
+          lunchCollection.add(new RecipeModel(lunchQ.pop()));
         }
 
-        for(i=0; i<that.props.query.get('numDinners'); i++){
-          that.props.dinnerCollection.add(new RecipeModel(dinnerQ.pop()));
+        for(i=0; i<query.get('numDinners'); i++){
+          dinnerCollection.add(new RecipeModel(dinnerQ.pop()));
         }
 
         //Set the recipeQueue as an attribute on the query model to pass to the reviewmeals view for reference.
-        that.props.query.set({
+        query.set({
           'breakfastQ': breakfastQ,
           'lunchQ': lunchQ,
           'dinnerQ': dinnerQ
         });
+
+        that.props.setBreakfastCollection(breakfastCollection);
+        that.props.setLunchCollection(lunchCollection);
+        that.props.setDinnerCollection(dinnerCollection);
+        that.props.setQueryModel(query);
 
         that.props.transitionTo('/reviewmeals');
       },

@@ -79,8 +79,7 @@ var ReviewMeals = React.createClass({
 
   //TODO: Send the state to a backbone model to be sent to Yummly
   handleSubmit: function(e){
-
-    this.props.mealPlan.set({
+    var mealPlan = new MealPlanModel({
       'title': this.state.mealPlanTitle,
       'userId': this.props.user.get('id'),
       'breakfastRecipes': this.props.breakfastCollection,
@@ -89,9 +88,10 @@ var ReviewMeals = React.createClass({
     });
 
     var that = this;
-    this.props.mealPlan.save({}, {
+    mealPlan.save({}, {
       success: function(model, res) {
         console.log("Meal plan saved! Response from server:", res);
+        that.props.setMealPlan(mealPlan);
         that.props.transitionTo('/shoppinglist');
       },
       error: function(model, err) {
