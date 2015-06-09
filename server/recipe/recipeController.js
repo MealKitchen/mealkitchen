@@ -171,6 +171,8 @@ module.exports = {
         .catch(function(error) {
           console.log('got error', error);
         });
+      } else {
+        callback();
       }
     });
   },
