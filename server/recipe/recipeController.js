@@ -24,7 +24,7 @@ var writeQueries = function(queryModel){
   queryModel.numBreakfasts *= 1;
   queryModel.numLunches *= 1;
   queryModel.numDinners *= 1;
-  
+
   // If number of course meals specified, add 10 meals for queueing functionality
   var numBreakfasts = queryModel.numBreakfasts && queryModel.numBreakfasts + 10;
   var numLunches =  queryModel.numLunches && queryModel.numLunches + 10;
@@ -69,7 +69,7 @@ var writeQueries = function(queryModel){
   dinnerQueryString = numDinners > 0 ?
     "http://api.yummly.com/v1/api/recipes?_app_id=" + appId +
     "&_app_key=" + apiKey +
-    queryString + "&allowedCourse[]=" + lib.course.Breakfast + "&requirePictures=true" +
+    queryString + "&allowedCourse[]=" + lib.course.Dinner + "&requirePictures=true" +
     "&maxResult=" + numDinners + "&start=" + start : "";
 
   return {
@@ -196,7 +196,6 @@ module.exports = {
         queryYummly(queries.dinnerQuery)
       ])
       .then(function(results){
-        console.log(results);
         //resolved value will be empty array if empty string is passed in 
         var breakfasts = results[0] || results[0].matches;
         var lunches = results[1] || results[1].matches;

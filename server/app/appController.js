@@ -25,7 +25,6 @@ module.exports = {
     ])
     .then(function(results){
       
-      console.log('results appcontroller', results);
       //temporary solution
       var matches = results[0];
       // var userPreferences = results[1];
