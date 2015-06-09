@@ -7,10 +7,10 @@ label {
   text-decoration:line-through;
 }
 
-#hideNavLinks {
+#hide {
   display: none;
 }
 
-#showNavLinks {
+#show {
   display: inline;
 }

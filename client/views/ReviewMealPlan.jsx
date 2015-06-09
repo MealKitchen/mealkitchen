@@ -116,10 +116,11 @@ var ReviewMeals = React.createClass({
 
           <h1>Review Meal Plan</h1>
 
-          <label htmlFor="breakfasts">Number of Breakfasts</label>
-          <input type="text" className="form-control" name="mealPlanTitle" placeholder="Enter Meal Plan Name" value={value} onChange={this.handleChange} />
+          <label htmlFor="mealPlanTitle">Meal Plan Name</label>
+          <input type="text" className="form-control" name="mealPlanTitle" placeholder="Enter Meal Plan Name" value={this.value} onChange={this.handleChange} />
 
           <div className="container breakfast">
+            <h3>Breakfast</h3>
             {this.props.breakfastCollection.map(function(item, i) {
               return [
                 <Recipe recipe={item} position={i} collection='breakfastCollection' rejectRecipe={this._rejectRecipe} />
@@ -128,6 +129,7 @@ var ReviewMeals = React.createClass({
           </div>
 
           <div className="container lunch">
+            <h3>Lunch</h3>
             {this.props.lunchCollection.map(function(item, i) {
               return [
                 <Recipe recipe={item} position={i} collection='lunchCollection' rejectRecipe={this._rejectRecipe} />
@@ -136,6 +138,7 @@ var ReviewMeals = React.createClass({
           </div>
 
           <div className="container dinner">
+            <h3>Dinner</h3>
             {this.props.dinnerCollection.map(function(item, i) {
               return [
                 <Recipe recipe={item} position={i} collection='dinnerCollection' rejectRecipe={this._rejectRecipe} />

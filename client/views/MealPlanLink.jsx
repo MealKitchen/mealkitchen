@@ -13,7 +13,7 @@ var MealPlanLink = React.createClass({
   },
 
   componentWillMount: function(){
-    //Find focus of meal plan to display appropriate information on the screen.
+    //Find main focus of meal plan to display appropriate image on the screen to represent the Meal Plan. Currently defaults to dinner.
     var mainCourse;
     if(this.state.dinners){
       this.setState({ mainCourse: this.state.dinners[0] });

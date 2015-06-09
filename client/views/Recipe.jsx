@@ -2,8 +2,13 @@
 
 var Recipe = React.createClass({
 
+  getInitialState: function(){
+    return { forReview: true };
+  },
+
   componentWillMount: function(){
-    console.log(this.props);
+    this.setState({ forReview: this.props.forReview || this.state.forReview });
+    console.log(this.props.recipe);
   },
 
   _navigateToRecipe: function(){
@@ -13,10 +18,12 @@ var Recipe = React.createClass({
   render : function() {
     return (
       <div className="recipeContainer" key={this.props.recipe}>
-        <button type='button' onClick={this._navigateToRecipe}>View</button>          
-        <button type='button' data-position={this.props.position} data-collection={this.props.collection} onClick={this.props.rejectRecipe}>Reject</button>
+        <div id={this.props.forReview ? 'show' : 'hide'}>
+          <button type='button' onClick={this._navigateToRecipe}>View</button>
+          <button type='button' data-position={this.props.position} data-collection={this.props.collection} onClick={this.props.rejectRecipe}>Reject</button>
+        </div>
         <div className="recipe">{this.props.recipe.get('recipeName')}</div>
-        <img className="recipeImage" src={this.props.recipe.get('smallImgUrl')}></img>
+        <img className="recipeImage" src={this.props.recipe.get('smallImageUrls')[0]}></img>
       </div>
     );
   }

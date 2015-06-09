@@ -2,9 +2,12 @@
 
 var NavbarLinks = React.createClass({
   
+  componentWillMount: function(){
+    console.log(this.props);
+  },
+
   _logOut: function(){
     var that = this;
-    console.log('logout clicked');
     $.get("api/logout", function(data) {
       window.location.hash = '/login';
     });

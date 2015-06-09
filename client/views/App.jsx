@@ -65,15 +65,6 @@ var AppView = React.createClass({
       }
     });
   },
-
-  //Ends a user's session and redirects them to the login page.
-  _logOut: function(){
-    var that = this;
-    console.log('logout clicked');
-    $.get("api/logout", function(data) {
-      window.location.hash = '/login';
-    });
-  },
   
   render: function() {
 
@@ -84,7 +75,8 @@ var AppView = React.createClass({
       case '/login': Child = LogIn; break;
       case '/mealquery': Child = Query; break;
       case '/reviewmeals': Child = ReviewMeals; break;
-      case '/mealplans': Child = MealPlans; break;
+      case '/mealplans': Child = MealPlanLibrary; break;
+      case '/mealplan': Child = MealPlan; break;
       case '/shoppinglist': Child = ShoppingList; break;
       default:      Child = this.state.loggedIn ? MealQuery : LogIn;
     }
@@ -96,7 +88,7 @@ var AppView = React.createClass({
     return (
       <div className="container-fluid">
         
-        <Navbar bgImage={this.state.bgImage} linkHandler={this._linkHandler} logOut={this._logOut} />
+        <Navbar bgImage={this.state.bgImage} linkHandler={this._linkHandler} />
 
         <Child setBGImg={this._setBGImg} isAuth={this._isAuth} linkHandler={this._linkHandler} transitionTo={this._transitionTo} breakfastCollection={breakfastCollection} lunchCollection={lunchCollection} dinnerCollection={dinnerCollection} query={queryModel} user={user} mealPlan={mealPlan} mealPlans={mealPlans} />
 
