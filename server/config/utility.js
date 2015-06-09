@@ -28,3 +28,13 @@ exports.logout = function(req, res) {
       res.status(200).send({loggedIn: false});
     });
 };
+
+//takes an array of recipe matches from yummly
+//returns an array of recipe ids, necessary for relational bookshelf association
+exports.parseRecipeIds = function(recipes){
+  var recipeIds = [];
+  for (var i = 0; i < recipes.length; i++) {
+    recipeIds.push(recipes[i].id);
+  }
+  return recipeIds;
+}

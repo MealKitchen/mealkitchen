@@ -2,49 +2,40 @@ var Promise = require('bluebird');
 var http = require('http');
 var MealPlan = require('./mealPlanModel');
 var recipeController = require('../recipe/recipeController')
+var utils = require('../config/utility');
 
-//returns an array of recipe ids, necessary for relational bookshelf association 
-// var parseRecipeIds = function(recipes){
-//   var recipeIds = [];
-//   for (var i = 0; i < recipes.length; i++) {
-//     recipeIds.push(recipes[i].id);
-//   }
-//   return recipeIds;
-// }
-
-var parseRecipeIds = function (recipes) {
-    var items = [];
-    for (var i = 0; i < recipes.length; i++) {
-      var item = recipes[i].id;
-      items.push(item);
-    }
-    return items;
-};
 
 module.exports = {
 
-  saveRecipes: function(userId, request) {
+  saveRecipes: function(userId, body) {
     return new Promise(function(resolve, reject) {
       var recipeObject = {
-        "breakfast": parseRecipeIds(request.breakfastRecipes),
-        "lunch": parseRecipeIds(request.lunchRecipes),
-        "dinner": parseRecipeIds(request.dinnerRecipes)
+        "breakfast": parseRecipeIds(body.breakfastRecipes),
+        "lunch": parseRecipeIds(body.lunchRecipes),
+        "dinner": parseRecipeIds(body.dinnerRecipes)
       };
 
-      var recipes = [];
+      //var recipes = [];
       var newRecipes = [];
       var counter = 0;
-      for (var meal in recipeObject) {
-        recipes = recipes.concat(recipeObject[meal]);
-      }
 
+      // for (var meal in recipeObject) {
+      //   recipes = recipes.concat(recipeObject[meal]);
+      // }
+
+      //for each course
       for (var course in recipeObject) {
+        //for each recipe in course
         for (var i = 0; i < recipeObject[course].length; i++) {
+          //get request to yummly for richer data
           recipeController.getToYummly(recipeObject[course][i], course, function(results, course){
+
             newRecipes.push(results.id);
+            //save recipe data in db
             recipeController.saveRecipe(results, course, function(){
+
               counter++;
-              console.log("counter: ", counter, 'course is ', course);
+              //done
               if (counter === recipes.length) {
                 resolve(newRecipes);
               }
@@ -55,7 +46,6 @@ module.exports = {
     });
   },
 
-  
   createMealPlan: function (userId, recipes) {
 
     return new Promise(function(resolve, reject){
@@ -74,8 +64,6 @@ module.exports = {
         reject(error);
       });
     });
-   
-    
   },
   fetchMealPlans: function (userId) {
     return new Promise(function(resolve, reject){
@@ -88,7 +76,6 @@ module.exports = {
           console.log("Sorry, could not find any meal plans for that user. Error:", error);
           reject(error);
         });
-      
     })
   }
 };
