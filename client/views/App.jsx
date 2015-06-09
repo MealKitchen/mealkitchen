@@ -28,6 +28,14 @@ var AppView = React.createClass({
     this.setState({bgImage: bool});
   },
 
+  _logOut: function(){
+    var that = this;
+    this.setState({ loggedIn: false });
+    $.get("api/logout", function(data) {
+      window.location.hash = '/login';
+    });
+  },
+
   //Checks authentication before allowing a user to transition to any new location in the application. If a user is not logged in, they are redirected to the login page.
   _transitionTo: function(route){
     var that = this;
@@ -88,7 +96,7 @@ var AppView = React.createClass({
     return (
       <div className="container-fluid">
 
-        <Navbar bgImage={this.state.bgImage} linkHandler={this._linkHandler} />
+        <Navbar bgImage={this.state.bgImage} linkHandler={this._linkHandler} logOut={this._logOut} />
 
         <Child setBGImg={this._setBGImg} isAuth={this._isAuth} linkHandler={this._linkHandler} transitionTo={this._transitionTo} breakfastCollection={breakfastCollection} lunchCollection={lunchCollection} dinnerCollection={dinnerCollection} query={queryModel} user={user} mealPlan={mealPlan} mealPlans={mealPlans} />
 

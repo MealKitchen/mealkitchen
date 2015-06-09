@@ -8,7 +8,6 @@ var Recipe = React.createClass({
 
   componentWillMount: function(){
     this.setState({ forReview: this.props.forReview || this.state.forReview });
-    console.log(this.props.recipe);
   },
 
   _navigateToRecipe: function(){
@@ -18,7 +17,7 @@ var Recipe = React.createClass({
   render : function() {
     return (
       <div className="recipeContainer" key={this.props.recipe}>
-        <div id={this.props.forReview ? 'show' : 'hide'}>
+        <div id={this.state.forReview ? 'show' : 'hide'}>
           <button type='button' onClick={this._navigateToRecipe}>View</button>
           <button type='button' data-position={this.props.position} data-collection={this.props.collection} onClick={this.props.rejectRecipe}>Reject</button>
         </div>

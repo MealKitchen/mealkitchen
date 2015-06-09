@@ -4,14 +4,12 @@ var ReviewMeals = React.createClass({
 
   mixins: [Backbone.Events],
 
-  //TODO: state should be the recipes collection returned from yummly
   getInitialState: function() {
     return { mealPlanTitle: '' };
   },
 
   componentWillMount: function(){
     this.props.setBGImg(false);
-    console.log(this.props);
   },
 
   componentDidMount: function() {
@@ -57,11 +55,11 @@ var ReviewMeals = React.createClass({
       'piquant': ''
     });
 
-    //Send rejected recipe preference to the server as POST request for user preferences update
+    //Send rejected recipe preference to the server as POST request for user preferences update.
     rejectedRecipe.save();
 
-    // Add new recipe to RecipeCollection from the queue of recipes.
-    //TODO: add handling in case recipeQueue is empty!
+    // Add new recipe to collection from the queue of recipes.
+    //TODO: add handling in case queues are empty!
     this.props[collection].add(new RecipeModel(courseQueue.pop()), {at: modelId});
 
     //Update the queue to reflect the recipe that was added to the recipes collection.
@@ -81,13 +79,6 @@ var ReviewMeals = React.createClass({
 
   //TODO: Send the state to a backbone model to be sent to Yummly
   handleSubmit: function(e){
-
-    // extract ingredients from each recipe to save in mealPlanModel
-    // var ingredients = [];
-    // for (var i = 0; i < this.props.recipes.length; i++) {
-    //   ingredients.push(this.props.recipes.at(i).get("ingredients"));
-    // }
-    // ingredients = ingredients.join().split(',');
 
     this.props.mealPlan.set({
       'title': this.state.mealPlanTitle,
@@ -109,7 +100,6 @@ var ReviewMeals = React.createClass({
     });
   },
 
-  // dynamically render recipes on page according to RecipesCollection
   render: function() {
       return (
         <div>
