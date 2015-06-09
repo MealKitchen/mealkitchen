@@ -19,16 +19,18 @@ var SignUp = React.createClass({
   },
 
   handleSignUp: function(e) {
+    console.log('calling handlesignup');
     e.preventDefault();
     var that = this;
-    this.props.user.set(this.state);
-    this.props.user.save({}, {
-      success: function(model, res){
-        console.log("Successful sign up!");
+    $.ajax({
+      type: "POST",
+      url: "api/user",
+      data: JSON.stringify(that.state),
+      dataType: "json",
+      contentType: "application/json",
+      success: function(){
+        console.log('success!');
         that.props.transitionTo('/login');
-      },
-      error: function(model, err){
-        console.error("I'm sorry, there was an error!");
       }
     });
   },
@@ -38,7 +40,7 @@ var SignUp = React.createClass({
       <div className="container">
         <div className="jumbotron">
         <h2 className="heading">Sign Up</h2>
-          <form onSubmit={this.handleSignup}>
+          <form onSubmit={this.handleSignUp}>
             <div className="form-group">
               <label htmlFor="email">Email</label>
               <input className="form-control" type="text" name="email" placeholder="Enter email" onChange={this.handleEmailChange} />

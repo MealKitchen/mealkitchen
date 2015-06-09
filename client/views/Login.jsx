@@ -21,16 +21,20 @@ var LogIn = React.createClass({
   handleLogin: function(e) {
     e.preventDefault();
     var that = this;
-    var user = new UserModel(this.state);
-    user.save({}, {
-      success: function(model, res){
-        console.log("Successful login!", res);
-        user.set({id: res.id});
+    $.ajax({
+      type: "POST",
+      url: "api/user",
+      data: JSON.stringify(that.state),
+      dataType: "json",
+      contentType: "application/json",
+      success: function(res){
+        var user = new UserModel({
+          id: res.id,
+          password: res.password,
+          email: res.email
+        });
         that.props.setUser(user);
         that.props.transitionTo('/mealquery');
-      },
-      error: function(model, err){
-        console.error("ERROR while logging in!");
       }
     });
   },

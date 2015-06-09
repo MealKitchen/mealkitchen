@@ -22,11 +22,11 @@ var MealPlan = React.createClass({
       return (
         <div>
 
-          <h1>Meal Plan: {this.props.mealPlan.title}</h1>
+          <h1>Meal Plan: {this.props.mealPlan.get('title')}</h1>
 
           <div className="container breakfast">
             <h3>Breakfast</h3>
-            {this.props.mealPlan.breakfastCollection.map(function(item, i) {
+            {this.props.mealPlan.get('breakfastRecipes').map(function(item, i) {
               return [
                 <Recipe recipe={item} position={i} forReview={false} collection='breakfastCollection' />
               ];
@@ -35,7 +35,7 @@ var MealPlan = React.createClass({
 
           <div className="container lunch">
             <h3>Lunch</h3>
-            {this.props.mealPlan.lunchCollection.map(function(item, i) {
+            {this.props.mealPlan.get('lunchRecipes').map(function(item, i) {
               return [
                 <Recipe recipe={item} position={i} forReview={false} collection='lunchCollection' />
               ];
@@ -44,7 +44,7 @@ var MealPlan = React.createClass({
 
           <div className="container dinner">
             <h3>Dinner</h3>
-            {this.props.mealPlan.dinnerCollection.map(function(item, i) {
+            {this.props.mealPlan.get('dinnerRecipes').map(function(item, i) {
               return [
                 <Recipe recipe={item} position={i} forReview={false} collection='dinnerCollection' />
               ];
