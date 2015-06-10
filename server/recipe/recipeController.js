@@ -22,7 +22,7 @@ var writeQueries = function(queryModel){
   var allowedCuisineList = queryModel.allowedCuisine;
   var allowedDietList = queryModel.allowedDiet;
 
-  //handling stringified number values from client so as to not concatenate 10 
+  //handling stringified number values from client so as to not concatenate 10
   queryModel.numBreakfasts *= 1;
   queryModel.numLunches *= 1;
   queryModel.numDinners *= 1;
@@ -113,7 +113,6 @@ var queryYummly = function(queryString){
 };
 
 var getToYummly = function (recipeId) {
-  console.log('in get to yummly');
   return new Promise(function(resolve, reject){
     var str = "";
     var recipe;
@@ -229,7 +228,6 @@ module.exports = {
 
       })
       .catch(function(error){
-        console.log('error in create recipes:', error);
         reject({'error': error});
       });
     });

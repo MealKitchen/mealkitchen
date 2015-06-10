@@ -4,13 +4,13 @@ var recipeController = require('../recipe/recipeController');
 var mealPlanController = require('../mealPlan/mealPlanController');
 var userController = require('../user/userController');
 var kNN = require('../kNN');
-
+var utils = require('../config/utility');
 
 module.exports = {
   getUserRecipes: function(req, res){
     Promise.all([
       //get recipes from yummly
-      //will return in form of 
+      //will return in form of
       //{
       //  breakfastRecipes: [...],
       //  lunchRecipes: [...],
@@ -42,6 +42,7 @@ module.exports = {
   getUserMealPlans: function(req, res){
     mealPlanController.fetchMealPlans(req.session.user.id)
       .then(function(mealPlans){
+        console.log('mealplans', mealPlans);
         res.status(200).send(mealPlans);
       })
       .catch(function(error){
@@ -52,26 +53,28 @@ module.exports = {
 
     recipeController.getMealPlanRecipes(req.body)
     .then(function(recipesFromYummly){
+
       Promise.all([
         recipeController.saveRecipeArray(recipesFromYummly.breakfast, 'breakfast'),
         recipeController.saveRecipeArray(recipesFromYummly.lunch, 'lunch'),
         recipeController.saveRecipeArray(recipesFromYummly.dinner, 'dinner')
       ])
       .then(function(){
-        mealPlanController.saveUserMealPlan(req.session.user.id, utils.getObjectRecipeIds(recipesFromYummly))
+
+        mealPlanController.createMealPlan(req.session.user.id, utils.getObjectRecipeIds(recipesFromYummly))
         .then(function(mealPlanId){
-          results.status(200).send({mealPlanId: mealPlanId});
+          res.status(200).send({mealPlanId: mealPlanId});
         })
         .catch(function(error){
           res.status(500).send({'error saving mealplan': error});
         })
+
       })
       .catch(function(error){
         res.status(500).send({'error saving recipes from yummly': error});
       })
-      res.status(200).send(recipesFromYummly);
     })
-    .catch(function(error){ 
+    .catch(function(error){
       res.status(500).send({'error saving user meal plan': error});
     })
   }

@@ -14,6 +14,7 @@ module.exports = {
       .then(function(mealPlan){
         console.log('recipes in create meal plan are', recipes);
         mealPlan.recipes().attach(recipes).then(function() {
+          console.log('attached recipe ids');
           resolve(mealPlan.id);
         })
         .catch(function(error) {
