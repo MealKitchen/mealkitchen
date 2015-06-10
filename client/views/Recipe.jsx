@@ -15,7 +15,9 @@ var Recipe = React.createClass({
   },
 
   render : function() {
+    // Getting the image url and modifying it to get the correct size. Note: this could break if Yummly changes their img urls
     var imgUrl = this.props.recipe.get('smallImageUrls')[0];
+    imgUrl = imgUrl.substring(0, imgUrl.length - 2) + '400';
     var bgStyle = {
       backgroundImage: 'url(' + imgUrl + ')',
       backgroundSize: 'cover',
