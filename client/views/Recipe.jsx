@@ -11,7 +11,7 @@ var Recipe = React.createClass({
   },
 
   _navigateToRecipe: function(){
-    window.open(this.props.recipe.get('recipeUrl'));
+    window.open('http://www.yummly.com/recipe/external/' + this.props.recipe.get('id'));
   },
 
   render : function() {
