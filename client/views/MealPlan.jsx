@@ -15,14 +15,17 @@ var MealPlan = React.createClass({
 
   _createShoppingList: function(){
     var that = this;
+    var mealPlanId = {mealPlanId: that.props.mealPlan.get('mealPlanId')};
     $.ajax({
       type: "POST",
       url: "api/recipes/ingredients",
-      data: JSON.stringify(that.props.mealPlan.get('mealPlanId')),
+      data: JSON.stringify(mealPlanId),
       dataType: "json",
       contentType: "application/json",
       success: function(res){
         console.log("response: ", res);
+        that.props.setIngredientsCollection(res);
+        that.props.transitionTo('/shoppinglist');
       }
     });
   },
