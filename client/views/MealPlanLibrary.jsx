@@ -17,7 +17,7 @@ var MealPlanLibrary = React.createClass({
     var mealPlans = new MealPlansCollection();
     mealPlans.fetch({
       data: {userId: this.props.user.get('id')},
-      success: function(){
+      success: function(model, res){
         var mealPlansArray = mealPlans.map(function(model, i){
           return model.get('recipes');
         });
@@ -31,6 +31,7 @@ var MealPlanLibrary = React.createClass({
   },
 
   render : function() {
+    console.log(this.state.mealPlans);
     return (
       <div>
         <h1>Your Meal Plan Library</h1>

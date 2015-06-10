@@ -8,7 +8,9 @@ var Navbar = React.createClass({
       <nav className="navbar navbar-default">
         <div className="container-fluid">
           <div className="navbar-header">
-            <a href="/#/login" className="navbar-brand">Meal Kitchen</a>
+            <a href="/#/login" className="navbar-brand">
+              <img src='/images/meal-kitchen-logo.png' className="img-responsive"></img>
+            </a>
             <div className={this.props.bgImage ? 'hide' : 'show'}>
               <NavbarLinks linkHandler={this.props.linkHandler} logOut={this.props.logOut} />
             </div>

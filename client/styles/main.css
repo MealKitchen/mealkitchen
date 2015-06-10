@@ -1,3 +1,11 @@
+body {
+  background: url(../images/vegetables.jpg) no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
 label {
   display: block;
 }
@@ -5,6 +13,26 @@ label {
 /*This class exists to allow users to cross things out in a list (see ShoppingList view)*/
 .checked {
   text-decoration:line-through;
+}
+
+/* navbar */
+.navbar-default {
+  background-color: #D74B1A;
+  border: none;
+}
+
+.howItWorks {
+  background-color: #D74B1A;
+  color: #ffffff;
+}
+
+.jumbotron {
+   background: rgb(192, 192, 192); /* This is for ie8 and below */
+   background: rgba(192, 192, 192, 0.3);
+   max-width: 50%;
+   margin-right: auto;
+   margin-left: auto;
+   color: #ffffff;
 }
 
 .hide {
