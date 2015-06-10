@@ -1,20 +1,17 @@
 var Promise = require('bluebird');
 var http = require('http');
 var MealPlan = require('./mealPlanModel');
-var recipeController = require('../recipe/recipeController')
 var utils = require('../config/utility');
 
 
 module.exports = {
 
-  createMealPlan: function (userId, recipes) {
+  createMealPlan: function (userId, title, recipes) {
 
     return new Promise(function(resolve, reject){
-      new MealPlan({ 'userId': userId }).save({}, {method: 'insert'})
+      new MealPlan({ 'userId': userId, 'title': title}).save({}, {method: 'insert'})
       .then(function(mealPlan){
-        console.log('recipes in create meal plan are', recipes);
         mealPlan.recipes().attach(recipes).then(function() {
-          console.log('attached recipe ids');
           resolve(mealPlan.id);
         })
         .catch(function(error) {
@@ -36,7 +33,7 @@ module.exports = {
         .then(function(mealPlans) {
           resolve(mealPlans)
         }).catch(function(error) {
-          console.log("Sorry, could not find any meal plans for that user. Error:", error);
+          console.error("Sorry, could not find any meal plans for that user. Error:", error);
           reject(error);
         });
     })

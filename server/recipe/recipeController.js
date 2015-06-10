@@ -87,7 +87,6 @@ var queryYummly = function(queryString){
     var results;
     //no meals entered for param; query is empty string
     if(!queryString){
-      console.log('hello error query');
       resolve([]);
     } else{
 
@@ -112,7 +111,7 @@ var queryYummly = function(queryString){
   });
 };
 
-var getToYummly = function (recipeId) {
+var getToYummlyById = function(recipeId){
   return new Promise(function(resolve, reject){
     var str = "";
     var recipe;
@@ -128,22 +127,44 @@ var getToYummly = function (recipeId) {
 
       yummlyResponse.on('end', function () {
         recipe = JSON.parse(str);
-
+        recipe.matchId = recipeId;
         resolve(recipe)
       });
 
       yummlyResponse.on('error', function(error) {
-        reject({'error in getToYummly': error});
+        reject({'error in fetchRecipeById': error});
       });
     });
   });
 }
+
+//fetch recipe from database first or from yummly if not found
+var fetchRecipeById = function (recipeId) {
+  return new Promise(function(resolve, reject){
+    new Recipe({matchId: recipeId}).fetch().then(function(found){
+      if(!found){
+        getToYummlyById(recipeId)
+        .then(function(recipe){
+          resolve(recipe);
+        })
+        .catch(function(error){
+          reject({'error in getToYummlyById': error})
+        })
+      }
+      else{
+        //returned fetched recipe
+        resolve(found);
+      }
+    });
+  })
+}
+
 //takes an array of recipe ids and will make individual get requests from yummly
-var getArrayFromYummly = function(recipes){
+var fetchRecipesByIds = function(recipeIds){
   return new Promise(function(resolve, reject){
     var promises = [];
-    for(var i = 0; i < recipes.length; i++){
-      promises.push(getToYummly(recipes[i]));
+    for(var i = 0; i < recipeIds.length; i++){
+      promises.push(fetchRecipeById(recipeIds[i]));
     }
 
     Promise.all(promises)
@@ -151,7 +172,8 @@ var getArrayFromYummly = function(recipes){
       resolve(fetchedRecipes);
     })
     .catch(function(error){
-      reject({'error in getArrayFromYummly': error});
+      console.log('error in array recipe', error);
+      reject({'error in fetchRecipesByIds': error});
     })
   });
 }
@@ -164,6 +186,7 @@ var saveRecipe = function(recipe, course){
       if(!found){
         var newRecipe = new Recipe({
           'id': recipe.id,
+          'matchId': recipe.matchId,
           'recipeName': recipe.name,
           'sourceDisplayName': recipe.sourceDisplayName,
           'smallImgUrl': recipe.images && recipe.images[0].hostedSmallUrl,
@@ -219,7 +242,6 @@ module.exports = {
         var breakfasts = results[0] || results[0].matches;
         var lunches = results[1] || results[1].matches;
         var dinners = results[2] || results[2].matches;
-        console.log(dinners);
         resolve({
           'breakfastRecipes': breakfasts,
           'lunchRecipes': lunches,
@@ -248,9 +270,9 @@ module.exports = {
     return new Promise(function(resolve, reject){
 
       Promise.props({
-        'breakfast': getArrayFromYummly(recipeObject.breakfast),
-        'lunch': getArrayFromYummly(recipeObject.lunch),
-        'dinner': getArrayFromYummly(recipeObject.dinner)
+        'breakfast': fetchRecipesByIds(recipeObject.breakfast),
+        'lunch': fetchRecipesByIds(recipeObject.lunch),
+        'dinner': fetchRecipesByIds(recipeObject.dinner)
       })
       .then(function(mealPlanRecipes){
         resolve(mealPlanRecipes);

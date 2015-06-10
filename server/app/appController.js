@@ -42,7 +42,6 @@ module.exports = {
   getUserMealPlans: function(req, res){
     mealPlanController.fetchMealPlans(req.session.user.id)
       .then(function(mealPlans){
-        console.log('mealplans', mealPlans);
         res.status(200).send(mealPlans);
       })
       .catch(function(error){
@@ -50,7 +49,6 @@ module.exports = {
       })
   },
   saveUserMealPlan: function(req, res){
-
     recipeController.getMealPlanRecipes(req.body)
     .then(function(recipesFromYummly){
 
@@ -61,7 +59,7 @@ module.exports = {
       ])
       .then(function(){
 
-        mealPlanController.createMealPlan(req.session.user.id, utils.getObjectRecipeIds(recipesFromYummly))
+        mealPlanController.createMealPlan(req.session.user.id, req.body.title, utils.getObjectRecipeIds(recipesFromYummly))
         .then(function(mealPlanId){
           res.status(200).send({mealPlanId: mealPlanId});
         })
