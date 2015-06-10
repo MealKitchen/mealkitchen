@@ -140,7 +140,7 @@ var AppView = React.createClass({
     return (
       <div className={this.state.bgImage ? "bgImage" : "bgContainer"}>
 
-        <Navbar className="container-fluid" bgImage={this.state.bgImage} linkHandler={this._linkHandler} logOut={this._logOut} />
+        <Navbar bgImage={this.state.bgImage} linkHandler={this._linkHandler} logOut={this._logOut} />
 
         <Child
           setBGImg={this._setBGImg}

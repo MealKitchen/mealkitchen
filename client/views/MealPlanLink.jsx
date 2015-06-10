@@ -35,14 +35,10 @@ var MealPlanLink = React.createClass({
     };
 
     return (
-      <div style={bgStyle} className="col-md-3 thumbnail" >
+      <div style={bgStyle} className="col-md-3 thumbnail " >
         <h3>{this.state.title}</h3>
         <p>{this.state.breakfasts.length} B | {this.state.lunches.length} L | {this.state.dinners.length} D </p>
       </div>
     );
   }
 });
-
-
-        // <img src={this.state.mainCourse ? this.state.mainCourse.smallImgUrl : ''}></img>
-// this.state.mainCourse ? this.state.mainCourse.get('smallImageUrls')[0] :
