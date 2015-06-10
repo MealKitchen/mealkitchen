@@ -6,6 +6,23 @@ label {
   display: block;
 }
 
+.full-height {
+  position: fixed;
+  height: 100%;
+}
+
+.centered {
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.howItWorks {
+  position: relative;
+  height: 100%;
+  background-color: #D74B1A;
+  color: #ffffff;
+}
+
 .btn-default {
   border: 0px solid #CCCCCC;
   border-radius: 5px;
@@ -52,10 +69,6 @@ label {
   border: none;
 }
 
-.howItWorks {
-  background-color: #D74B1A;
-  color: #ffffff;
-}
 
 .jumbotron {
    background: rgb(192, 192, 192); /* This is for ie8 and below */
