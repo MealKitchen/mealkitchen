@@ -42,6 +42,7 @@ module.exports = {
   getUserMealPlans: function(req, res){
     mealPlanController.fetchMealPlans(req.session.user.id)
       .then(function(mealPlans){
+
         res.status(200).send(mealPlans);
       })
       .catch(function(error){
