@@ -37,7 +37,7 @@ var AppView = React.createClass({
   },
 
   _setMealPlans: function(mealPlans){
-    this.setState({mealplans: mealPlans});
+    this.setState({mealPlans: mealPlans});
   },
 
   _setMealPlan: function(mealPlan){

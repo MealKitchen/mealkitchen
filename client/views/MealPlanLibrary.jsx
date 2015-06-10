@@ -19,10 +19,10 @@ var MealPlanLibrary = React.createClass({
       data: {userId: this.props.user.get('id')},
       success: function(model, res){
         var mealPlansArray = mealPlans.map(function(model, i){
-          return model.get('recipes');
+          return model;
         });
         that.setState({mealPlans: mealPlansArray});
-        that.setMealPlans(mealPlans);
+        that.props.setMealPlans(mealPlans);
       },
       error: function(){
         console.error('There was an error fetching your mealplans!');
@@ -31,15 +31,20 @@ var MealPlanLibrary = React.createClass({
   },
 
   render : function() {
-    console.log(this.state.mealPlans);
     return (
-      <div>
-        <h1>Your Meal Plan Library</h1>
-        {this.state.mealPlans.map(function(mealPlan, i) {
-            return (
-              <MealPlanLink key={i} mealPlan={mealPlan}/>
-            )
-          }, this)}
+      <div className="container">
+        <h1>Meal Plan Library ({this.state.mealPlans.length})</h1>
+        <div className="row">
+          <div className="col-md-3 thumbnail createMealPlan" >
+            <span className="glyphicon glyphicon-plus" aria-hidden="true"></span>
+            <p>Create New Meal Plan</p>
+          </div>
+          {this.state.mealPlans.map(function(mealPlan, i) {
+              return (
+                <MealPlanLink key={i} mealPlan={mealPlan}/>
+              )
+            }, this)}
+        </div>
       </div>
     );
   }

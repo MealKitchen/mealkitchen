@@ -54,8 +54,19 @@ label {
   min-height: 100%
 }
 
-.recipeContainer {
+.thumbnail {
   margin: 0 10px;
+}
+
+span.glyphicon-plus {
+  font-size: 3em;
+  margin: 0 auto;
+  display: table;
+  top: 35%;
+}
+
+.createMealPlan {
+  height: 250px;
 }
 
 .bgContainer{
