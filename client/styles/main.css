@@ -46,12 +46,16 @@ label {
 }
 
 .bgImage {
-  background: url(../images/vegetables.jpg) no-repeat center center fixed;
+  background: url(../images/vegetables-min.jpg) no-repeat center center fixed;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
   background-size: cover;
   min-height: 100%
+}
+
+.recipeContainer {
+  margin: 0 10px;
 }
 
 .bgContainer{

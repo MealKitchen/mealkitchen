@@ -4,7 +4,7 @@ var MealPlanLink = React.createClass({
 
   getInitialState: function(){
     return {
-      title: this.props.mealPlan.title,
+      title: this.props.mealPlan.get('title'),
       breakfasts: this.props.mealPlan.get('breakfastRecipes'),
       lunches: this.props.mealPlan.get('lunchRecipes'),
       dinners: this.props.mealPlan.get('dinnerRecipes'),
