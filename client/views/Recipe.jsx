@@ -25,10 +25,10 @@ var Recipe = React.createClass({
     };
 
     return (
-      <div className="recipeContainer col-md-2" style={bgStyle} key={this.props.recipe}>
-        <div id={this.state.forReview ? 'show' : 'hide'} >
-          <button type='button' onClick={this._navigateToRecipe}>View</button>
-          <button type='button' data-position={this.props.position} data-collection={this.props.collection} onClick={this.props.rejectRecipe}>Reject</button>
+      <div className="thumbnail recipeContainer col-md-2" style={bgStyle} key={this.props.recipe}>
+        <div className={this.state.forReview ? 'show' : 'hide'} >
+          <button type='button' className="btn btn-default" onClick={this._navigateToRecipe}>View</button>
+          <button type='button' className="btn btn-default" data-position={this.props.position} data-collection={this.props.collection} onClick={this.props.rejectRecipe}>Reject</button>
         </div>
         <div className="recipe recipeName">{this.props.recipe.get('recipeName')}</div>
       </div>

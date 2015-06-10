@@ -1,10 +1,98 @@
+html, body {
+  height: 100%;
+}
+
 label {
   display: block;
+}
+
+.full-height {
+  position: fixed;
+  height: 100%;
+}
+
+.centered {
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.howItWorks {
+  position: relative;
+  height: 100%;
+  background-color: #D74B1A;
+  color: #ffffff;
+}
+
+.btn-default {
+  border: 0px solid #CCCCCC;
+  border-radius: 5px;
+  color: black;
+}
+
+.btn-right {
+  border: 0px solid #CCCCCC;
+  border-radius: 5px;
+  color: black;
+}
+
+.btn-primary {
+  background: #2B9F83;
+  border: 0px solid #CCCCCC;
+  border-radius: 5px;
+}
+
+.navbar-default .navbar-nav>li>a {
+  color: #ffffff;
+}
+
+.bgImage {
+  background: url(../images/vegetables-min.jpg) no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  min-height: 100%
+}
+
+.thumbnail {
+  margin: 0 10px;
+}
+
+span.glyphicon-plus {
+  font-size: 3em;
+  margin: 0 auto;
+  display: table;
+  top: 35%;
+}
+
+.createMealPlan {
+  height: 250px;
+}
+
+.bgContainer{
+  min-height: 100%;
 }
 
 /*This class exists to allow users to cross things out in a list (see ShoppingList view)*/
 .checked {
   text-decoration:line-through;
+}
+
+/* navbar */
+.navbar-default {
+  background-color: #D74B1A;
+  border: none;
+}
+
+
+.jumbotron {
+   background: rgb(192, 192, 192); /* This is for ie8 and below */
+   background: rgba(192, 192, 192, 0.3);
+   max-width: 50%;
+   margin-right: auto;
+   margin-left: auto;
+   color: #ffffff;
+   font-family: 'Lato', sans-serif;
 }
 
 .hide {

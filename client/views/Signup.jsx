@@ -49,7 +49,7 @@ var SignUp = React.createClass({
               <label htmlFor="password">Password</label>
               <input className="form-control" type="password" name="password" placeholder="Enter password" onChange={this.handlePasswordChange}/>
             </div>
-            <input type="submit" value="Sign Up"></input>
+            <input type="submit" className="btn btn-right pull-right" value="Sign Up"></input>
           </form>
           <p>Already have an account with us? <a href="/#/login">Login here.</a></p>
         </div>

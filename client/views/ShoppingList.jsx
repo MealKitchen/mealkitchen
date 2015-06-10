@@ -23,13 +23,17 @@ var ShoppingList = React.createClass({
     console.log(this.props);
     return (
       <div className="container">
-        {that.props.ingredients.map(function(ingredient, i) {
-          return [
-            <button data-id={i} onClick={that.crossout}>X</button>,
-            <div ref={i} data-id={i}>{ingredient}</div>
-            ]
-          })
-        }
+        <h1>Shopping List: {this.props.mealPlan.get('title')}</h1>
+        <div className="row">
+          <ul className='list-group'>
+            {that.props.ingredients.map(function(ingredient, i) {
+              return [
+                  <li className='list-group-item' ref={i} data-id={i} onClick={that.crossout}>{ingredient}</li>
+                ]
+              })
+            }
+          </ul>
+        </div>
       </div>
     );
   }
