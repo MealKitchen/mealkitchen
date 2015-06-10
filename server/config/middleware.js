@@ -21,9 +21,8 @@ module.exports = function(app, express) {
 
   // 'api/recipes' routing
   app.post('/api/recipes', appController.getUserRecipes);
-  app.get('/api/recipes', utils.checkUser, recipeController.getYummlyRecipe);
+  //app.get('/api/recipes', utils.checkUser, recipeController.getYummlyRecipe);
   app.post('/api/recipes/ingredients', recipeController.createIngredientsList);
-  
   // 'api/mealplan' routing
   app.post('/api/mealplan', utils.checkUser, appController.saveUserMealPlan);
   app.get('/api/mealplan', utils.checkUser, appController.getUserMealPlans);
@@ -40,7 +39,6 @@ module.exports = function(app, express) {
   app.post('/api/user', userController.routeUser);
 
   app.get('/api/logout', utils.logout);
-  
   // app.post('/api/users/signup', userController.signUp);
   // app.post('/api/users/signin', userController.signIn);
 };

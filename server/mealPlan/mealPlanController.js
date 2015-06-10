@@ -1,81 +1,66 @@
 var Promise = require('bluebird');
 var http = require('http');
+var utils = require('../config/utility');
 var MealPlan = require('./mealPlanModel');
-var recipeController = require('../recipe/recipeController')
 
-//returns an array of recipe ids, necessary for relational bookshelf association 
-// var parseRecipeIds = function(recipes){
-//   var recipeIds = [];
-//   for (var i = 0; i < recipes.length; i++) {
-//     recipeIds.push(recipes[i].id);
-//   }
-//   return recipeIds;
-// }
 
-var parseRecipeIds = function (recipes) {
-    var items = [];
-    for (var i = 0; i < recipes.length; i++) {
-      var item = recipes[i].id;
-      items.push(item);
+var processMealPlanInformation = function(mealPlansBookshelf){
+
+  var mealPlansArray = [], mealPlan, mealPlanObject, recipe;
+
+  for(var i = 0; i < mealPlansBookshelf.models.length; i++){
+
+    mealPlan = mealPlansBookshelf.models[i];
+    mealPlanObject = {
+      breakfastRecipes: [],
+      lunchRecipes: [],
+      dinnerRecipes: [],
+      title: mealPlan.attributes.title,
+      userId: mealPlan.attributes.userId
+    };
+
+    mealPlanRecipes = mealPlan.relations.recipes.models;
+    for(var j = 0; j < mealPlanRecipes.length; j++){
+      recipe = mealPlanRecipes[j].attributes;
+      switch(recipe.course){
+        case 'breakfast':
+          mealPlanObject.breakfastRecipes.push(recipe);
+          break;
+        case 'lunch':
+          mealPlanObject.lunchRecipes.push(recipe);
+          break;
+        case 'dinner':
+          mealPlanObject.dinnerRecipes.push(recipe);
+          break;
+        default:
+          break;
+      }
     }
-    return items;
-};
+    mealPlansArray.push(mealPlanObject);
+  }
+  return mealPlansArray;
+}
 
 module.exports = {
 
-  saveRecipes: function(userId, request) {
-    return new Promise(function(resolve, reject) {
-      var recipeObject = {
-        "breakfast": parseRecipeIds(request.breakfastRecipes),
-        "lunch": parseRecipeIds(request.lunchRecipes),
-        "dinner": parseRecipeIds(request.dinnerRecipes)
-      };
-
-      var recipes = [];
-      var newRecipes = [];
-      var counter = 0;
-      for (var meal in recipeObject) {
-        recipes = recipes.concat(recipeObject[meal]);
-      }
-
-      for (var course in recipeObject) {
-        for (var i = 0; i < recipeObject[course].length; i++) {
-          recipeController.getToYummly(recipeObject[course][i], course, function(results, course){
-            newRecipes.push(results.id);
-            recipeController.saveRecipe(results, course, function(){
-              counter++;
-              console.log("counter: ", counter, 'course is ', course);
-              if (counter === recipes.length) {
-                resolve(newRecipes);
-              }
-            });
-          });
-        }
-      }
-    });
-  },
-
-  
-  createMealPlan: function (userId, recipes) {
+  createMealPlan: function (userId, title, recipes) {
 
     return new Promise(function(resolve, reject){
-      new MealPlan({ 'userId': userId }).save({}, {method: 'insert'})
+      new MealPlan({ 'userId': userId, 'title': title}).save({}, {method: 'insert'})
       .then(function(mealPlan){
-        console.log('recipes in create meal plan are', recipes);
         mealPlan.recipes().attach(recipes).then(function() {
           resolve(mealPlan.id);
         })
         .catch(function(error) {
           console.error("On attaching recipes to meal plan got:", error);
+          reject({"On attaching recipes to meal plan got": error})
         });
       })
       .catch(function(error) {
         console.error("On associating recipes with meal plan got error:", error);
-        reject(error);
+        reject({"On associating recipes with meal plan got error": error});
       });
     });
-   
-    
   },
   fetchMealPlans: function (userId) {
     return new Promise(function(resolve, reject){
@@ -83,12 +68,13 @@ module.exports = {
       new MealPlan().query({where: {userId: userId}})
         .fetchAll({withRelated: 'recipes'})
         .then(function(mealPlans) {
-          resolve(mealPlans)
+          //resolve processed data
+          resolve(processMealPlanInformation(mealPlans));
+
         }).catch(function(error) {
-          console.log("Sorry, could not find any meal plans for that user. Error:", error);
+          console.error("Sorry, could not find any meal plans for that user. Error:", error);
           reject(error);
         });
-      
     })
   }
 };

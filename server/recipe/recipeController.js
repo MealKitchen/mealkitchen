@@ -5,7 +5,7 @@ var RecipePreference = require('../recipePreference/recipePreferenceModel');
 var db = require('../db');
 var lib = require('../config/libraries');
 var MealPlan = require('../mealPlan/mealPlanModel');
-
+var utils = require('../config/utility');
 
 var appId, apiKey;
 try {
@@ -22,7 +22,7 @@ var writeQueries = function(queryModel){
   var allowedCuisineList = queryModel.allowedCuisine;
   var allowedDietList = queryModel.allowedDiet;
 
-  //handling stringified number values from client so as to not concatenate 10 
+  //handling stringified number values from client so as to not concatenate 10
   queryModel.numBreakfasts *= 1;
   queryModel.numLunches *= 1;
   queryModel.numDinners *= 1;
@@ -37,7 +37,7 @@ var writeQueries = function(queryModel){
   var start = queryModel.additionalRequest ? queryModel.totalRecipesRequested : 0;
 
   var breakfastQueryString, lunchQueryString, dinnerQueryString;
-  var queryString = ''; 
+  var queryString = '';
 
   // add each allowed allergy/cuisine/diet to query string
   for (var key in allowedAllergyList) {
@@ -75,8 +75,8 @@ var writeQueries = function(queryModel){
     "&maxResult=" + numDinners + "&start=" + start : "";
 
   return {
-    'breakfastQuery': breakfastQueryString, 
-    'lunchQuery': lunchQueryString, 
+    'breakfastQuery': breakfastQueryString,
+    'lunchQuery': lunchQueryString,
     'dinnerQuery': dinnerQueryString
   };
 };
@@ -87,13 +87,12 @@ var queryYummly = function(queryString){
     var results;
     //no meals entered for param; query is empty string
     if(!queryString){
-      console.log('hello error query');
       resolve([]);
     } else{
 
       http.get(queryString, function(yummlyResponse){
         var str = '';
-        
+
         yummlyResponse.on('data', function (chunk) {
           str += chunk;
         });
@@ -109,48 +108,85 @@ var queryYummly = function(queryString){
         })
       });
     }
-
-
   });
 };
 
+var getToYummlyById = function(recipeId){
+  return new Promise(function(resolve, reject){
+    var str = "";
+    var recipe;
 
-// var processIngredientsList = function (recipeIds, callback) {
-//   var ingredientsList = [];
+    var query = "http://api.yummly.com/v1/api/recipe/" + recipeId +
+    "?_app_id=" + appId + "&_app_key=" + apiKey;
 
-//   var functionsToRun = [];
-//   Promise.all(function(){
-//     for (var i = 0; i < recipeIds.length; i++) {
-//       functionsToRun.push(getToYummly(recipeIds[i], function(results) {
-//         return results;
-//       }));
-//     }
-//     return functionsToRun;
-//   }).then(function(results) {
-//     console.log(results);
-//     // change array of ingredients into a single array
-//     //callback(results);
-//   });
-//   // for every recipe in recipeIds, call getToYummly 
-//   // pull out the ingredients
-//   // save the ingredients and add to total ingredients array
-//   // send ingredients array back to 
+    http.get(query, function(yummlyResponse) {
 
-// };
+      yummlyResponse.on('data', function (chunk) {
+        str += chunk;
+      });
 
-var getRecipeId = function (request) {
-  var recipeId = request.headers.recipeId || request.body.recipeIds;
-  return recipeId;
+      yummlyResponse.on('end', function () {
+        recipe = JSON.parse(str);
+        recipe.matchId = recipeId;
+        resolve(recipe)
+      });
+
+      yummlyResponse.on('error', function(error) {
+        reject({'error in fetchRecipeById': error});
+      });
+    });
+  });
 }
 
-module.exports = {
+//fetch recipe from database first or from yummly if not found
+var fetchRecipeById = function (recipeId) {
+  return new Promise(function(resolve, reject){
+    new Recipe({matchId: recipeId}).fetch().then(function(found){
+      if(!found){
+        getToYummlyById(recipeId)
+        .then(function(recipe){
+          resolve(recipe);
+        })
+        .catch(function(error){
+          reject({'error in getToYummlyById': error})
+        })
+      }
+      else{
+        //returned fetched recipe
+        resolve(found);
+      }
+    });
+  })
+}
 
-  saveRecipe: function(recipe, course, callback){
+//takes an array of recipe ids and will make individual get requests from yummly
+var fetchRecipesByIds = function(recipeIds){
+  return new Promise(function(resolve, reject){
+    var promises = [];
+    for(var i = 0; i < recipeIds.length; i++){
+      promises.push(fetchRecipeById(recipeIds[i]));
+    }
+
+    Promise.all(promises)
+    .then(function(fetchedRecipes){
+      resolve(fetchedRecipes);
+    })
+    .catch(function(error){
+      console.log('error in array recipe', error);
+      reject({'error in fetchRecipesByIds': error});
+    })
+  });
+}
+
+
+
+var saveRecipe = function(recipe, course){
+  return new Promise(function(resolve, reject){
     new Recipe({'id': recipe.id}).fetch().then(function(found){
       if(!found){
-        //console.log(recipe);
         var newRecipe = new Recipe({
           'id': recipe.id,
+          'matchId': recipe.matchId,
           'recipeName': recipe.name,
           'sourceDisplayName': recipe.sourceDisplayName,
           'smallImgUrl': recipe.images && recipe.images[0].hostedSmallUrl,
@@ -167,57 +203,34 @@ module.exports = {
           'bitter':recipe.flavors && recipe.flavors.bitter,
           'piquant':recipe.flavors && recipe.flavors.piquant,
           'meaty': recipe.flavors && recipe.flavors.meaty
-        }).save({}, {method: 'insert'}).then(callback)
+        }).save({}, {method: 'insert'})
+        .then(function(){
+          resolve()
+        })
         .catch(function(error) {
-          console.log('got error', error);
+          reject({'error': error});
         });
       } else {
-        callback();
+        resolve()
       }
     });
-  },
+  });
+}
+module.exports = {
 
-  getToYummly: function (recipeId, course, callback) {
-    //var recipeId = request.header.recipeId;
-    var str = "";
-    var results;
-
-    var query = "http://api.yummly.com/v1/api/recipe/" + recipeId + 
-    "?_app_id=" + appId + "&_app_key=" + apiKey;
-
-    http.get(query, function(yummlyResponse) {
-
-      yummlyResponse.on('data', function (chunk) {
-        str += chunk;
-      });
-
-      yummlyResponse.on('end', function () {
-        results = JSON.parse(str);
-        console.log('original recipe id was ' + recipeId + " and new recipe id " + results.id);
-        callback(results, course);
-      });
-
-      yummlyResponse.on('error', function(error) {
-        console.log('error on get to yummly', error);
-      });
-
-    });
-  },
 
   createRecipes: function (queryModel) {
 
     return new Promise(function(resolve, reject){
 
-      //queries takes form of 
+      //queries takes form of
       //{
-      //  breakfastQuery: "...", 
-      //  lunchQuery: "...", 
+      //  breakfastQuery: "...",
+      //  lunchQuery: "...",
       //  dinnerQuery: "..."
       //}
       //if course has 0 meals, that query will result in empty string
       var queries = writeQueries(queryModel);
-
-      console.log('queries', queries)
 
       Promise.all([
         queryYummly(queries.breakfastQuery),
@@ -225,11 +238,10 @@ module.exports = {
         queryYummly(queries.dinnerQuery)
       ])
       .then(function(results){
-        //resolved value will be empty array if empty string is passed in 
+        //resolved value will be empty array if empty string is passed in
         var breakfasts = results[0] || results[0].matches;
         var lunches = results[1] || results[1].matches;
         var dinners = results[2] || results[2].matches;
-        console.log(dinners);
         resolve({
           'breakfastRecipes': breakfasts,
           'lunchRecipes': lunches,
@@ -238,18 +250,53 @@ module.exports = {
 
       })
       .catch(function(error){
-        console.log('error in create recipes:', error);
         reject({'error': error});
       });
-      
     });
   },
 
-  getYummlyRecipe: function (request, response) {
-    var recipeId = getRecipeId(request);
-    this.getToYummly(recipeId, function(results) {
-      response.status(200).send(results);
+  //optimization note: lookup in database for preexisting recipes
+  //potentially save two separate ids for recipes
+  //matchId -> id from yummly match
+  //getId -> id from individual get request
+  getMealPlanRecipes: function(body){
+
+    var recipeObject = {
+      "breakfast": utils.parseRecipeIds(body.breakfastRecipes),
+      "lunch": utils.parseRecipeIds(body.lunchRecipes),
+      "dinner": utils.parseRecipeIds(body.dinnerRecipes)
+    };
+
+    return new Promise(function(resolve, reject){
+
+      Promise.props({
+        'breakfast': fetchRecipesByIds(recipeObject.breakfast),
+        'lunch': fetchRecipesByIds(recipeObject.lunch),
+        'dinner': fetchRecipesByIds(recipeObject.dinner)
+      })
+      .then(function(mealPlanRecipes){
+        resolve(mealPlanRecipes);
+      })
+      .catch(function(error){
+        reject({'error in getMealPlanRecipes': error});
+      })
     })
+  },
+  saveRecipeArray: function(recipeArray, course){
+    return new Promise(function(resolve, reject){
+      var promises = [];
+      for(var i = 0; i < recipeArray.length; i++){
+        promises.push(saveRecipe(recipeArray[i], course))
+      }
+
+      Promise.all(promises)
+      .then(function(){
+        resolve();
+      })
+      .catch(function(error){
+        reject({'error saving recipe array': error});
+      })
+    });
   },
   createIngredientsList: function (request, response) {
     if (!request.body.mealPlanId) {
