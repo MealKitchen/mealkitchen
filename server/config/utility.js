@@ -38,3 +38,15 @@ exports.parseRecipeIds = function(recipes){
   }
   return recipeIds;
 }
+
+//returns a single array of recipe ids
+exports.getObjectRecipeIds = function(obj){
+  var results = [];
+  for(var key in obj){
+    //if file changes be mindful of this dependency on parseRecipeIds
+    var temp = exports.parseRecipeIds(obj[key]);
+    results = results.concat(temp);
+  }
+  return results
+}
+
