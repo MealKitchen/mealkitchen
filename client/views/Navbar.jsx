@@ -11,7 +11,7 @@ var Navbar = React.createClass({
             <a href="/#/login" className="navbar-brand">
               <img src='/images/meal-kitchen-logo.png' className="img-responsive"></img>
             </a>
-            <div className={this.props.bgImage ? 'hide' : 'show'}>
+            <div className={this.props.bgImage ? 'hide navbar-right' : 'show navbar-right'}>
               <NavbarLinks linkHandler={this.props.linkHandler} logOut={this.props.logOut} />
             </div>
           </div>

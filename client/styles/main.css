@@ -1,13 +1,44 @@
-body {
+html, body {
+  height: 100%;
+}
+
+label {
+  display: block;
+}
+
+.btn-default {
+  border: 0px solid #CCCCCC;
+  border-radius: 5px;
+  color: black;
+}
+
+.btn-right {
+  border: 0px solid #CCCCCC;
+  border-radius: 5px;
+  color: black;
+}
+
+.btn-primary {
+  background: #2B9F83;
+  border: 0px solid #CCCCCC;
+  border-radius: 5px;
+}
+
+.navbar-default .navbar-nav>li>a {
+  color: #ffffff;
+}
+
+.bgImage {
   background: url(../images/vegetables.jpg) no-repeat center center fixed;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
   background-size: cover;
+  min-height: 100%
 }
 
-label {
-  display: block;
+.bgContainer{
+  min-height: 100%;
 }
 
 /*This class exists to allow users to cross things out in a list (see ShoppingList view)*/
@@ -33,6 +64,7 @@ label {
    margin-right: auto;
    margin-left: auto;
    color: #ffffff;
+   font-family: 'Lato', sans-serif;
 }
 
 .hide {

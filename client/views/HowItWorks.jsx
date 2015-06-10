@@ -4,7 +4,7 @@ var HowItWorks = React.createClass({
 
   render : function() {
     return (
-      <div>
+      <div className="container-fluid bottom-fill">
         <div className="col-md-4">
           <img></img>
           <h3>1. Search for recipes based on preferences</h3>

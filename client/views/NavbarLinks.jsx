@@ -4,12 +4,11 @@ var NavbarLinks = React.createClass({
 
   render : function() {
     return (
-      <div>
-        <button data-route="/mealquery" type="button" className="btn btn-default" onClick={this.props.linkHandler}>Create Meal Plan</button>
-        <button data-route="/mealplans" type="button" className="btn btn-default" onClick={this.props.linkHandler}>View Meal Plans</button>
-        <button data-route="/login" type="button" className="btn btn-default" onClick={this.props.linkHandler}>Log In</button>
-        <button data-route="/logout" type="button" className="btn btn-default" onClick={this.props.logOut}>Log Out</button>
-      </div>
+      <ul className="nav navbar-nav">
+        <li><a data-route="/mealquery" onClick={this.props.linkHandler}>Create Meal Plan</a></li>
+        <li><a data-route="/reviewmeals" onClick={this.props.linkHandler}>View Meal Plans</a></li>
+        <li><a data-route="/logout" onClick={this.props.logOut}>Log Out</a></li>
+      </ul>
     );
   }
 });
