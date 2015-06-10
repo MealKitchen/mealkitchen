@@ -159,7 +159,7 @@ module.exports = {
           'course': course,
           'holiday': recipe.attributes.holiday,
           'totalTimeInSeconds': recipe.totalTimeInSeconds,
-          'ingredients':  recipe.ingredientLines.join(),
+          'ingredients':  recipe.ingredientLines.join('|'),
           'rating':recipe.rating,
           'salty': recipe.flavors && recipe.flavors.salty,
           'sour': recipe.flavors && recipe.flavors.sour,
@@ -261,8 +261,9 @@ module.exports = {
       var ingredients = [];
       model.related('recipes').forEach(function(item){
         var recipeIngredients = item.get('ingredients');
-        var editedIngredients = recipeIngredients.substring(2, recipeIngredients.length - 2).split('","');
-        ingredients = ingredients.concat(editedIngredients);
+        recipeIngredients = recipeIngredients.split('|');
+        console.log('recipe ingredients after split', recipeIngredients);
+        ingredients = ingredients.concat(recipeIngredients);
       });
       response.status(200).send(ingredients);
     })
