@@ -6,3 +6,35 @@ label {
 .checked {
   text-decoration:line-through;
 }
+
+.hide {
+  display: none;
+}
+
+.show {
+  display: inline;
+}
+
+.slogan {
+  text-align: center;
+}
+
+.subSlogan {
+  text-align: center;
+}
+
+.logInOrSignUp {
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+
+.heading {
+  text-align: center;
+}
+
+.recipeName {
+  background-color: white;
+  opacity: .4;
+  margin-top: 100%;
+}

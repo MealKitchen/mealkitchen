@@ -8,6 +8,10 @@ var ShoppingList = React.createClass({
     return {};
   },
 
+  componentWillMount: function(){
+    this.props.setBGImg(false);
+  },
+
   //TODO: Refactor to persist checked class after refresh. Currently only adds checked class temporarily.
   crossout: function (event) {
     var id = event.target.dataset.id;
@@ -18,14 +22,14 @@ var ShoppingList = React.createClass({
     var that = this;
     console.log(this.props);
     return (
-      <div>
-      {that.props.mealPlan.get('ingredientsList').map(function(ingredient, i) {
-        return [
-          <button data-id={i} onClick={that.crossout}>X</button>,
-          <div ref={i} data-id={i}>{ingredient}</div>
-          ]
-        })
-      }
+      <div className="container">
+        {that.props.ingredients.map(function(ingredient, i) {
+          return [
+            <button data-id={i} onClick={that.crossout}>X</button>,
+            <div ref={i} data-id={i}>{ingredient}</div>
+            ]
+          })
+        }
       </div>
     );
   }
