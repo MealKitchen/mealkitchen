@@ -25,9 +25,7 @@ module.exports = {
     ])
     .then(function(results){
 
-
       var matches = results[0];
-
 
       res.status(200).send(matches);
       // kNN.runMachine(matches, seededPreferences).then(function(results){
@@ -50,10 +48,11 @@ module.exports = {
       })
   },
   saveUserMealPlan: function(req, res){
-    var recipesToSaveAsPrefs = mealPlanController.saveMealPlanRecipePreferences(req);
+    var recipesPrefs = mealPlanController.saveMealPlanRecipePreferences(req);
    
-    console.log(recipesToSaveAsPrefs);
-    //recipePreferenceController.updatePreferences(request.body);
+    for (var i = 0; i < recipesPrefs.length; i++) {
+      recipePreferenceController.savePreference(recipesPrefs[i]);
+    }    
 
     recipeController.getMealPlanRecipes(req.body)
     .then(function(recipesFromYummly){
