@@ -106,18 +106,18 @@ var Query = React.createClass({
   render: function() {
     var value = this.state.value;
     return (
-      <div className="query container">
-        <h2>Create Meal Plan</h2>
+      <div className="query-container">
+        <h2 className="page-header">Create Meal Plan</h2>
 
         <form onSubmit={this.handleSubmit}>
 
-          <h3>Select Number of Meals by Type</h3>
+          <h3 className="section-header">Select Number of Meals by Type</h3>
 
           <div className="row">
 
-            <div className="form-group breakfasts col-md-3">
-              <label htmlFor="numBreakfasts">Number of Breakfasts</label>
+            <div className="form-group col-md-3">
               <select className="form-control" name="numBreakfasts" id="numBreakfasts" value={value} onChange={this.handleChange} type="number">
+                <option value="" disabled selected># Breakfasts</option>
                 <option value="0">0</option>
                 <option value="1">1</option>
                 <option value="2">2</option>
@@ -129,9 +129,9 @@ var Query = React.createClass({
               </select>
             </div>
 
-            <div className="form-group lunches col-md-3">
-              <label htmlFor="numLunches">Number of Lunches</label>
+            <div className="form-group col-md-3">
               <select className="form-control" name="numLunches" id="numLunches" value={value} onChange={this.handleChange} type="number">
+                <option value="" disabled selected># Lunches</option>
                 <option>0</option>
                 <option>1</option>
                 <option>2</option>
@@ -143,9 +143,9 @@ var Query = React.createClass({
               </select>
             </div>
 
-            <div className="form-group dinners col-md-3">
-              <label htmlFor="numDinners">Number of Dinners</label>
+            <div className="form-group col-md-3">
               <select className="form-control" name="numDinners" id="numDinners" value={value} onChange={this.handleChange} type="number">
+                <option value="" disabled selected># Dinners</option>
                 <option>0</option>
                 <option>1</option>
                 <option>2</option>
@@ -161,47 +161,50 @@ var Query = React.createClass({
 
           </div>
 
-          <h3>Additional Filters</h3>
+          <h3 className="section-header">Additional Filters</h3>
 
           <div className="row">
 
-            <div className="form-group diet col-md-3">
-              <h5>Food Preferences</h5>
-              {allowedDiet.map(function(item, i){
-                return [
-                  <div className="checkbox">
-                    <label>
-                      <input type="checkbox" name='allowedDiet' value={item} className="checkbox" onChange={this.handleChange} />{item}
-                    </label>
-                  </div>
-                ];
-              }, this)}
+            <div className="form-group col-md-3">
+              <div className="filter-label">Food Preferences</div>
+                {allowedDiet.map(function(item, i){
+                  return [
+                    <div className="checkbox">
+                      <label>
+                        <input type="checkbox" name='allowedDiet' value={item} className="checkbox" onChange={this.handleChange} />{item}
+                      </label>
+                    </div>
+                  ];
+                }, this)}
+                <div className='toggle-filter'>See more <span className="glyphicon glyphicon-chevron-down" aria-hidden="true"></span></div>
             </div>
 
-            <div className="form-group allergies col-md-3">
-              <h5>Allergy Restrictions</h5>
-              {allowedAllergies.map(function(item, i){
-                return [
-                  <div className="checkbox">
-                    <label>
-                      <input type="checkbox" name='allowedAllergies' value={item} className="checkbox" onChange={this.handleChange} />{item}
-                    </label>
-                  </div>
-                ];
-              }, this)}
+            <div className="form-group col-md-3">
+              <div className="filter-label">Allergy Restrictions</div>
+                {allowedAllergies.map(function(item, i){
+                  return [
+                    <div className="checkbox">
+                      <label>
+                        <input type="checkbox" name='allowedAllergies' value={item} className="checkbox" onChange={this.handleChange} />{item}
+                      </label>
+                    </div>
+                  ];
+                }, this)}
+                <div className='toggle-filter'>See more <span className="glyphicon glyphicon-chevron-down" aria-hidden="true"></span></div>
             </div>
 
-            <div className="form-group cuisines col-md-3">
-              <h5>Cuisine Preferences</h5>
-              {allowedCuisines.map(function(item, i){
-                return [
-                  <div className="checkbox">
-                    <label>
-                      <input type="checkbox" name='allowedCuisines' value={item} className="checkbox" onChange={this.handleChange} />{item}
-                    </label>
-                  </div>
-                ];
-              }, this)}
+            <div className="form-group col-md-3">
+              <div className="filter-label">Cuisine Preferences</div>
+                {allowedCuisines.map(function(item, i){
+                  return [
+                    <div className="checkbox">
+                      <label>
+                        <input type="checkbox" name='allowedCuisines' value={item} className="checkbox" onChange={this.handleChange} />{item}
+                      </label>
+                    </div>
+                  ];
+                }, this)}
+                <div className='toggle-filter'>See more <span className="glyphicon glyphicon-chevron-down" aria-hidden="true"></span></div>
             </div>
 
           </div>

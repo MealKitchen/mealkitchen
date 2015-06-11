@@ -33,37 +33,43 @@ var MealPlan = React.createClass({
   // dynamically render recipes on page according to Meal Plan
   render: function() {
       return (
-        <div>
+        <div className="split-container">
 
-          <h1>Meal Plan: {this.props.mealPlan.get('title')}</h1>
+          <div className="primary-container">
 
-          <button className="btn btn-default" type='button' onClick={this._createShoppingList}>Create Shopping List</button>
+            <h1 className="page-header">Meal Plan: {this.props.mealPlan.get('title')}</h1>
 
-          <div className="container breakfast">
-            <h3>Breakfast</h3>
-            {this.props.mealPlan.get('breakfastRecipes').map(function(item, i) {
-              return [
-                <Recipe recipe={item} position={i} forReview={false} collection='breakfastCollection' />
-              ];
-            }, this)}
+            <div className="course-container">
+              <h3 className="section-header">Breakfast</h3>
+              {this.props.mealPlan.get('breakfastRecipes').map(function(item, i) {
+                return [
+                  <Recipe recipe={item} position={i} forReview={false} collection='breakfastCollection' />
+                ];
+              }, this)}
+            </div>
+
+            <div className="course-container">
+              <h3 className="section-header">Lunch</h3>
+              {this.props.mealPlan.get('lunchRecipes').map(function(item, i) {
+                return [
+                  <Recipe recipe={item} position={i} forReview={false} collection='lunchCollection' />
+                ];
+              }, this)}
+            </div>
+
+            <div className="course-container">
+              <h3 className="section-header">Dinner</h3>
+              {this.props.mealPlan.get('dinnerRecipes').map(function(item, i) {
+                return [
+                  <Recipe recipe={item} position={i} forReview={false} collection='dinnerCollection' />
+                ];
+              }, this)}
+            </div>
+
           </div>
 
-          <div className="container lunch">
-            <h3>Lunch</h3>
-            {this.props.mealPlan.get('lunchRecipes').map(function(item, i) {
-              return [
-                <Recipe recipe={item} position={i} forReview={false} collection='lunchCollection' />
-              ];
-            }, this)}
-          </div>
-
-          <div className="container dinner">
-            <h3>Dinner</h3>
-            {this.props.mealPlan.get('dinnerRecipes').map(function(item, i) {
-              return [
-                <Recipe recipe={item} position={i} forReview={false} collection='dinnerCollection' />
-              ];
-            }, this)}
+          <div className="secondary-container">
+            <button className="btn btn-primary btn-large" type='button' onClick={this._createShoppingList}>Create Shopping List</button>
           </div>
 
         </div>
