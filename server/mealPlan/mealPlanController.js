@@ -8,14 +8,14 @@ var processMealPlanInformation = function(mealPlansBookshelf){
   var mealPlansArray = [], mealPlan, mealPlanObject, recipe;
 
   for(var i = 0; i < mealPlansBookshelf.models.length; i++){
-
     mealPlan = mealPlansBookshelf.models[i];
     mealPlanObject = {
       breakfastRecipes: [],
       lunchRecipes: [],
       dinnerRecipes: [],
       title: mealPlan.attributes.title,
-      userId: mealPlan.attributes.userId
+      userId: mealPlan.attributes.userId,
+      mealPlanId: mealPlan.attributes.id
     };
 
     mealPlanRecipes = mealPlan.relations.recipes.models;
