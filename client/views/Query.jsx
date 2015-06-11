@@ -52,9 +52,11 @@ var Query = React.createClass({
 
     //Send a POST request to the server with the QueryModel to get a list of recipes that match the query.
     var query = new QueryModel(this.state);
-    query.set('allowedCuisines', this.state.allowedCuisines);
-    query.set('allowedDiet', this.state.allowedDiet);
-    query.set('allowedAllergies', this.state.allowedAllergies);
+    query.set({
+      allowedCuisines: this.state.allowedCuisines,
+      allowedDiet: this.state.allowedDiet,
+      allowedAllergies: this.state.allowedAllergies
+    });
     query.save({}, {
       success: function(model, res){
         console.log("Response from the server on submitting Meal Query: ", res);
@@ -68,15 +70,15 @@ var Query = React.createClass({
         var lunchQ = res.lunchRecipes;
         var dinnerQ = res.dinnerRecipes;
 
-        for(var i = 0; i < query.get('numBreakfasts'); i++){
+        for(var i=0; i<query.get('numBreakfasts'); i++){
           breakfastCollection.add(new RecipeModel(breakfastQ.pop()));
         }
 
-        for(i = 0; i < query.get('numLunches'); i++){
+        for(i=0; i<query.get('numLunches'); i++){
           lunchCollection.add(new RecipeModel(lunchQ.pop()));
         }
 
-        for(i = 0; i < query.get('numDinners'); i++){
+        for(i=0; i<query.get('numDinners'); i++){
           dinnerCollection.add(new RecipeModel(dinnerQ.pop()));
         }
 

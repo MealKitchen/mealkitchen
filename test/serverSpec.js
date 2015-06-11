@@ -66,6 +66,7 @@ describe('Node server', function() {
     var testRecipeSave = function() {
       new Recipe({
         "id": "New-Orleans-Jambalaya-TEST",
+        "matchId": "New-Orleans-Jambalaya-TEST",
         "recipeName": "New Orleans Jambalaya",
         "sourceDisplayName": "Johnsonville Brand",
         "smallImgUrl": "http://lh3.googleusercontent.com/7sj2IkdCtlc0rGAf0Iv1k4sHscofg9OsdsyCnzcAilTguacsOwt_CLVU_WvE_YANu3t8w6ZIX11zdn4vsmoCAg=s90",
@@ -134,7 +135,12 @@ describe('Node server', function() {
         url: 'http://127.0.0.1:3000/api/mealplan',
         headers: { 'Cookie': testCookie },
         json: true, 
-        body: {userId: testUserId, recipes: [{id: testRecipeId}]}
+        body: {
+          userId: testUserId,
+          breakfastRecipes: [],
+          lunchRecipes: [],
+          dinnerRecipes: [{id: testRecipeId}]
+        }
       })
       .on('response', function(response) {
         expect(response.statusCode).to.equal(200);
