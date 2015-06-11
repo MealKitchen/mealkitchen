@@ -3,11 +3,7 @@
 var Recipe = React.createClass({
 
   getInitialState: function(){
-    return { forReview: true };
-  },
-
-  componentWillMount: function(){
-    this.setState({ forReview: this.props.forReview || this.state.forReview });
+    return {};
   },
 
   _navigateToRecipe: function(){
@@ -15,6 +11,7 @@ var Recipe = React.createClass({
   },
 
   render : function() {
+
     // Getting the image url and modifying it to get the correct size. Note: this could break if Yummly changes their img urls
     var imgUrl = this.props.recipe.get('smallImageUrls')[0];
     imgUrl = imgUrl.substring(0, imgUrl.length - 2) + '400';
@@ -24,7 +21,7 @@ var Recipe = React.createClass({
 
     return (
       <div className="thumbnail recipe-preview col-md-2" style={bgStyle} key={this.props.recipe}>
-        <div className={this.state.forReview ? 'show review-buttons' : 'hide'} >
+        <div className={this.props.forReview ? 'show review-buttons' : 'hide'} >
           <button type='button' className="btn btn-default btn-small" onClick={this._navigateToRecipe}>View</button>
           <button type='button' className="btn btn-default btn-small" data-position={this.props.position} data-collection={this.props.collection} onClick={this.props.rejectRecipe}>Reject</button>
         </div>

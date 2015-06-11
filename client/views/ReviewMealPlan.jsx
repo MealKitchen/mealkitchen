@@ -140,7 +140,7 @@ var ReviewMeals = React.createClass({
               <div className="row">
                 {this.props.breakfastCollection.map(function(item, i) {
                   return [
-                    <Recipe recipe={item} position={i} collection='breakfastCollection' rejectRecipe={this._rejectRecipe} />
+                    <Recipe recipe={item} position={i} forReview={true} collection='breakfastCollection' rejectRecipe={this._rejectRecipe} />
                   ];
                 }, this)}
               </div>
@@ -151,7 +151,7 @@ var ReviewMeals = React.createClass({
               <div className="row">
                 {this.props.lunchCollection.map(function(item, i) {
                   return [
-                    <Recipe recipe={item} position={i} collection='lunchCollection' rejectRecipe={this._rejectRecipe} />
+                    <Recipe recipe={item} position={i} forReview={true} collection='lunchCollection' rejectRecipe={this._rejectRecipe} />
                   ];
                 }, this)}
               </div>
@@ -162,7 +162,7 @@ var ReviewMeals = React.createClass({
               <div className="row">
                 {this.props.dinnerCollection.map(function(item, i) {
                   return [
-                    <Recipe recipe={item} position={i} collection='dinnerCollection' rejectRecipe={this._rejectRecipe} />
+                    <Recipe recipe={item} position={i} forReview={true} collection='dinnerCollection' rejectRecipe={this._rejectRecipe} />
                   ];
                 }, this)}
               </div>
