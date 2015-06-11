@@ -50,6 +50,11 @@ module.exports = {
       })
   },
   saveUserMealPlan: function(req, res){
+    var recipesToSaveAsPrefs = mealPlanController.saveMealPlanRecipePreferences(req);
+   
+    console.log(recipesToSaveAsPrefs);
+    //recipePreferenceController.updatePreferences(request.body);
+
     recipeController.getMealPlanRecipes(req.body)
     .then(function(recipesFromYummly){
 
