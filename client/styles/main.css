@@ -11,12 +11,53 @@ label {
   margin-left: auto;
 }
 
-.howItWorks {
-  position: relative;
-  height: 100%;
-  background-color: #D74B1A;
-  color: #ffffff;
+.default-header {
+  color: white;
 }
+/************************************
+  Landing Page Styles
+************************************/
+
+.how-it-works-container{
+  background-color: #D74B1A;
+  width: 100%;
+  color: white;
+  position: absolute;
+  text-align: center;
+  bottom: 0;
+}
+
+
+.how-it-works-container .glyphicon {
+  text-align: center;
+  font-size: 3em;
+}
+
+.how-it-works-container .default-header{
+  font-size: 63px;
+  margin-left: 20px;
+  text-align: left;
+}
+
+.step{
+  margin: 25px 0;
+  font-size: 24px;
+}
+
+.jumbotron .default-header{
+  text-align: center;
+}
+.jumbotron {
+  padding: 10px;
+}
+.jumbotron .sub-header{
+  text-align: center;
+}
+
+@
+/*********************************
+  End Landing Page Styles
+*********************************/
 
 .btn-default {
   border: 0px solid #CCCCCC;
@@ -34,6 +75,10 @@ label {
   background: #2B9F83;
   border: 0px solid #CCCCCC;
   border-radius: 5px;
+}
+
+.action-buttons {
+  text-align: center;
 }
 
 .navbar-default .navbar-nav>li>a {
@@ -79,15 +124,20 @@ span.glyphicon-plus {
   border: none;
 }
 
+.navbar {
+  border-radius: 0px;
+  padding-bottom: 10px;
+}
 
 .jumbotron {
-   background: rgb(192, 192, 192); /* This is for ie8 and below */
-   background: rgba(192, 192, 192, 0.3);
-   max-width: 50%;
-   margin-right: auto;
-   margin-left: auto;
-   color: #ffffff;
-   font-family: 'Lato', sans-serif;
+  border-radius: 10px;
+  background: rgb(192, 192, 192); /* This is for ie8 and below */
+  background: rgba(192, 192, 192, 0.3);
+  max-width: 50%;
+  margin-right: auto;
+  margin-left: auto;
+  color: #ffffff;
+  font-family: 'Lato', sans-serif;
 }
 
 .hide {
