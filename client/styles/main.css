@@ -11,12 +11,53 @@ label {
   margin-left: auto;
 }
 
-.howItWorks {
-  position: relative;
-  height: 100%;
-  background-color: #D74B1A;
-  color: #ffffff;
+.default-header {
+  color: white;
 }
+/************************************
+  Landing Page Styles
+************************************/
+
+.how-it-works-container{
+  background-color: #D74B1A;
+  width: 100%;
+  color: white;
+  position: absolute;
+  text-align: center;
+  bottom: 0;
+}
+
+
+.how-it-works-container .glyphicon {
+  text-align: center;
+  font-size: 3em;
+}
+
+.how-it-works-container .default-header{
+  font-size: 63px;
+  margin-left: 20px;
+  text-align: left;
+}
+
+.step{
+  margin: 25px 0;
+  font-size: 24px;
+}
+
+.jumbotron .default-header{
+  text-align: center;
+}
+.jumbotron {
+  padding: 10px;
+}
+.jumbotron .sub-header{
+  text-align: center;
+}
+
+@
+/*********************************
+  End Landing Page Styles
+*********************************/
 
 .btn-default {
   border: 0px solid #CCCCCC;
@@ -36,6 +77,10 @@ label {
   border-radius: 5px;
 }
 
+.action-buttons {
+  text-align: center;
+}
+
 .navbar-default .navbar-nav>li>a {
   color: #ffffff;
 }
@@ -49,10 +94,36 @@ label {
   min-height: 100%
 }
 
-.thumbnail {
-  margin: 0 10px;
+.recipe-preview{
+  padding: 0px;
+  height: 250px;
+  margin-right: 25px;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  background-position: center;
 }
 
+.overlay{
+  position: absolute;
+  background-color: rgba(240, 240, 240, 0.73);
+  width: 100%;
+  bottom: 0;
+  height: 30%;
+}
+
+.overlay-title{
+  text-align: center;
+  font-size: 1.25em;
+}
+.course-container{
+  margin: 0 25px;
+}
+
+.split-container{
+  margin: 0 100px;
+}
 span.glyphicon-plus {
   font-size: 3em;
   margin: 0 auto;
@@ -79,15 +150,20 @@ span.glyphicon-plus {
   border: none;
 }
 
+.navbar {
+  border-radius: 0px;
+  padding-bottom: 10px;
+}
 
 .jumbotron {
-   background: rgb(192, 192, 192); /* This is for ie8 and below */
-   background: rgba(192, 192, 192, 0.3);
-   max-width: 50%;
-   margin-right: auto;
-   margin-left: auto;
-   color: #ffffff;
-   font-family: 'Lato', sans-serif;
+  border-radius: 10px;
+  background: rgb(192, 192, 192); /* This is for ie8 and below */
+  background: rgba(192, 192, 192, 0.3);
+  max-width: 50%;
+  margin-right: auto;
+  margin-left: auto;
+  color: #ffffff;
+  font-family: 'Lato', sans-serif;
 }
 
 .hide {
