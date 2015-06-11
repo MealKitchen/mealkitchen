@@ -24,24 +24,29 @@ var ShoppingList = React.createClass({
     return (
       <div className="split-container">
 
-        <div className="primary-container">
+        <div className="row">
 
-          <h2 className="page-header">Shopping List: {this.props.mealPlan.get('title')}</h2>
+          <div className="primary-container col-md-10">
 
-          <ul className='list-group'>
-            {that.props.ingredients.map(function(ingredient, i) {
-              return [
-                  <li className='list-group-item ingredient' ref={i} data-id={i} onClick={that.crossout}>{ingredient}</li>
-                ]
-              })
-            }
-          </ul>
+            <h2 className="page-header">Shopping List: {this.props.mealPlan.get('title')}</h2>
+
+            <ul className='list-group'>
+              {that.props.ingredients.map(function(ingredient, i) {
+                return [
+                    <li className='list-group-item ingredient' ref={i} data-id={i} onClick={that.crossout}>{ingredient}</li>
+                  ]
+                })
+              }
+            </ul>
+
+          </div>
+
+          <div className="secondary-container col-md-2">
+            <button className="btn btn-primary btn-large" onClick={window.print}>Print Shopping List</button>
+          </div>
 
         </div>
 
-        <div className="secondary-container">
-          <button className="btn btn-primary btn-large" onClick={window.print}>Print Shopping List</button>
-        </div>
       </div>
     );
   }
