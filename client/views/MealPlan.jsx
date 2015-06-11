@@ -41,29 +41,35 @@ var MealPlan = React.createClass({
 
             <div className="course-container">
               <h3 className="section-header">Breakfast</h3>
-              {this.props.mealPlan.get('breakfastRecipes').map(function(item, i) {
-                return [
-                  <Recipe recipe={item} position={i} forReview={false} collection='breakfastCollection' />
-                ];
-              }, this)}
+              <div className="row">
+                {this.props.mealPlan.get('breakfastRecipes').map(function(item, i) {
+                  return [
+                    <Recipe recipe={item} position={i} forReview={false} collection='breakfastCollection' />
+                  ];
+                }, this)}
+              </div>
             </div>
 
             <div className="course-container">
               <h3 className="section-header">Lunch</h3>
-              {this.props.mealPlan.get('lunchRecipes').map(function(item, i) {
-                return [
-                  <Recipe recipe={item} position={i} forReview={false} collection='lunchCollection' />
-                ];
-              }, this)}
+              <div className="row">
+                {this.props.mealPlan.get('lunchRecipes').map(function(item, i) {
+                  return [
+                    <Recipe recipe={item} position={i} forReview={false} collection='lunchCollection' />
+                  ];
+                }, this)}
+              </div>
             </div>
 
             <div className="course-container">
               <h3 className="section-header">Dinner</h3>
-              {this.props.mealPlan.get('dinnerRecipes').map(function(item, i) {
-                return [
-                  <Recipe recipe={item} position={i} forReview={false} collection='dinnerCollection' />
-                ];
-              }, this)}
+              <div className="row">
+                {this.props.mealPlan.get('dinnerRecipes').map(function(item, i) {
+                  return [
+                    <Recipe recipe={item} position={i} forReview={false} collection='dinnerCollection' />
+                  ];
+                }, this)}
+              </div>
             </div>
 
           </div>
