@@ -11,12 +11,30 @@ var Query = React.createClass({
       allowedDiet: {},
       numBreakfasts: 0,
       numLunches: 0,
-      numDinners: 0
+      numDinners: 0,
+      seeMoreAllergies: false,
+      seeMoreDiet: false,
+      seeMoreCuisines: false
     };
   },
 
   componentWillMount: function(){
     this.props.setBGImg(false);
+  },
+
+  _seeMoreToggle: function(e){
+    var filter = e.target.dataset.filter;
+    switch (filter){
+      case 'allowed-allergies':
+        this.setState({seeMoreAllergies: !this.state.seeMoreAllergies});
+        break;
+      case 'allowed-diet':
+        this.setState({seeMoreDiet: !this.state.seeMoreDiet});
+        break;
+      case 'allowed-cuisines':
+        this.setState({seeMoreCuisines: !this.state.seeMoreCuisines});
+        break;
+    }
   },
 
   //Every time a user interacts with the form, we need to update the state of the view to reflect that change.
@@ -63,11 +81,14 @@ var Query = React.createClass({
     }
 
     //Send a POST request to the server with the QueryModel to get a list of recipes that match the query.
-    var query = new QueryModel(this.state);
+    var query = new QueryModel();
     query.set({
       allowedCuisines: this.state.allowedCuisines,
       allowedDiet: this.state.allowedDiet,
-      allowedAllergies: this.state.allowedAllergies
+      allowedAllergies: this.state.allowedAllergies,
+      numBreakfasts: this.state.numBreakfasts,
+      numLunches: this.state.numLunches,
+      numDinners: this.state.numDinners
     });
     query.save({}, {
       success: function(model, res){
@@ -116,6 +137,12 @@ var Query = React.createClass({
 
   render: function() {
     var value = this.state.value;
+
+    //Determine whether to show all options or some options for filters based on whether the see more/see less button is clicked.
+    var cuisineOptions = this.state.seeMoreCuisines ? allowedCuisines : allowedCuisinesShort;
+    var allergyOptions = this.state.seeMoreAllergies ? allowedAllergies : allowedAllergiesShort;
+    var dietOptions = this.state.seeMoreDiet ? allowedDiet : allowedDietShort;
+
     return (
       <div className="query-container">
 
@@ -144,28 +171,28 @@ var Query = React.createClass({
             <div className="form-group col-md-3">
               <select className="form-control" name="numLunches" id="numLunches" value={value} onChange={this.handleChange} type="number">
                 <option value="" disabled selected># Lunches</option>
-                <option>0</option>
-                <option>1</option>
-                <option>2</option>
-                <option>3</option>
-                <option>4</option>
-                <option>5</option>
-                <option>6</option>
-                <option>7</option>
+                <option value="0">0</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
               </select>
             </div>
 
             <div className="form-group col-md-3">
               <select className="form-control" name="numDinners" id="numDinners" value={value} onChange={this.handleChange} type="number">
                 <option value="" disabled selected># Dinners</option>
-                <option>0</option>
-                <option>1</option>
-                <option>2</option>
-                <option>3</option>
-                <option>4</option>
-                <option>5</option>
-                <option>6</option>
-                <option>7</option>
+                <option value="0">0</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
               </select>
             </div>
 
@@ -179,7 +206,7 @@ var Query = React.createClass({
 
             <div className="form-group col-md-3">
               <div className="filter-label">Food Preferences</div>
-                {allowedDiet.map(function(item, i){
+                {dietOptions.map(function(item, i){
                   return [
                     <div className="checkbox">
                       <label>
@@ -188,12 +215,15 @@ var Query = React.createClass({
                     </div>
                   ];
                 }, this)}
-                <div className='toggle-filter'>See more <span className="glyphicon glyphicon-chevron-down" aria-hidden="true"></span></div>
+                <div className='toggle-filter' data-filter='allowed-diet' onClick={this._seeMoreToggle}>
+                  <span data-filter='allowed-diet'>{this.state.seeMoreDiet ? 'See less ' : 'See more '}</span>
+                  <span data-filter='allowed-diet' className={this.state.seeMoreDiet ? "glyphicon glyphicon-chevron-up" : "glyphicon glyphicon-chevron-down"} aria-hidden="true"></span>
+                </div>
             </div>
 
             <div className="form-group col-md-3">
               <div className="filter-label">Allergy Restrictions</div>
-                {allowedAllergies.map(function(item, i){
+                {allergyOptions.map(function(item, i){
                   return [
                     <div className="checkbox">
                       <label>
@@ -202,12 +232,15 @@ var Query = React.createClass({
                     </div>
                   ];
                 }, this)}
-                <div className='toggle-filter'>See more <span className="glyphicon glyphicon-chevron-down" aria-hidden="true"></span></div>
+                <div className='toggle-filter' data-filter='allowed-allergies' onClick={this._seeMoreToggle}>
+                  <span data-filter='allowed-allergies'>{this.state.seeMoreAllergies ? 'See less ' : 'See more '}</span>
+                  <span data-filter='allowed-allergies' className={this.state.seeMoreAllergies ? "glyphicon glyphicon-chevron-up" : "glyphicon glyphicon-chevron-down"} aria-hidden="true"></span>
+                </div>
             </div>
 
             <div className="form-group col-md-3">
               <div className="filter-label">Cuisine Preferences</div>
-                {allowedCuisines.map(function(item, i){
+                {cuisineOptions.map(function(item, i){
                   return [
                     <div className="checkbox">
                       <label>
@@ -216,7 +249,10 @@ var Query = React.createClass({
                     </div>
                   ];
                 }, this)}
-                <div className='toggle-filter'>See more <span className="glyphicon glyphicon-chevron-down" aria-hidden="true"></span></div>
+                <div className='toggle-filter' data-filter='allowed-cuisines' onClick={this._seeMoreToggle}>
+                  <span data-filter='allowed-cuisines'>{this.state.seeMoreCuisines ? 'See less ' : 'See more '}</span>
+                  <span data-filter='allowed-cuisines' className={this.state.seeMoreCuisines ? "glyphicon glyphicon-chevron-up" : "glyphicon glyphicon-chevron-down"} aria-hidden="true"></span>
+                </div>
             </div>
 
           </div>
@@ -229,7 +265,8 @@ var Query = React.createClass({
 });
 
 
-//TODO: Store all meal query options below and dynamically generate jsx in the render method above.
+//The following arrays are for easier rendering of the filter checklists in the render method above. Do not delete them or the checklists will not render!
+
 var allowedAllergies = [
   "Egg-Free",
   "Gluten-Free",
@@ -242,13 +279,31 @@ var allowedAllergies = [
   "Wheat-Free"
 ];
 
+var allowedAllergiesShort = [
+  "Egg-Free",
+  "Gluten-Free",
+  "Peanut-Free",
+  "Seafood-Free",
+  "Sesame-Free",
+  "Soy-Free"
+];
+
 var allowedDiet = [
-  "Lacto-Vegetarian",
-  "Ovo-Vegetarian",
-  "Pescatarian",
+  "Vegetarian",
   "Vegan",
-  "Lacto-Ovo-Vegetarian",
-  "Paleo"
+  "Pescetarian",
+  "Paleo",
+  "Lacto-Vegetarian",
+  "Ovo-Vegetarian"
+];
+
+var allowedDietShort = [
+  "Vegetarian",
+  "Vegan",
+  "Pescetarian",
+  "Paleo",
+  "Lacto-Vegetarian",
+  "Ovo-Vegetarian"
 ];
 
 var allowedCuisines = [
@@ -278,4 +333,13 @@ var allowedCuisines = [
   "Spanish",
   "Swedish",
   "Thai"
+];
+
+var allowedCuisinesShort = [
+  "American",
+  "Asian",
+  "Barbecue",
+  "Cajun & Creole",
+  "Chinese",
+  "Cuban"
 ];

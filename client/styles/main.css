@@ -181,6 +181,24 @@ p.suggested-action {
   padding-bottom: 10px;
 }
 
+.navbar-link:hover {
+  cursor: pointer;
+}
+
+/*********************************
+  Query Styles
+*********************************/
+
+.toggle-filter {
+  color: rgba(215, 75, 26, 1);
+}
+
+.toggle-filter:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+
 /*********************************
   Review Meal Plan Style
 *********************************/
@@ -252,6 +270,26 @@ p.suggested-action {
   max-width: 100%;
 }
 
+
+/*********************************
+  Meal Plan Library Styles
+*********************************/
+
+.library-container {
+  margin-left: 5%;
+  max-width: 100%;
+}
+
+.meal-plan-preview {
+  height: 300px;
+  width: 300px;
+  padding: 0px;
+  text-align: center;
+  margin: 30px
+}
+
+
+
 select {
   max-width: 250px;
 }
@@ -263,13 +301,6 @@ span.glyphicon-plus {
   top: 35%;
 }
 
-.createMealPlan {
-  height: 250px;
-}
-
-.bgContainer{
-  min-height: 100%;
-}
 
 /*This class exists to allow users to cross things out in a list (see ShoppingList view)*/
 .checked {
