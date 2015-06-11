@@ -32,6 +32,7 @@ var MealPlan = React.createClass({
 
   // dynamically render recipes on page according to Meal Plan
   render: function() {
+    console.log('****** rendering mealPlan', this.props.mealPlan);
       return (
         <div className="split-container">
 

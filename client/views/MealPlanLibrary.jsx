@@ -41,7 +41,7 @@ var MealPlanLibrary = React.createClass({
           </div>
           {this.state.mealPlans.map(function(mealPlan, i) {
               return (
-                <MealPlanLink key={i} mealPlan={mealPlan}/>
+                <MealPlanLink key={i} mealPlan={mealPlan} setMealPlan={this.props.setMealPlan} transitionTo={this.props.transitionTo} />
               )
             }, this)}
         </div>
