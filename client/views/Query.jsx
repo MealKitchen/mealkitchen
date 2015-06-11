@@ -6,9 +6,9 @@ var Query = React.createClass({
 
   getInitialState: function() {
     return {
-      allowedAllergies: null,
-      allowedCuisines: null,
-      allowedDiet: null,
+      allowedAllergies: {},
+      allowedCuisines: {},
+      allowedDiet: {},
       numBreakfasts: 0,
       numLunches: 0,
       numDinners: 0
@@ -34,19 +34,13 @@ var Query = React.createClass({
         this.setState({ numDinners: value });
         break;
       case 'allowedAllergies':
-        var newAllergies = _.extend({}, this.state.allowedAllergies);
-        newAllergies[value] = event.target.checked;
-        this.setState({allowedAllergies: newAllergies});
+        this.state.allowedAllergies[value] = !this.state.allowedAllergies[value];
         break;
       case 'allowedDiet':
-        var newDiet = _.extend({}, this.state.allowedDiet);
-        newDiet[value] = event.target.checked;
-        this.setState({allowedDiet: newDiet});
+        this.state.allowedDiet[value] = !this.state.allowedDiet[value];
         break;
       case 'allowedCuisines':
-        var newCuisines = _.extend({}, this.state.allowedCuisines);
-        newCuisines[value] = event.target.checked;
-        this.setState({allowedCuisines: newCuisines});
+        this.state.allowedCuisines[value] = !this.state.allowedCuisines[value];
         break;
     }
   },
@@ -58,6 +52,11 @@ var Query = React.createClass({
 
     //Send a POST request to the server with the QueryModel to get a list of recipes that match the query.
     var query = new QueryModel(this.state);
+    query.set({
+      allowedCuisines: this.state.allowedCuisines,
+      allowedDiet: this.state.allowedDiet,
+      allowedAllergies: this.state.allowedAllergies
+    });
     query.save({}, {
       success: function(model, res){
         console.log("Response from the server on submitting Meal Query: ", res);
