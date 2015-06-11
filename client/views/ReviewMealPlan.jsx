@@ -50,13 +50,15 @@ var ReviewMeals = React.createClass({
       preference.set({
         'preference': false,
         'recipeId': rejectedRecipe.get('id'),
-        'userId': this.props.user.get('id')
+        'userId': this.props.user.get('id'),
+        'course': rejectedRecipe.get('attributes').course[0]
       });
     } else {
       preference.set({
         'preference': false,
         'recipeId': rejectedRecipe.get('id'),
         'userId': this.props.user.get('id'),
+        'course': rejectedRecipe.get('attributes').course[0],
         'salty': rejectedRecipe.get('flavors').salty,
         'sour': rejectedRecipe.get('flavors').sour,
         'sweet': rejectedRecipe.get('flavors').sweet,
@@ -65,9 +67,6 @@ var ReviewMeals = React.createClass({
         'piquant': rejectedRecipe.get('flavors').piquant
       });
     }
-
-    console.log('rejectedRecipe: ', rejectedRecipe);
-    console.log('preference: ', preference);
 
     //Send rejected recipe preference to the server as POST request for user preferences update.
     preference.save({}, {
