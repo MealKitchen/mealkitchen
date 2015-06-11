@@ -154,11 +154,13 @@ describe('Node server', function() {
   after(function(done) {
     db.knex.select('id').from('mealPlans').where('userId', testUserId).then(function(resp) {
       var mealPlanId = resp[0].id;
-      db.knex('mealPlans_recipes').where('mealPlan_id', mealPlanId).del().then(function(resp) {
-        db.knex('mealPlans').where('id', mealPlanId).del().then(function(resp) {
-          db.knex('recipes').where('id', 'New-Orleans-Jambalaya-TEST').del().then(function(resp) {
-            db.knex('users').where('id', testUserId).del().then(function(resp) {
-              done();
+      db.knex('mealPlans_recipes').where('mealPlan_id', mealPlanId).del().then(function() {
+        db.knex('mealPlans').where('id', mealPlanId).del().then(function() {
+          db.knex('recipes').where('id', 'New-Orleans-Jambalaya-TEST').del().then(function() {
+            db.knex('recipePreferences').where('userId', testUserId).del().then(function() {
+              db.knex('users').where('id', testUserId).del().then(function() {
+                done();
+              });
             });
           });
         });
