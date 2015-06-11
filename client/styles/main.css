@@ -34,7 +34,7 @@ label {
 }
 
 .how-it-works-container .default-header {
-  font-size: 63px;
+  font-size: 56px;
   margin-left: 20px;
   text-align: left;
 }
@@ -43,6 +43,42 @@ label {
   margin: 25px 0;
   font-size: 24px;
 }
+
+@media (max-width: 1000px) {
+  .how-it-works-container .default-header{
+    font-size: 44px;
+    text-align: center;
+  }
+
+  .how-it-works-container .glyphicon {
+    text-align: center;
+    font-size: 1.8em;
+  }
+
+  .step {
+    margin: 25px 0;
+    font-size: 1.8em;
+  }
+}
+
+@media (max-width: 750px) {
+  .how-it-works-container .default-header{
+    font-size: 36px;
+    text-align: center;
+  }
+
+  .how-it-works-container .glyphicon {
+    text-align: center;
+    font-size: 1.5em;
+  }
+
+  .step {
+    margin: 25px 0;
+    font-size: 1.5em;
+  }
+}
+
+
 
 /*********************************
   End Landing Page Styles
@@ -56,19 +92,17 @@ label {
   text-align: center;
 }
 
-.jumbotron {
-  padding: 25px 50px;
-}
-
 .jumbotron .sub-header {
   text-align: center;
 }
 
 .jumbotron {
+  padding: 25px 50px;
   border-radius: 10px;
   background: rgb(192, 192, 192); /* This is for ie8 and below */
   background: rgba(192, 192, 192, 0.3);
   max-width: 500px;
+  margin-top: 6%;
   margin-right: auto;
   margin-left: auto;
   color: #ffffff;
@@ -81,6 +115,11 @@ p.suggested-action {
 
 /*********************************
   End Jumbotron Styles
+*********************************/
+
+
+/*********************************
+  Button Styles
 *********************************/
 
 .btn-default {
@@ -112,6 +151,10 @@ p.suggested-action {
 .review-buttons {
   text-align: center;
   margin-top: 10px;
+}
+
+.btn {
+  margin-right: 10px;
 }
 
 
