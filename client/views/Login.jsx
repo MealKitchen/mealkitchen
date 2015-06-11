@@ -35,6 +35,9 @@ var LogIn = React.createClass({
         });
         that.props.setUser(user);
         that.props.transitionTo('/mealquery');
+      },
+      error: function (xhr, ajaxOptions, thrownError) {
+        alert('Please check your username/password!');
       }
     });
   },
