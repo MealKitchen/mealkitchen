@@ -63,7 +63,7 @@ module.exports = function(grunt) {
           'client/dist/views/Recipe.js',
           'client/dist/views/App.js'
           ],
-        dest: 'client/dist/<%= pkg.name %>.js'
+        dest: 'client/dist/public/<%= pkg.name %>.js'
       }
     },
 
@@ -73,8 +73,27 @@ module.exports = function(grunt) {
       },
       dist: {
         files: {
-          'client/dist/<%= pkg.name %>.js': ['<%= concat.dist.dest %>']
+          'client/dist/public/<%= pkg.name %>.js': ['<%= concat.dist.dest %>']
         }
+      }
+    },
+
+    copy: {
+      css: {
+        expand: true,
+        cwd: 'client/lib/bootstrap/dist/fonts/',
+        src: '**',
+        dest: 'client/dist/fonts',
+        flatten: true,
+        filter: 'isFile'
+      },
+      images: {
+        expand: true,
+        cwd: 'client/images/',
+        src: '**',
+        dest: 'client/dist/images',
+        flatten: true,
+        filter: 'isFile'
       }
     },
 
@@ -84,7 +103,7 @@ module.exports = function(grunt) {
       },
       dist: {
         files: {
-          'client/dist/style.min.css': 'client/styles/main.css'
+          'client/dist/public/style.min.css': ['client/lib/bootstrap/dist/css/bootstrap.min.css', 'client/styles/main.css']
         }
       }
     },
@@ -94,16 +113,6 @@ module.exports = function(grunt) {
         script: 'index.js'
       }
     }
-    
-    // browserify: {
-    //   options: {
-    //     transform: [ require('grunt-react').browserify ]
-    //   },
-    //   app: {
-    //     src: 'path/to/source/main.js',
-    //     dest: 'path/to/target/output.js'
-    //   }
-    // }
 
   });
 
@@ -111,14 +120,13 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-concat');
+  grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-contrib-cssmin');
   grunt.loadNpmTasks('grunt-nodemon');
   grunt.loadNpmTasks('grunt-react');
-  grunt.loadNpmTasks('grunt-browserify');
 
   grunt.registerTask('default', ['jshint', 'buildDev', 'watch']);
-  grunt.registerTask('buildDev', ['react', 'concat', 'cssmin']);
-  grunt.registerTask('buildProduction', ['react', 'concat', 'uglify', 'cssmin']);
-
-
+  grunt.registerTask('serve', ['jshint', 'buildDev', 'nodemon']);
+  grunt.registerTask('buildDev', ['react', 'concat', 'copy', 'cssmin']);
+  grunt.registerTask('buildProduction', ['react', 'concat', 'uglify', 'copy', 'cssmin']);
 };
