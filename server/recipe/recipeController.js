@@ -18,8 +18,8 @@ catch (e) {
 }
 
 var writeQueries = function(queryModel){
-  var allowedAllergyList = queryModel.allowedAllergy;
-  var allowedCuisineList = queryModel.allowedCuisine;
+  var allowedAllergyList = queryModel.allowedAllergies;
+  var allowedCuisineList = queryModel.allowedCuisines;
   var allowedDietList = queryModel.allowedDiet;
 
   //handling stringified number values from client so as to not concatenate 10
@@ -86,9 +86,9 @@ var queryYummly = function(queryString){
   return new Promise(function(resolve, reject){
     var results;
     //no meals entered for param; query is empty string
-    if(!queryString){
+    if (!queryString) {
       resolve([]);
-    } else{
+    } else {
 
       http.get(queryString, function(yummlyResponse){
         var str = '';
