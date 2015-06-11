@@ -37,22 +37,49 @@ var writeQueries = function(queryModel){
   var start = queryModel.additionalRequest ? queryModel.totalRecipesRequested : 0;
 
   var breakfastQueryString, lunchQueryString, dinnerQueryString;
-  var queryString = '';
+  var queryString = '', newQueryProp = true;
 
-  // add each allowed allergy/cuisine/diet to query string
+  if(allowedAllergyList){
+    queryString += "&allowedAllergy[]=";
+  }
   for (var key in allowedAllergyList) {
     if (allowedAllergyList[key]) {
-      queryString += "&allowedAllergy[]" + "=" + lib.allowedAllergyLibrary[key];
+      if(newQueryProp){
+        queryString += "&allowedAllergy[]=";
+        newQueryProp = false;
+      }
+      else{
+        queryString += '&';
+      }
+      queryString += lib.allowedAllergyLibrary[key];
     }
   }
+  newQueryProp = true;
+
   for (key in allowedCuisineList) {
     if (allowedCuisineList[key]) {
-      queryString += "&allowedCuisine[]" + "=" + lib.allowedCuisineLibrary[key];
+      if(newQueryProp){
+        queryString += "&allowedCuisine[]=";
+        newQueryProp = false;
+      }
+      else{
+        queryString += '&';
+      }
+      queryString +=  lib.allowedCuisineLibrary[key];
     }
   }
+  newQueryProp = true;
+
   for (key in allowedDietList) {
     if (allowedDietList[key]) {
-      queryString += "&allowedDiet[]" +  "=" + lib.allowedDietLibrary[key];
+      if(newQueryProp){
+        queryString += "&allowedDiet[]=";
+        newQueryProp = false;
+      }
+      else{
+        queryString += '&';
+      }
+      queryString += lib.allowedDietLibrary[key];
     }
   }
 
@@ -74,6 +101,9 @@ var writeQueries = function(queryModel){
     queryString + "&allowedCourse[]=" + lib.course.Dinner + "&requirePictures=true" +
     "&maxResult=" + numDinners + "&start=" + start : "";
 
+  console.log('breakfast: ' + breakfastQueryString + '\n\n',
+   'lunch: ' + lunchQueryString + '\n\n',
+   'dinner: ' + dinnerQueryString + '\n\n');
   return {
     'breakfastQuery': breakfastQueryString,
     'lunchQuery': lunchQueryString,
