@@ -37,9 +37,9 @@ var SignUp = React.createClass({
 
   render : function() {
     return (
-      <div className="container">
+      <div className="jumbotron-container">
         <div className="jumbotron">
-        <h2 className="heading">Sign Up</h2>
+        <h1 className="default-header">Sign Up</h1>
           <form onSubmit={this.handleSignUp}>
             <div className="form-group">
               <label className="input-label" htmlFor="email">Email</label>
@@ -49,7 +49,7 @@ var SignUp = React.createClass({
               <label className="input-label" htmlFor="password">Password</label>
               <input className="form-control" type="password" name="password" placeholder="Enter password" onChange={this.handlePasswordChange}/>
             </div>
-            <input type="submit" className="btn btn-right pull-right" value="Sign Up"></input>
+            <input type="submit" className="btn btn-default btn-large pull-right" value="Sign Up"></input>
           </form>
           <p className="suggested-action">Already have an account with us? <a href="/#/login">Login here.</a></p>
         </div>

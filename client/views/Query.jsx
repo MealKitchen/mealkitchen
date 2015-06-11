@@ -106,6 +106,7 @@ var Query = React.createClass({
     var value = this.state.value;
     return (
       <div className="query-container">
+
         <h2 className="page-header">Create Meal Plan</h2>
 
         <form onSubmit={this.handleSubmit}>
@@ -156,7 +157,7 @@ var Query = React.createClass({
               </select>
             </div>
 
-            <input type="submit" value="Create Plan" className="btn btn-primary col-md-3" />
+            <input type="submit" value="Create Plan" className="btn btn-primary btn-medium col-md-3" />
 
           </div>
 
@@ -207,7 +208,9 @@ var Query = React.createClass({
             </div>
 
           </div>
+
         </form>
+
       </div>
     );
   }

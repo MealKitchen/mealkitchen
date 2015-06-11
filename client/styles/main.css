@@ -6,11 +6,6 @@ label {
   display: block;
 }
 
-.full-height {
-  position: fixed;
-  height: 100%;
-}
-
 .centered {
   margin-right: auto;
   margin-left: auto;
@@ -45,7 +40,7 @@ label {
   color: #ffffff;
 }
 
-.bgImage {
+.background-image {
   background: url(../images/vegetables-min.jpg) no-repeat center center fixed;
   -webkit-background-size: cover;
   -moz-background-size: cover;

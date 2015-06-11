@@ -40,6 +40,7 @@ var ShoppingList = React.createClass({
         </div>
 
         <div className="secondary-container">
+          <button className="btn btn-primary btn-large" onClick={window.print}>Print Shopping List</button>
         </div>
       </div>
     );
