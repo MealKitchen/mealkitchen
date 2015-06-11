@@ -6,6 +6,7 @@ var db = require('../db');
 var lib = require('../config/libraries');
 var MealPlan = require('../mealPlan/mealPlanModel');
 var utils = require('../config/utility');
+var RecipePreferenceController = require('../recipePreference/RecipePreferenceController');
 
 var appId, apiKey;
 try {
@@ -17,7 +18,9 @@ catch (e) {
   apiKey = 98765;
 }
 
-var writeQueries = function(queryModel){
+var writeQueries = function(queryModel, userFlavorPrefs){
+  console.log('writeQueries queryModel', queryModel);
+  console.log('userFlavorPrefs')
   var allowedAllergyList = queryModel.allowedAllergies;
   var allowedCuisineList = queryModel.allowedCuisines;
   var allowedDietList = queryModel.allowedDiet;
@@ -82,6 +85,15 @@ var writeQueries = function(queryModel){
       queryString += lib.allowedDietLibrary[key];
     }
   }
+
+  // TO-DO: Add ranges to query for user preferences
+  // "&flavor.salty.min=" + 0.8 + "&flavor.salty.max=" + 1 +
+  // "&flavor.sour.min=" + 0.8 + "&flavor.sour.max=" + 1 +
+  // "&flavor.sweet.min=" + 0.8 + "&flavor.sweet.max=" + 1 +
+  // "&flavor.bitter.min=" + 0.8 + "&flavor.bitter.max=" + 1 +
+  // "&flavor.meaty.min=" + 0.8 + "&flavor.meaty.max=" + 1 +
+  // "&flavor.piquant.min=" + 0 + "&flavor.piquant.max=" + 0.2
+
 
   breakfastQueryString = numBreakfasts > 0 ?
     "http://api.yummly.com/v1/api/recipes?_app_id=" + appId +
@@ -243,10 +255,61 @@ var saveRecipe = function(recipe, course){
     });
   });
 }
+
+var getUserFlavorPrefs = function (userid) {
+  
+  return new Promise(function(resolve, reject) {
+    var userFlavorPrefs = {};
+
+    RecipePreferenceController.getUserPreferences(userid).then(function(preferences){
+      console.log("getUserFlavorPrefs results: ", preferences);
+      var saltyTotal = 0;
+      var sourTotal = 0;
+      var sweetTotal = 0;
+      var bitterTotal = 0;
+      var meatyTotal = 0;
+      var piquantTotal = 0;
+      var counter = 0;
+
+      for (var i = 0; i < preferences.length; i++){
+        var preferenceAttr = preferences[i].attributes;
+        if (preferenceAttr.salty && preferenceAttr.sour && preferenceAttr.sweet && preferenceAttr.bitter && preferenceAttr.meaty && preferenceAttr.piquant) {
+          console.log('preference Attributes: ', preferenceAttr);
+          saltyTotal += preferenceAttr.salty;
+          sourTotal += preferenceAttr.sour;
+          sweetTotal += preferenceAttr.sweet;
+          bitterTotal += preferenceAttr.bitter;
+          meatyTotal += preferenceAttr.meaty;
+          piquantTotal += preferenceAttr.piquant;
+          counter++;
+        }
+      }
+
+      var saltyAvg = saltyTotal / counter;
+      var sourAvg = sourTotal / counter;
+      var sweetAvg = sweetTotal / counter;
+      var bitterAvg = bitterTotal / counter;
+      var meatyAvg = meatyTotal / counter;
+      var piquantAvg = piquantTotal / counter;
+
+      userFlavorPrefs = {
+        "salty": [(saltyAvg - 0.1) > 0 ? saltyAvg - 0.1 : 0, (saltyAvg + 0.1) < 1 ? saltyAvg + 0.1 : 1],
+        "sour": [(sourAvg - 0.1) > 0 ? sourAvg - 0.1 : 0, (sourAvg + 0.1) < 1 ? sourAvg + 0.1 : 1],
+        "sweet": [(sweetAvg - 0.1) > 0 ? sweetAvg - 0.1 : 0, (sweetAvg + 0.1) < 1 ? sweetAvg + 0.1 : 1],
+        "bitter": [(bitterAvg - 0.1) > 0 ? bitterAvg - 0.1 : 0, (bitterAvg + 0.1) < 1 ? bitterAvg + 0.1 : 1],
+        "meaty": [(meatyAvg - 0.1) > 0 ? meatyAvg - 0.1 : 0, (meatyAvg + 0.1) < 1 ? meatyAvg + 0.1 : 1],
+        "piquant": [(piquantAvg - 0.1) > 0 ? piquantAvg - 0.1 : 0, (piquantAvg + 0.1) < 1 ? piquantAvg + 0.1 : 1]
+      }
+      resolve(userFlavorPrefs);
+    });
+  })
+  
+};
+
 module.exports = {
 
 
-  createRecipes: function (queryModel) {
+  createRecipes: function (queryModel, userid) {
 
     return new Promise(function(resolve, reject){
 
@@ -256,8 +319,13 @@ module.exports = {
       //  lunchQuery: "...",
       //  dinnerQuery: "..."
       //}
-      //if course has 0 meals, that query will result in empty string
+      getUserFlavorPrefs(userid).then(function(userFlavorPrefs){
+        console.log("getUserFlavorPrefs results: ", userFlavorPrefs);
+      });
+      
       var queries = writeQueries(queryModel);
+      //if course has 0 meals, that query will result in empty string
+      //var queries = writeQueries(queryModel, userFlavorPrefs);
 
       Promise.all([
         queryYummly(queries.breakfastQuery),

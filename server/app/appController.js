@@ -10,7 +10,7 @@ module.exports = {
   getUserRecipes: function(req, res){
     Promise.all([
       //if query was empty value will be empty array
-      recipeController.createRecipes(req.body),
+      recipeController.createRecipes(req.body, req.session.user.id),
 
       //get user recipe preferences
       recipePreferenceController.getUserPreferences(req.session.user.id)
