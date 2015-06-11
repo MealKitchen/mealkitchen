@@ -57,7 +57,7 @@ var Query = React.createClass({
     var that = this;
 
     //Prevent submission if no recipes were requested (meal plans with no recipes are meaningless)
-    if(this.state.numBreakfasts === 0 && this.state.numLunches === 0 && this.state.numDinners === 0){
+    if((1*this.state.numBreakfasts) === 0 && (1*this.state.numLunches) === 0 && (1*this.state.numDinners) === 0){
       alert('Please request at least one recipe for Breakfast, Lunch, or Dinner!');
       return;
     }

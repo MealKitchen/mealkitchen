@@ -30,51 +30,51 @@ label {
 
 .how-it-works-container .glyphicon {
   text-align: center;
-  font-size: 3em;
+  font-size: 2em;
 }
 
 .how-it-works-container .default-header {
-  font-size: 56px;
+  font-size: 2em;
   margin-left: 20px;
   text-align: left;
 }
 
 .step {
   margin: 25px 0;
-  font-size: 24px;
+  font-size: 1.3em;
 }
 
 @media (max-width: 1000px) {
   .how-it-works-container .default-header{
-    font-size: 44px;
+    font-size: 1.5em;
     text-align: center;
   }
 
   .how-it-works-container .glyphicon {
     text-align: center;
-    font-size: 1.8em;
+    font-size: 1.3em;
   }
 
   .step {
-    margin: 25px 0;
-    font-size: 1.8em;
+    margin: 2% 0;
+    font-size: 1em;
   }
 }
 
 @media (max-width: 750px) {
   .how-it-works-container .default-header{
-    font-size: 36px;
+    font-size: 1.2em;
     text-align: center;
   }
 
   .how-it-works-container .glyphicon {
     text-align: center;
-    font-size: 1.5em;
+    font-size: 1em;
   }
 
   .step {
-    margin: 25px 0;
-    font-size: 1.5em;
+    margin: 2% 0;
+    font-size: 1em;
   }
 }
 
@@ -90,6 +90,7 @@ label {
 
 .jumbotron .default-header {
   text-align: center;
+  margin-top: 1%;
 }
 
 .jumbotron .sub-header {
@@ -97,12 +98,12 @@ label {
 }
 
 .jumbotron {
-  padding: 25px 50px;
+  padding: 1% 50px;
   border-radius: 10px;
   background: rgb(192, 192, 192); /* This is for ie8 and below */
   background: rgba(192, 192, 192, 0.3);
   max-width: 500px;
-  margin-top: 6%;
+  margin-top: 3%;
   margin-right: auto;
   margin-left: auto;
   color: #ffffff;
