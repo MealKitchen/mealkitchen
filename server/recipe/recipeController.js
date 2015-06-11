@@ -101,9 +101,6 @@ var writeQueries = function(queryModel){
     queryString + "&allowedCourse[]=" + lib.course.Dinner + "&requirePictures=true" +
     "&maxResult=" + numDinners + "&start=" + start : "";
 
-  console.log('breakfast: ' + breakfastQueryString + '\n\n',
-   'lunch: ' + lunchQueryString + '\n\n',
-   'dinner: ' + dinnerQueryString + '\n\n');
   return {
     'breakfastQuery': breakfastQueryString,
     'lunchQuery': lunchQueryString,
