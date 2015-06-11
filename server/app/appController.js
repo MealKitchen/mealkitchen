@@ -26,16 +26,14 @@ module.exports = {
     .then(function(results){
 
       var matches = results[0];
-      // var breakfastMatches = results[0].breakfastRecipes;
-      // var lunchMatches = results[0].lunchRecipes;
-      // var dinnerMatches = results[0].dinnerRecipes;
       
       var preferences = results[1];
+      //console.log("original match recipes: ", matches);
 
-      res.status(200).send(matches);
+      //res.status(200).send(matches);
       kNN.runMachine(matches, preferences).then(function(results){
-        //console.log("kNN results: ", results);
-        //res.status(200).send(results);
+        console.log("kNN results: ", results);
+        res.status(200).send(results);
       })
     })
     .catch(function(error){

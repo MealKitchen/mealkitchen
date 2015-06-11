@@ -1,19 +1,5 @@
 var Promise = require('bluebird');
 
-/*
-  user preference data now looks like
-  {
-    userId:
-    recipeId:
-    preference:
-    salty:
-    sour:
-    sweet:
-    bitter:
-    meaty:
-    piquant:
-  }
- */
 var kNN = function(matches, userPreferences){
 
   return new Promise(function(resolve, reject) {
@@ -31,17 +17,14 @@ var kNN = function(matches, userPreferences){
             break;
           }
           var base = yummlyMatch.flavors[key] - userPreference.attributes[key];
-          // console.log("base: ", base);
           sumOfSquares += Math.pow(base, 2);
-          // console.log("sumOfSquares", sumOfSquares);
         }
         var distance = Math.sqrt(sumOfSquares);
-        // console.log("distance: ", distance);
-        //if distance === 0 don't use distance as weighting factor
+        // if distance === 0, do not factor that recipe into likelihood calculation
         likelihood += distance === 0 ? 0 : (1 / distance) * userPreference.attributes.preference;
       }
       yummlyMatch.likelihood = likelihood;
-      // console.log("likelihood", likelihood);
+
     }
     matches.sort(function (a, b) {
       if (a.likelihood > b.likelihood) {
@@ -50,7 +33,7 @@ var kNN = function(matches, userPreferences){
       if (a.likelihood < b.likelihood) {
         return -1;
       }
-      // a must be equal to b
+      // if a === b, leave in place
       return 0;
     });
     resolve(matches);    
@@ -88,13 +71,17 @@ module.exports = {
           kNN(dinnerMatches, dinnerPrefs)
            ])
         .then(function(results) {
-          console.log(results);
-          //resolve(results);
+
+          var matches = {
+            "breakfastRecipes": results[0],
+            "lunchRecipes": results[1],
+            "dinnerRecipes": results[2]
+          };
+          resolve(matches);
         })
       } 
-      //otherwise return matches in regular order (maybe randomized in someway(?))
-      else{
-        
+      //otherwise return matches in regular order
+      else {
         resolve(matches);
       }     
     })
