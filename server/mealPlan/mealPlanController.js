@@ -3,7 +3,6 @@ var http = require('http');
 var utils = require('../config/utility');
 var MealPlan = require('./mealPlanModel');
 
-
 var processMealPlanInformation = function(mealPlansBookshelf){
 
   var mealPlansArray = [], mealPlan, mealPlanObject, recipe;
@@ -42,6 +41,52 @@ var processMealPlanInformation = function(mealPlansBookshelf){
 }
 
 module.exports = {
+
+  saveMealPlanRecipePreferences: function (req) {
+    var requestAliases = [];
+    var recipeObject = {
+      "breakfast": req.body.breakfastRecipes,
+      "lunch": req.body.lunchRecipes,
+      "dinner": req.body.dinnerRecipes      
+    };
+
+    console.log(recipeObject);
+    
+    for (var key in recipeObject) {
+      console.log("keys in recipeObject", key);
+      for (var i = 0; i < recipeObject[key].length; i++) {
+        var requestAlias = {};
+
+        if (!recipeObject[key][i].flavors) {
+          requestAlias = {
+            body: {
+              'preference': true,
+              'recipeId': recipeObject[key][i].id,
+              'userId': req.body.userId,
+              'course': key
+            }
+          }
+        } else {
+          requestAlias = {
+            body: {
+              'preference': true,
+              'recipeId': recipeObject[key][i].id,
+              'userId': req.body.userId,
+              'salty': recipeObject[key][i].flavors.salty,
+              'sour': recipeObject[key][i].flavors.sour,
+              'sweet': recipeObject[key][i].flavors.sweet,
+              'bitter': recipeObject[key][i].flavors.bitter,
+              'meaty': recipeObject[key][i].flavors.meaty,
+              'piquant': recipeObject[key][i].flavors.piquant,
+              'course': key
+            }
+          };
+        }
+        requestAliases.push(requestAlias);
+      }
+    }
+    return requestAliases;
+  },
 
   createMealPlan: function (userId, title, recipes) {
 

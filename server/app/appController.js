@@ -25,9 +25,7 @@ module.exports = {
     ])
     .then(function(results){
 
-
       var matches = results[0];
-
 
       res.status(200).send(matches);
       // kNN.runMachine(matches, seededPreferences).then(function(results){
@@ -50,6 +48,12 @@ module.exports = {
       })
   },
   saveUserMealPlan: function(req, res){
+    var recipesPrefs = mealPlanController.saveMealPlanRecipePreferences(req);
+   
+    for (var i = 0; i < recipesPrefs.length; i++) {
+      recipePreferenceController.savePreference(recipesPrefs[i]);
+    }    
+
     recipeController.getMealPlanRecipes(req.body)
     .then(function(recipesFromYummly){
 

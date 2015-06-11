@@ -112,6 +112,7 @@ db.knex.schema.hasTable('recipes').then(function(exists) {
                   recipePreferences.float('bitter');
                   recipePreferences.float('piquant');
                   recipePreferences.float('meaty');
+                  recipePreferences.string('course');
                 }).then(function (table) {
                   console.log('Created Table', table);
                 });
