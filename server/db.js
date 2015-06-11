@@ -8,17 +8,13 @@ var knex = require('knex')({
     user: '',
     password: '',
     database: 'mealplan',
-    charset: 'utf8',
-    debug: true
+    charset: 'utf8'
   }
 });
 
 var db = require('bookshelf')(knex);
 
 
-process.stderr.on('data', function(data) {
-  console.log(data);
-});
 /*********************************************************
   Recipe Schema
 *********************************************************/
