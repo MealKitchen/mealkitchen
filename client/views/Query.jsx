@@ -49,7 +49,6 @@ var Query = React.createClass({
         this.setState({allowedCuisines: newCuisines});
         break;
     }
-    console.log(this.state);
   },
 
   //Send the state to a backbone model to be sent to Yummly
