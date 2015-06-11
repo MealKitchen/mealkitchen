@@ -289,21 +289,21 @@ var allowedAllergiesShort = [
 ];
 
 var allowedDiet = [
-  "Pescatarian",
+  "Vegetarian",
   "Vegan",
+  "Pescetarian",
   "Paleo",
   "Lacto-Vegetarian",
-  "Ovo-Vegetarian",
-  "Lacto-Ovo-Vegetarian"
+  "Ovo-Vegetarian"
 ];
 
 var allowedDietShort = [
-  "Pescatarian",
+  "Vegetarian",
   "Vegan",
+  "Pescetarian",
   "Paleo",
   "Lacto-Vegetarian",
-  "Ovo-Vegetarian",
-  "Lacto-Ovo-Vegetarian",
+  "Ovo-Vegetarian"
 ];
 
 var allowedCuisines = [
