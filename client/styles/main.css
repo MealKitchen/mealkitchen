@@ -94,10 +94,36 @@ label {
   min-height: 100%
 }
 
-.thumbnail {
-  margin: 0 10px;
+.recipe-preview{
+  padding: 0px;
+  height: 250px;
+  margin-right: 25px;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  background-position: center;
 }
 
+.overlay{
+  position: absolute;
+  background-color: rgba(240, 240, 240, 0.73);
+  width: 100%;
+  bottom: 0;
+  height: 30%;
+}
+
+.overlay-title{
+  text-align: center;
+  font-size: 1.25em;
+}
+.course-container{
+  margin: 0 25px;
+}
+
+.split-container{
+  margin: 0 100px;
+}
 span.glyphicon-plus {
   font-size: 3em;
   margin: 0 auto;
