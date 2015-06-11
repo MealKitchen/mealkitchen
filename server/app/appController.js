@@ -9,13 +9,6 @@ var utils = require('../config/utility');
 module.exports = {
   getUserRecipes: function(req, res){
     Promise.all([
-      //get recipes from yummly
-      //will return in form of
-      //{
-      //  breakfastRecipes: [...],
-      //  lunchRecipes: [...],
-      //  dinnerRecipes: [...]
-      //}
       //if query was empty value will be empty array
       recipeController.createRecipes(req.body),
 
@@ -25,14 +18,10 @@ module.exports = {
     ])
     .then(function(results){
 
-      var matches = results[0];
-      
+      var matches = results[0];      
       var preferences = results[1];
-      //console.log("original match recipes: ", matches);
 
-      //res.status(200).send(matches);
       kNN.runMachine(matches, preferences).then(function(results){
-        console.log("kNN results: ", results);
         res.status(200).send(results);
       })
     })

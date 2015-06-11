@@ -49,11 +49,8 @@ module.exports = {
       "lunch": req.body.lunchRecipes,
       "dinner": req.body.dinnerRecipes      
     };
-
-    console.log(recipeObject);
     
     for (var key in recipeObject) {
-      console.log("keys in recipeObject", key);
       for (var i = 0; i < recipeObject[key].length; i++) {
         var requestAlias = {};
 
