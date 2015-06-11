@@ -1,3 +1,4 @@
+//client value (key) for representative yummly query value (value)
 module.exports = {
   "allowedAllergyLibrary": {
     "Egg-Free": "397^Egg-Free",
@@ -43,7 +44,7 @@ module.exports = {
     "Ovo-Vegetarian": "389^Ovo vegetarian",
     "Pescetarian": "390^Pescetarian",
     "Vegan": "386^Vegan",
-    "Lacto-Ovo-Vegetarian": "387^Lacto-ovo vegetarian",
+    "Vegetarian": "387^Lacto-ovo vegetarian",
     "Paleo": "403^Paleo"
   },
   "course": {
