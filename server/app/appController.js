@@ -17,20 +17,26 @@ module.exports = {
       //  dinnerRecipes: [...]
       //}
       //if query was empty value will be empty array
-      recipeController.createRecipes(req.body)
+      recipeController.createRecipes(req.body),
 
       //get user recipe preferences
-      //recipePreferenceController.getUserPreferences(req.session.user.id)
+      recipePreferenceController.getUserPreferences(req.session.user.id)
 
     ])
     .then(function(results){
 
       var matches = results[0];
+      // var breakfastMatches = results[0].breakfastRecipes;
+      // var lunchMatches = results[0].lunchRecipes;
+      // var dinnerMatches = results[0].dinnerRecipes;
+      
+      var preferences = results[1];
 
       res.status(200).send(matches);
-      // kNN.runMachine(matches, seededPreferences).then(function(results){
-      //   res.status(200).send(results);
-      // })
+      kNN.runMachine(matches, preferences).then(function(results){
+        //console.log("kNN results: ", results);
+        //res.status(200).send(results);
+      })
     })
     .catch(function(error){
       res.status(500).send({'error': error});
