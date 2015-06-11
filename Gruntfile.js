@@ -4,7 +4,7 @@ module.exports = function(grunt) {
     
     jshint: {
       files: [
-        ['Gruntfile.js', 'server/**/*.js', 'client/**/*.js', 'index.js']
+        ['Gruntfile.js', 'server/**/*.js', 'index.js', 'client/collections/*.js', 'client/models/*.js', 'client/views/*.js']
       ],
       options: {
         jshintrc: '.jshintrc',
@@ -28,11 +28,66 @@ module.exports = function(grunt) {
     watch: {
       scripts: {
         files: ['client/**/*.js', 'client/**/*.jsx', 'client/*.js', 'server/**/*.js', 'server/*.js', 'index.js'],
-        tasks: ['jshint', 'react'],
+        tasks: ['jshint', 'buildDev'],
         options: {
           spawn: false,
         },
       },
+    },
+
+    concat: {
+      options: {
+        separator: ';'
+      },
+      dist: {
+        src: [
+          'client/lib/react/react.js',
+          'client/lib/react-router/build/umd/ReactRouter.js',
+          'client/lib/underscore/underscore.js',
+          'client/lib/jquery/dist/jquery.js',
+          'client/lib/backbone/backbone.js',
+          'client/models/*.js',
+          'client/collections/*.js',
+          'client/dist/views/Signup.js',
+          'client/dist/views/Login.js',
+          'client/dist/views/Query.js',
+          'client/dist/views/ReviewMealPlan.js',
+          'client/dist/views/ShoppingList.js',
+          'client/dist/views/MealPlan.js',
+          'client/dist/views/MealPlanLink.js',
+          'client/dist/views/Navbar.js',
+          'client/dist/views/LandingPage.js',
+          'client/dist/views/CallToAction.js',
+          'client/dist/views/HowItWorks.js',
+          'client/dist/views/MealPLanLibrary.js',
+          'client/dist/views/NavbarLinks.js',
+          'client/dist/views/Recipe.js',
+          'client/dist/views/App.js'
+          ],
+        dest: 'client/dist/<%= pkg.name %>.js'
+      }
+    },
+
+    uglify: {
+      options: {
+        banner: '/*! <%= pkg.name %> <%= grunt.template.today("dd-mm-yyyy") %> */\n'
+      },
+      dist: {
+        files: {
+          'client/dist/<%= pkg.name %>.js': ['<%= concat.dist.dest %>']
+        }
+      }
+    },
+
+    cssmin: {
+      options: {
+        keepSpecialComments: 0
+      },
+      dist: {
+        files: {
+          'client/dist/style.min.css': 'client/styles/main.css'
+        }
+      }
     },
 
     nodemon: {
@@ -55,12 +110,16 @@ module.exports = function(grunt) {
 
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-watch');
+  grunt.loadNpmTasks('grunt-contrib-uglify');
+  grunt.loadNpmTasks('grunt-contrib-concat');
+  grunt.loadNpmTasks('grunt-contrib-cssmin');
   grunt.loadNpmTasks('grunt-nodemon');
   grunt.loadNpmTasks('grunt-react');
   grunt.loadNpmTasks('grunt-browserify');
 
-  grunt.registerTask('default', ['jshint', 'react', 'watch']);
-  grunt.registerTask('build', ['react']);
+  grunt.registerTask('default', ['jshint', 'buildDev', 'watch']);
+  grunt.registerTask('buildDev', ['react', 'concat', 'cssmin']);
+  grunt.registerTask('buildProduction', ['react', 'concat', 'uglify', 'cssmin']);
 
 
 };
