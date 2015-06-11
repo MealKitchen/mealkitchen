@@ -18,7 +18,7 @@ label {
   Landing Page Styles
 ************************************/
 
-.how-it-works-container{
+.how-it-works-container {
   background-color: #D74B1A;
   width: 100%;
   color: white;
@@ -33,30 +33,54 @@ label {
   font-size: 3em;
 }
 
-.how-it-works-container .default-header{
+.how-it-works-container .default-header {
   font-size: 63px;
   margin-left: 20px;
   text-align: left;
 }
 
-.step{
+.step {
   margin: 25px 0;
   font-size: 24px;
 }
 
-.jumbotron .default-header{
-  text-align: center;
-}
-.jumbotron {
-  padding: 10px;
-}
-.jumbotron .sub-header{
+/*********************************
+  End Landing Page Styles
+*********************************/
+
+/*********************************
+  Jumbotron Styles
+*********************************/
+
+.jumbotron .default-header {
   text-align: center;
 }
 
-@
+.jumbotron {
+  padding: 25px 50px;
+}
+
+.jumbotron .sub-header {
+  text-align: center;
+}
+
+.jumbotron {
+  border-radius: 10px;
+  background: rgb(192, 192, 192); /* This is for ie8 and below */
+  background: rgba(192, 192, 192, 0.3);
+  max-width: 500px;
+  margin-right: auto;
+  margin-left: auto;
+  color: #ffffff;
+  font-family: 'Lato', sans-serif;
+}
+
+p.suggested-action {
+  font-size: 1em;
+}
+
 /*********************************
-  End Landing Page Styles
+  End Jumbotron Styles
 *********************************/
 
 .btn-default {
@@ -77,12 +101,66 @@ label {
   border-radius: 5px;
 }
 
+.btn-small {
+  margin-right: 10px;
+}
+
 .action-buttons {
   text-align: center;
 }
 
+.review-buttons {
+  text-align: center;
+  margin-top: 10px;
+}
+
+
+/*********************************
+  Navbar Styles
+*********************************/
+
 .navbar-default .navbar-nav>li>a {
   color: #ffffff;
+}
+
+.navbar-default {
+  background-color: rgba(215, 75, 26, 1);
+  border: none;
+}
+
+.navbar-default.transparent {
+  background-color: rgba(215, 75, 26, 0);
+}
+
+.navbar {
+  border-radius: 0px;
+  padding-bottom: 10px;
+}
+
+/*********************************
+  Review Meal Plan Style
+*********************************/
+
+.meal-plan-name {
+  width: 75%;
+}
+
+.secondary-container {
+  margin-top: 40px;
+}
+
+
+.page-header {
+  color: #D74B1A;
+}
+
+.section-header {
+  color: #D74B1A;
+  font-size: 1.3em;
+}
+
+.filter-label {
+  color: #666666;
 }
 
 .background-image {
@@ -94,7 +172,7 @@ label {
   min-height: 100%
 }
 
-.recipe-preview{
+.recipe-preview {
   padding: 0px;
   height: 250px;
   margin-right: 25px;
@@ -105,7 +183,7 @@ label {
   background-position: center;
 }
 
-.overlay{
+.overlay {
   position: absolute;
   background-color: rgba(240, 240, 240, 0.73);
   width: 100%;
@@ -113,17 +191,27 @@ label {
   height: 30%;
 }
 
-.overlay-title{
+.overlay-title {
   text-align: center;
   font-size: 1.25em;
 }
-.course-container{
+.course-container {
   margin: 0 25px;
 }
 
 .split-container{
-  margin: 0 100px;
+  margin-left: 5%;
 }
+
+.query-container {
+  margin-left: 5%;
+  max-width: 100%;
+}
+
+select {
+  max-width: 250px;
+}
+
 span.glyphicon-plus {
   font-size: 3em;
   margin: 0 auto;
@@ -145,26 +233,8 @@ span.glyphicon-plus {
 }
 
 /* navbar */
-.navbar-default {
-  background-color: #D74B1A;
-  border: none;
-}
 
-.navbar {
-  border-radius: 0px;
-  padding-bottom: 10px;
-}
 
-.jumbotron {
-  border-radius: 10px;
-  background: rgb(192, 192, 192); /* This is for ie8 and below */
-  background: rgba(192, 192, 192, 0.3);
-  max-width: 50%;
-  margin-right: auto;
-  margin-left: auto;
-  color: #ffffff;
-  font-family: 'Lato', sans-serif;
-}
 
 .hide {
   display: none;
@@ -174,26 +244,7 @@ span.glyphicon-plus {
   display: inline;
 }
 
-.slogan {
-  text-align: center;
-}
-
-.subSlogan {
-  text-align: center;
-}
-
-.logInOrSignUp {
-  margin-left: auto;
-  margin-right: auto;
-  text-align: center;
-}
 
 .heading {
   text-align: center;
-}
-
-.recipeName {
-  background-color: white;
-  opacity: .4;
-  margin-top: 100%;
 }

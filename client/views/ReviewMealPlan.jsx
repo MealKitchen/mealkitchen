@@ -128,49 +128,53 @@ var ReviewMeals = React.createClass({
       return (
         <div className="split-container">
 
-          <div className="primary-container">
+          <div className="row">
 
-            <h2 className="page-header">Review Meal Plan</h2>
+            <div className="primary-container col-md-10">
 
-            <input type="text" className="form-control meal-plan-name" name="mealPlanTitle" placeholder="Enter Meal Plan Name" value={this.value} onChange={this.handleChange} />
+              <h2 className="page-header">Review Meal Plan</h2>
 
-            <div className="course-container">
-              <h3 className="section-header">Breakfast</h3>
-              <div className="row">
-                {this.props.breakfastCollection.map(function(item, i) {
-                  return [
-                    <Recipe recipe={item} position={i} forReview={true} collection='breakfastCollection' rejectRecipe={this._rejectRecipe} />
-                  ];
-                }, this)}
+              <input type="text" className="form-control meal-plan-name" name="mealPlanTitle" placeholder="Enter Meal Plan Name" value={this.value} onChange={this.handleChange} />
+
+              <div className="course-container">
+                <h3 className="section-header">Breakfast</h3>
+                <div className="row">
+                  {this.props.breakfastCollection.map(function(item, i) {
+                    return [
+                      <Recipe recipe={item} position={i} forReview={true} collection='breakfastCollection' rejectRecipe={this._rejectRecipe} />
+                    ];
+                  }, this)}
+                </div>
               </div>
+
+              <div className="course-container">
+                <h3 className="section-header">Lunch</h3>
+                <div className="row">
+                  {this.props.lunchCollection.map(function(item, i) {
+                    return [
+                      <Recipe recipe={item} position={i} forReview={true} collection='lunchCollection' rejectRecipe={this._rejectRecipe} />
+                    ];
+                  }, this)}
+                </div>
+              </div>
+
+              <div className="course-container">
+                <h3 className="section-header">Dinner</h3>
+                <div className="row">
+                  {this.props.dinnerCollection.map(function(item, i) {
+                    return [
+                      <Recipe recipe={item} position={i} forReview={true} collection='dinnerCollection' rejectRecipe={this._rejectRecipe} />
+                    ];
+                  }, this)}
+                </div>
+              </div>
+
             </div>
 
-            <div className="course-container">
-              <h3 className="section-header">Lunch</h3>
-              <div className="row">
-                {this.props.lunchCollection.map(function(item, i) {
-                  return [
-                    <Recipe recipe={item} position={i} forReview={true} collection='lunchCollection' rejectRecipe={this._rejectRecipe} />
-                  ];
-                }, this)}
-              </div>
+            <div className="secondary-container col-md-2">
+              <button type="button" className="btn btn-primary btn-large" onClick={this.handleSubmit}>Save meal plan</button>
             </div>
 
-            <div className="course-container">
-              <h3 className="section-header">Dinner</h3>
-              <div className="row">
-                {this.props.dinnerCollection.map(function(item, i) {
-                  return [
-                    <Recipe recipe={item} position={i} forReview={true} collection='dinnerCollection' rejectRecipe={this._rejectRecipe} />
-                  ];
-                }, this)}
-              </div>
-            </div>
-
-          </div>
-
-          <div className="secondary-container">
-            <button type="button" className="btn btn-primary btn-large" onClick={this.handleSubmit}>Save meal plan</button>
           </div>
 
         </div>

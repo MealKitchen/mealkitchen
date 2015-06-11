@@ -34,13 +34,19 @@ var Query = React.createClass({
         this.setState({ numDinners: value });
         break;
       case 'allowedAllergies':
-        this.state.allowedAllergies[value] = !this.state.allowedAllergies[value];
+        var newAllergies = _.extend({}, this.state.allowedAllergies);
+        newAllergies[value] = event.target.checked;
+        this.setState({allowedAllergies: newAllergies});
         break;
       case 'allowedDiet':
-        this.state.allowedDiet[value] = !this.state.allowedDiet[value];
+        var newDiet = _.extend({}, this.state.allowedDiet);
+        newDiet[value] = event.target.checked;
+        this.setState({allowedDiet: newDiet});
         break;
       case 'allowedCuisines':
-        this.state.allowedCuisines[value] = !this.state.allowedCuisines[value];
+        var newCuisines = _.extend({}, this.state.allowedCuisines);
+        newCuisines[value] = event.target.checked;
+        this.setState({allowedCuisines: newCuisines});
         break;
     }
   },
@@ -49,6 +55,12 @@ var Query = React.createClass({
   handleSubmit: function(e){
     e.preventDefault();
     var that = this;
+
+    //Prevent submission if no recipes were requested (meal plans with no recipes are meaningless)
+    if(this.state.numBreakfasts === 0 && this.state.numLunches === 0 && this.state.numDinners === 0){
+      alert('Please request at least one recipe for Breakfast, Lunch, or Dinner!');
+      return;
+    }
 
     //Send a POST request to the server with the QueryModel to get a list of recipes that match the query.
     var query = new QueryModel(this.state);
@@ -157,7 +169,7 @@ var Query = React.createClass({
               </select>
             </div>
 
-            <input type="submit" value="Create Plan" className="btn btn-primary btn-medium col-md-3" />
+            <input type="submit" value="Create Plan" className="btn btn-primary btn-medium" />
 
           </div>
 
