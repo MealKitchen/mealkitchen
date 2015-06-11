@@ -138,7 +138,7 @@ var AppView = React.createClass({
     }
 
     return (
-      <div className={this.state.bgImage ? "bgImage" : "bgContainer"}>
+      <div className={this.state.bgImage ? "background-image" : ""}>
 
         <Navbar bgImage={this.state.bgImage} linkHandler={this._linkHandler} logOut={this._logOut} />
 

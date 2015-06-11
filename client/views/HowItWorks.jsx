@@ -4,18 +4,19 @@ var HowItWorks = React.createClass({
 
   render : function() {
     return (
-      <div className="container-fluid bottom-fill">
-        <div className="col-md-4">
-          <img></img>
-          <h3>1. Search for recipes based on preferences</h3>
+      <div className="how-it-works-container">
+        <h1 className="default-header">How it works</h1>
+        <div className="col-md-4 step">
+          <span className="glyphicon glyphicon-search" aria-hidden="true"></span>
+          <p className="step-text">1. Search for recipes based on preferences</p>
         </div>
-        <div className="col-md-4">
-          <img></img>
-          <h3>2. Review recipes and confirm meals</h3>
+        <div className="col-md-4 step">
+          <span className="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
+          <p className="step-text">2. Review recipes and confirm meals</p>
         </div>
-        <div className="col-md-4">
-          <img></img>
-          <h3>3. Generate list of ingredients for purchase</h3>
+        <div className="col-md-4 step">
+          <span className="glyphicon glyphicon-list-alt" aria-hidden="true"></span>
+          <p className="step-text">3. Generate list of ingredients for purchase</p>
         </div>
       </div>
     );
