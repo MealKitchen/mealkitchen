@@ -42,7 +42,6 @@ module.exports = function(grunt) {
       dist: {
         src: [
           'client/lib/react/react.js',
-          'client/lib/react-router/build/umd/ReactRouter.js',
           'client/lib/underscore/underscore.js',
           'client/lib/jquery/dist/jquery.js',
           'client/lib/backbone/backbone.js',
