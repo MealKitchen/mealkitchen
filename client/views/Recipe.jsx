@@ -20,17 +20,17 @@ var Recipe = React.createClass({
     imgUrl = imgUrl.substring(0, imgUrl.length - 2) + '400';
     var bgStyle = {
       backgroundImage: 'url(' + imgUrl + ')',
-      backgroundSize: 'cover',
-      height: '250px'
     };
 
     return (
-      <div className="thumbnail recipeContainer col-md-2" style={bgStyle} key={this.props.recipe}>
-        <div className={this.state.forReview ? 'show' : 'hide'} >
-          <button type='button' className="btn btn-default" onClick={this._navigateToRecipe}>View</button>
-          <button type='button' className="btn btn-default" data-position={this.props.position} data-collection={this.props.collection} onClick={this.props.rejectRecipe}>Reject</button>
+      <div className="thumbnail recipe-preview col-md-2" style={bgStyle} key={this.props.recipe}>
+        <div className={this.state.forReview ? 'show review-buttons' : 'hide'} >
+          <button type='button' className="btn btn-default btn-small" onClick={this._navigateToRecipe}>View</button>
+          <button type='button' className="btn btn-default btn-small" data-position={this.props.position} data-collection={this.props.collection} onClick={this.props.rejectRecipe}>Reject</button>
         </div>
-        <div className="recipe recipeName">{this.props.recipe.get('recipeName')}</div>
+        <div className="overlay">
+          <p className="overlay-title">{this.props.recipe.get('recipeName')}</p>
+        </div>
       </div>
     );
   }

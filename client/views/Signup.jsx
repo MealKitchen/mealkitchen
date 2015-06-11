@@ -42,16 +42,16 @@ var SignUp = React.createClass({
         <h2 className="heading">Sign Up</h2>
           <form onSubmit={this.handleSignUp}>
             <div className="form-group">
-              <label htmlFor="email">Email</label>
+              <label className="input-label" htmlFor="email">Email</label>
               <input className="form-control" type="text" name="email" placeholder="Enter email" onChange={this.handleEmailChange} />
             </div>
             <div className="form-group">
-              <label htmlFor="password">Password</label>
+              <label className="input-label" htmlFor="password">Password</label>
               <input className="form-control" type="password" name="password" placeholder="Enter password" onChange={this.handlePasswordChange}/>
             </div>
             <input type="submit" className="btn btn-right pull-right" value="Sign Up"></input>
           </form>
-          <p>Already have an account with us? <a href="/#/login">Login here.</a></p>
+          <p className="suggested-action">Already have an account with us? <a href="/#/login">Login here.</a></p>
         </div>
       </div>
     );

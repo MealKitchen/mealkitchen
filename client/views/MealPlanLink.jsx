@@ -30,15 +30,17 @@ var MealPlanLink = React.createClass({
 
     var bgStyle = {
       backgroundImage: 'url(' + imgUrl + ')',
-      backgroundSize: 'cover',
-      height: '250px'
     };
 
     return (
-      <div style={bgStyle} className="col-md-3 thumbnail " >
-        <h3>{this.state.title}</h3>
-        <p>{this.state.breakfasts.length} B | {this.state.lunches.length} L | {this.state.dinners.length} D </p>
-      </div>
+      <a href="#">
+        <div style={bgStyle} className="col-md-3 thumbnail meal-plan-preview">
+          <div className="overlay">
+            <p className="overlay-title">{this.state.title}</p>
+            <p className="overlay-text">{this.state.breakfasts.length} B | {this.state.lunches.length} L | {this.state.dinners.length} D </p>
+          </div>
+        </div>
+      </a>
     );
   }
 });
