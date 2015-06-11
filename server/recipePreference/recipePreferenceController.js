@@ -16,7 +16,7 @@ module.exports = {
       'bitter': preference.bitter,
       'meaty': preference.meaty,
       'piquant': preference.piquant,
-      //'course': preference.course
+      'course': preference.course
     }).save().then(function(recipePreference){
       console.log('Saved recipe Preference to db');
     }).catch(function(err){
