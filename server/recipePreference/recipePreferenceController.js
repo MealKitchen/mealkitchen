@@ -6,8 +6,6 @@ var Recipe = require('../recipe/recipeModel');
 module.exports = {
 
   savePreference: function(request){
-    console.log("savePreference request: ", request);
-    console.log("savePreference request.body: ", request.body);  
     var preference = request.body;
     new RecipePreference({
       'userId': preference.userId,
