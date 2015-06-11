@@ -157,7 +157,7 @@ var Query = React.createClass({
               </select>
             </div>
 
-            <input type="submit" value="Create Plan" className="btn btn-primary btn-medium col-md-3" />
+            <input type="submit" value="Create Plan" className="btn btn-primary btn-medium" />
 
           </div>
 
