@@ -19,8 +19,6 @@ catch (e) {
 }
 
 var writeQueries = function(queryModel, userFlavorPrefs){
-  console.log('writeQueries queryModel', queryModel);
-  //console.log('writeQueries userFlavorPrefs', userFlavorPrefs);
   var allowedAllergyList = queryModel.allowedAllergies;
   var allowedCuisineList = queryModel.allowedCuisines;
   var allowedDietList = queryModel.allowedDiet;
@@ -34,7 +32,6 @@ var writeQueries = function(queryModel, userFlavorPrefs){
   var numBreakfasts = queryModel.numBreakfasts && queryModel.numBreakfasts + 10;
   var numLunches =  queryModel.numLunches && queryModel.numLunches + 10;
   var numDinners =  queryModel.numDinners && queryModel.numDinners + 10;
-
 
   //will likely have to track additional requests for each course
   var start = queryModel.additionalRequest ? queryModel.totalRecipesRequested : 0;
@@ -89,8 +86,6 @@ var writeQueries = function(queryModel, userFlavorPrefs){
   var breakfastPrefs = userFlavorPrefs[0];
   var lunchPrefs = userFlavorPrefs[1];
   var dinnerPrefs = userFlavorPrefs[2];
-
-  console.log("lunchPrefs: ", lunchPrefs);
 
   var breakfastRangeString = 
   "&flavor.salty.min=" + breakfastPrefs.salty[0] + "&flavor.salty.max=" + breakfastPrefs.salty[1] +
