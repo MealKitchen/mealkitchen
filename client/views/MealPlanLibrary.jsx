@@ -37,7 +37,7 @@ var MealPlanLibrary = React.createClass({
         <div className="row">
           <div className="col-md-3 thumbnail meal-plan-preview create-meal-plan" data-route='/query' onClick={this.props.linkHandler}>
             <span className="glyphicon glyphicon-plus" aria-hidden="true"></span>
-            <p className="overlay-text">Create New Meal Plan</p>
+            <p className="overlay-title">Create New Meal Plan</p>
           </div>
           {this.state.mealPlans.map(function(mealPlan, i) {
               return (

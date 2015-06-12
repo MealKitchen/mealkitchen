@@ -253,12 +253,14 @@ p.suggested-action {
 .recipe-preview {
   padding: 0px;
   height: 250px;
+  width: 170px;
   margin-right: 25px;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
   background-size: cover;
   background-position: center;
+  cursor: pointer;
 }
 
 .overlay {
@@ -301,20 +303,35 @@ p.suggested-action {
   width: 300px;
   padding: 0px;
   text-align: center;
-  margin: 30px
-}
-
-
-
-select {
-  max-width: 250px;
+  margin: 30px;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  background-position: center;
+  cursor: pointer;
 }
 
 span.glyphicon-plus {
   font-size: 3em;
   margin: 0 auto;
   display: table;
-  top: 35%;
+  top: 43%;
+}
+
+.create-meal-plan {
+  background-color: rgba(169, 169, 169, 0.41);
+}
+
+.create-meal-plan > p {
+  bottom: 5%;
+  width: 100%;
+  text-align: center;
+  position: absolute;
+}
+
+select {
+  max-width: 250px;
 }
 
 
