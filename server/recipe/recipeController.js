@@ -273,123 +273,39 @@ var saveRecipe = function(recipe, course){
   });
 }
 
-var createUserFlavorProf = function(preferences) {
 
-  return new Promise(function(resolve, reject) {
-
-    var saltyTotal = 0;
-    var sourTotal = 0;
-    var sweetTotal = 0;
-    var bitterTotal = 0;
-    var meatyTotal = 0;
-    var piquantTotal = 0;
-    var counter = 0;
-
-    for (var i = 0; i < preferences.length; i++){
-      var preferenceAttr = preferences[i].attributes;
-      if (preferenceAttr.salty && preferenceAttr.sour && preferenceAttr.sweet && preferenceAttr.bitter && preferenceAttr.meaty && preferenceAttr.piquant) {
-
-        saltyTotal += preferenceAttr.salty;
-        sourTotal += preferenceAttr.sour;
-        sweetTotal += preferenceAttr.sweet;
-        bitterTotal += preferenceAttr.bitter;
-        meatyTotal += preferenceAttr.meaty;
-        piquantTotal += preferenceAttr.piquant;
-        counter++;
-      }
-    }
-
-    var saltyAvg = saltyTotal / counter;
-    var sourAvg = sourTotal / counter;
-    var sweetAvg = sweetTotal / counter;
-    var bitterAvg = bitterTotal / counter;
-    var meatyAvg = meatyTotal / counter;
-    var piquantAvg = piquantTotal / counter;
-
-    var TOLERANCE = 0.45;
-
-    userFlavorPrefs = {
-      "salty": [(saltyAvg - TOLERANCE) > 0 ? saltyAvg - TOLERANCE : 0, (saltyAvg + TOLERANCE) < 1 ? saltyAvg + TOLERANCE : 1],
-      "sour": [(sourAvg - TOLERANCE) > 0 ? sourAvg - TOLERANCE : 0, (sourAvg + TOLERANCE) < 1 ? sourAvg + TOLERANCE : 1],
-      "sweet": [(sweetAvg - TOLERANCE) > 0 ? sweetAvg - TOLERANCE : 0, (sweetAvg + TOLERANCE) < 1 ? sweetAvg + TOLERANCE : 1],
-      "bitter": [(bitterAvg - TOLERANCE) > 0 ? bitterAvg - TOLERANCE : 0, (bitterAvg + TOLERANCE) < 1 ? bitterAvg + TOLERANCE : 1],
-      "meaty": [(meatyAvg - TOLERANCE) > 0 ? meatyAvg - TOLERANCE : 0, (meatyAvg + TOLERANCE) < 1 ? meatyAvg + TOLERANCE : 1],
-      "piquant": [(piquantAvg - TOLERANCE) > 0 ? piquantAvg - TOLERANCE : 0, (piquantAvg + TOLERANCE) < 1 ? piquantAvg + 0.15 : 1]
-    };
-
-    resolve(userFlavorPrefs);
-  })
-
-};
-
-var getUserFlavorPrefs = function (userid) {
-
-  return new Promise(function(resolve, reject) {
-    var userFlavorPrefs = {};
-
-    var breakfastPrefs = [];
-    var lunchPrefs = [];
-    var dinnerPrefs = [];
-
-    RecipePreferenceController.getUserPreferences(userid).then(function(preferences){
-
-      for (var i = 0; i < preferences.length; i++) {
-        var course = preferences[i].attributes.course;
-        if (course === "breakfast" || course === "Breakfast and Brunch") {
-          breakfastPrefs.push(preferences[i]);
-        } else if (course === "lunch" || course === "Lunch and Snacks") {
-          lunchPrefs.push(preferences[i]);
-        } else if (course === "dinner" || course === "Main Dishes") {
-          dinnerPrefs.push(preferences[i]);
-        }
-      } 
-
-      Promise.all([
-        createUserFlavorProf(breakfastPrefs),
-        createUserFlavorProf(lunchPrefs),
-        createUserFlavorProf(dinnerPrefs)
-      ])
-      .then(function(userFlavorPrefs) {
-        resolve(userFlavorPrefs);
-      })
-    });
-  })
-  
-};
 
 module.exports = {
 
-  createRecipes: function (queryModel, userid) {
+  createRecipes: function (queryModel, userCourseFlavorPreferences) {
 
     return new Promise(function(resolve, reject){
 
-      getUserFlavorPrefs(userid).then(function(userFlavorPrefs){
-        var queries = writeQueries(queryModel, userFlavorPrefs);
+      var queries = writeQueries(queryModel, userCourseFlavorPreferences);
 
-        //if course has 0 meals, that query will result in empty string
+      //if course has 0 meals, that query will result in empty string
 
-        Promise.all([
-          queryYummly(queries.breakfastQuery),
-          queryYummly(queries.lunchQuery),
-          queryYummly(queries.dinnerQuery)
-        ])
-        .then(function(results){
-          //resolved value will be empty array if empty string is passed in
-          var breakfasts = results[0] || results[0].matches;
-          var lunches = results[1] || results[1].matches;
-          var dinners = results[2] || results[2].matches;
-          resolve({
-            'breakfastRecipes': breakfasts,
-            'lunchRecipes': lunches,
-            'dinnerRecipes': dinners
-          });
-
-        })
-        .catch(function(error){
-          reject({'error': error});
+      Promise.all([
+        queryYummly(queries.breakfastQuery),
+        queryYummly(queries.lunchQuery),
+        queryYummly(queries.dinnerQuery)
+      ])
+      .then(function(results){
+        //resolved value will be empty array if empty string is passed in
+        var breakfasts = results[0] || results[0].matches;
+        var lunches = results[1] || results[1].matches;
+        var dinners = results[2] || results[2].matches;
+        resolve({
+          'breakfastRecipes': breakfasts,
+          'lunchRecipes': lunches,
+          'dinnerRecipes': dinners
         });
 
+      })
+      .catch(function(error){
+        reject({'error': error});
       });
+
     });
   },
 
