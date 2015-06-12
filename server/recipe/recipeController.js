@@ -90,6 +90,8 @@ var writeQueries = function(queryModel, userFlavorPrefs){
   var lunchPrefs = userFlavorPrefs[1];
   var dinnerPrefs = userFlavorPrefs[2];
 
+  console.log("lunchPrefs: ", lunchPrefs);
+
   var breakfastRangeString = 
   "&flavor.salty.min=" + breakfastPrefs.salty[0] + "&flavor.salty.max=" + breakfastPrefs.salty[1] +
   "&flavor.sour.min=" + breakfastPrefs.sour[0] + "&flavor.sour.max=" + breakfastPrefs.sour[1] +
@@ -106,6 +108,7 @@ var writeQueries = function(queryModel, userFlavorPrefs){
   "&flavor.meaty.min=" + lunchPrefs.meaty[0] + "&flavor.meaty.max=" + lunchPrefs.meaty[1] +
   "&flavor.piquant.min=" + lunchPrefs.piquant[0] + "&flavor.piquant.max=" + lunchPrefs.piquant[1];
 
+
   var dinnerRangeString = 
   "&flavor.salty.min=" + dinnerPrefs.salty[0] + "&flavor.salty.max=" + dinnerPrefs.salty[1] +
   "&flavor.sour.min=" + dinnerPrefs.sour[0] + "&flavor.sour.max=" + dinnerPrefs.sour[1] +
@@ -114,6 +117,8 @@ var writeQueries = function(queryModel, userFlavorPrefs){
   "&flavor.meaty.min=" + dinnerPrefs.meaty[0] + "&flavor.meaty.max=" + dinnerPrefs.meaty[1] +
   "&flavor.piquant.min=" + dinnerPrefs.piquant[0] + "&flavor.piquant.max=" + dinnerPrefs.piquant[1];
 
+
+  // &flavor.sweet.min=0.8&flavor.sweet.max=1
 
   breakfastQueryString = numBreakfasts > 0 ?
     "http://api.yummly.com/v1/api/recipes?_app_id=" + appId +
@@ -162,6 +167,7 @@ var queryYummly = function(queryString){
 
         yummlyResponse.on('end', function () {
           results = JSON.parse(str);
+          console.log("queryYummly results: ", results);
           resolve(results.matches);
 
         });
@@ -314,12 +320,12 @@ var createUserFlavorProf = function(preferences) {
     var piquantAvg = piquantTotal / counter;
 
     userFlavorPrefs = {
-      "salty": [(saltyAvg - 0.1) > 0 ? saltyAvg - 0.1 : 0, (saltyAvg + 0.1) < 1 ? saltyAvg + 0.1 : 1],
-      "sour": [(sourAvg - 0.1) > 0 ? sourAvg - 0.1 : 0, (sourAvg + 0.1) < 1 ? sourAvg + 0.1 : 1],
-      "sweet": [(sweetAvg - 0.1) > 0 ? sweetAvg - 0.1 : 0, (sweetAvg + 0.1) < 1 ? sweetAvg + 0.1 : 1],
-      "bitter": [(bitterAvg - 0.1) > 0 ? bitterAvg - 0.1 : 0, (bitterAvg + 0.1) < 1 ? bitterAvg + 0.1 : 1],
-      "meaty": [(meatyAvg - 0.1) > 0 ? meatyAvg - 0.1 : 0, (meatyAvg + 0.1) < 1 ? meatyAvg + 0.1 : 1],
-      "piquant": [(piquantAvg - 0.1) > 0 ? piquantAvg - 0.1 : 0, (piquantAvg + 0.1) < 1 ? piquantAvg + 0.1 : 1]
+      "salty": [(saltyAvg - 0.15) > 0 ? saltyAvg - 0.15 : 0, (saltyAvg + 0.15) < 1 ? saltyAvg + 0.15 : 1],
+      "sour": [(sourAvg - 0.15) > 0 ? sourAvg - 0.15 : 0, (sourAvg + 0.15) < 1 ? sourAvg + 0.15 : 1],
+      "sweet": [(sweetAvg - 0.15) > 0 ? sweetAvg - 0.15 : 0, (sweetAvg + 0.15) < 1 ? sweetAvg + 0.15 : 1],
+      "bitter": [(bitterAvg - 0.15) > 0 ? bitterAvg - 0.15 : 0, (bitterAvg + 0.15) < 1 ? bitterAvg + 0.15 : 1],
+      "meaty": [(meatyAvg - 0.15) > 0 ? meatyAvg - 0.15 : 0, (meatyAvg + 0.15) < 1 ? meatyAvg + 0.15 : 1],
+      "piquant": [(piquantAvg - 0.15) > 0 ? piquantAvg - 0.15 : 0, (piquantAvg + 0.15) < 1 ? piquantAvg + 0.15 : 1]
     };
     
     resolve(userFlavorPrefs);
