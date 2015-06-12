@@ -8,68 +8,9 @@ var lib = require('../config/libraries');
 var MealPlan = require('../mealPlan/mealPlanModel');
 var utils = require('../config/utility');
 
-var appId, apiKey;
-try {
-  appId = process.env.APPLICATION_ID || require('../config/config.js').APPLICATION_ID;
-  apiKey = process.env.APPLICATION_KEY || require('../config/config.js').APPLICATION_KEY;
-} 
-catch (e) {
-  appId = 12345;
-  apiKey = 98765;
-}
-
-var writeQueries = function(queryModel, userFlavorPrefs){
 
 
-// refer to as initial data
-
-// Query Data extraction
-var filterQueryString = utils.query.filter()
-
-  var start = queryModel.additionalRequest ? queryModel.totalRecipesRequested : 0;
-
-  var amoutOfCourse = {
-    'Breakfast': queryModel.numBreakfasts*1 && queryModel*1.numBreakfasts + 10,
-    'Lunch': queryModel.numLunches*1 && queryModel.numLunches*1 + 10,
-    'Dinner': queryModel.numDinners*1 && queryModel.numDinners*1 + 10  
-  }
-
-    //if value is present
-  var allergyQuery =  queryModel.allowedAllergies ?
-                                utils.query.filterValue( queryModel.allowedAllergies, 'Allergy' )
-                                : "";
-
-  var dietQuery = queryModel.allowedCuisines ?
-                                utils.query.filterValue( queryModel.allowedCuisines, 'Cuisine' )
-                                : "";
-  var cuisineQuery = queryModel.allowedDiet  ?
-                                utils.query.filterValue( queryModel.allowedDiet, 'Diet' )
-    : "";
-
-  var filterQueryString = allergyQuery + dietQuery + cuisineQuery;
-
-  var courseStrings = [];
-
-  var coursesForQuery = ['Breakfast', 'Lunch', 'Dinner']
-
-  for(var i = 0; i < course.length; i++){
-    var courseQueryString = utils.query.course()
-
-      filterQueryStr +
-
-      utils.query.courseflavorRange( userFlavorPrefs[i])
-
-      + "&allowedCourse[]=" + lib.course.[coursesForQuery[i]] + "&requirePictures=true" +
-      "&maxResult=" + numBreakfasts + "&start=" + start;
-    courseStrings.push(courseString);
-  }
-
-  return {
-    "breakfastRecipes": courseStrings[0]
-  }
-
-};
-
+//GET to yummlySearchQuery
 var queryYummly = function(queryString){
 
   return new Promise(function(resolve, reject){
@@ -102,13 +43,13 @@ var queryYummly = function(queryString){
   });
 };
 
+//GET individual recipe from yummly
 var getToYummlyById = function(recipeId){
   return new Promise(function(resolve, reject){
     var str = "";
     var recipe;
 
-    var query = "http://api.yummly.com/v1/api/recipe/" + recipeId +
-    "?_app_id=" + appId + "&_app_key=" + apiKey;
+    var query =  utils.query.yummlyGetById(recipeId);
 
     http.get(query, function(yummlyResponse) {
 
@@ -129,7 +70,9 @@ var getToYummlyById = function(recipeId){
   });
 }
 
-//fetch recipe from database first or from yummly if not found
+//fetch recipe information
+// try database first
+// else GETbyId to yummly
 var fetchRecipeById = function (recipeId) {
   return new Promise(function(resolve, reject){
     new Recipe({matchId: recipeId}).fetch().then(function(found){
@@ -216,8 +159,7 @@ module.exports = {
 
     return new Promise(function(resolve, reject){
 
-      var queries = writeQueries(queryModel, userCourseFlavorPreferences);
-
+      var queries = utils.query.createInitialCourseQueries(queryModel, userCourseFlavorPreferences);
       //if course has 0 meals, that query will result in empty string
 
       Promise.all([
@@ -230,6 +172,7 @@ module.exports = {
         var breakfasts = results[0] || results[0].matches;
         var lunches = results[1] || results[1].matches;
         var dinners = results[2] || results[2].matches;
+
         resolve({
           'breakfastRecipes': breakfasts,
           'lunchRecipes': lunches,

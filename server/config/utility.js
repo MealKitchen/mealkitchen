@@ -1,5 +1,15 @@
 var lib = require('../config/libraries');
 
+var appId, apiKey;
+try {
+  appId = process.env.APPLICATION_ID || require('../config/config.js').APPLICATION_ID;
+  apiKey = process.env.APPLICATION_KEY || require('../config/config.js').APPLICATION_KEY;
+} 
+catch (e) {
+  appId = 12345;
+  apiKey = 98765;
+}
+
 exports.createSession = function(req, res, newUser) {
   return req.session.regenerate(function() {
       req.session.user = newUser;
@@ -53,32 +63,124 @@ exports.getObjectRecipeIds = function(obj){
 }
 
 
+//Yummly API Queries
 exports.query = {
 
-  course: function(numMeals, course){
+  //gets initial recipes for potential 3 course mealPlan
+  createInitialCourseQueries: function(queryModel, userFlavorPrefs){
+
+    var numCourseMeals = [
+      queryModel.numBreakfasts*1 && queryModel.numBreakfasts*1 + 10,
+      queryModel.numLunches*1 && queryModel.numLunches*1 + 10,
+      queryModel.numDinners*1 && queryModel.numDinners*1 + 10
+    ],
+
+    coursesForQuery = [
+    'Breakfast',
+    'Lunch',
+    'Dinner'
+    ],
+
+    filterQueryString = exports.query.filterForCourses(queryModel),
+    courseStrings = [],
+    courseQueryString;
+
+    //iterates through and creates 3 queries
+    //0 -> Breakfast
+    //1 -> Lunch
+    //2 -> Dinner
+    for(var i = 0; i < coursesForQuery.length; i++){
+
+      if(numCourseMeals[i]){
+        //course has meals
+        courseQueryString =
+
+          exports.query.yummlySearchValidation() +
+
+          filterQueryString +
+
+          exports.query.courseFlavorRange( userFlavorPrefs[i]) +
+
+          "&allowedCourse[]=" + lib.course[coursesForQuery[i]] + "&requirePictures=true" +
+
+          "&maxResult=" + numCourseMeals[i] + "&start=" + 0;
+      }
+      else
+        courseQueryString = "";
+
+      courseStrings.push(courseQueryString);
+    }
+
+    return {
+      "breakfastQuery": courseStrings[0],
+      "lunchQuery": courseStrings[1],
+      "dinnerQuery": courseStrings[2]
+    }
 
   },
+
+  //creates filter query from query Model
+  //allergy, diet, cuisine settings
+  filterForCourses: function(queryModel){
+
+      //if value is present
+    var allergyQuery =  queryModel.allowedAllergies ?
+                          exports.query.filterValue( queryModel.allowedAllergies, 'Allergy' )
+                          : "";
+
+    var dietQuery = queryModel.allowedCuisines ?
+                          exports.query.filterValue( queryModel.allowedCuisines, 'Cuisine' )
+                          : "";
+    var cuisineQuery = queryModel.allowedDiet  ?
+                          exports.query.filterValue( queryModel.allowedDiet, 'Diet' )
+                          : "";
+
+    return allergyQuery + dietQuery + cuisineQuery;
+  },
+
+  //start of yummly search Query
+  yummlySearchValidation: function(){
+    return "http://api.yummly.com/v1/api/recipes?_app_id=" + appId +
+    "&_app_key=" + apiKey;
+  },
+
+  //get query for individual recipes
+  yummlyGetById: function(recipeId){
+    return  "http://api.yummly.com/v1/api/recipe/" + recipeId +
+    "?_app_id=" + appId + "&_app_key=" + apiKey;
+  },
+
   //compute query flavor range
-  courseflavorRange: function(range){
+  courseFlavorRange: function(range){
     var queryStr = '', profile = ['salty', 'sour', 'sweet', 'bitter', 'meaty', 'piquant'];
 
-    for(var flavor in profile){
-        queryStr += '&flavor.' + flavor +'.min' + range[0] + '&flavor.salty.max=' + range[1]
+    for(var flavor = 0; flavor < profile.length; flavor++){
+        queryStr += '&flavor.' + profile[flavor] +'.min=' + range[profile[flavor]][0] + '&flavor.'
+          + profile[flavor] + '.max=' + range[profile[flavor]][1];
     }
-    console.log(queryStr)
+
     return queryStr;
   },
-  //figure out filter profile
-  filterValue: function(filtervalue){
+  //figure out filter query
+  filterValue: function(allowedValueList, filterValue){
+    var filterQueryString =  "&allowed" + filterValue + "[]=", oneFilterValue = false;
 
-    var filterQueryString =  "&allowed" + value + "[]=&", first = true;
+    var libraryName = 'allowed' + filterValue + 'Library';
+    var keys = Object.keys(allowedValueList)
+    for (var i = 0; i < keys.length; i++) {
+      var key = keys[i];
+      if(allowedValueList[key]){
 
-    var libraryName = 'allowed'+Value+'Library'
-    for (var key in allowedValueList) {
+        if(oneFilterValue){
+          filterQueryString += '+';
+        }
 
-      filterQueryString += lib[libraryName][key];
+        filterQueryString += lib[libraryName][key];
+        oneFilterValue = true;
+      }
     }
-    return filterQueryString;
+    return oneFilterValue ? filterQueryString: '';
   }
 
 }
+
