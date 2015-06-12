@@ -306,15 +306,15 @@ var createUserFlavorProf = function(preferences) {
     var meatyAvg = meatyTotal / counter;
     var piquantAvg = piquantTotal / counter;
 
-    var tolerance = .45;
+    var TOLERANCE = .45;
 
     userFlavorPrefs = {
-      "salty": [(saltyAvg - tolerance) > 0 ? saltyAvg - tolerance : 0, (saltyAvg + tolerance) < 1 ? saltyAvg + tolerance : 1],
-      "sour": [(sourAvg - tolerance) > 0 ? sourAvg - tolerance : 0, (sourAvg + tolerance) < 1 ? sourAvg + tolerance : 1],
-      "sweet": [(sweetAvg - tolerance) > 0 ? sweetAvg - tolerance : 0, (sweetAvg + tolerance) < 1 ? sweetAvg + tolerance : 1],
-      "bitter": [(bitterAvg - tolerance) > 0 ? bitterAvg - tolerance : 0, (bitterAvg + tolerance) < 1 ? bitterAvg + tolerance : 1],
-      "meaty": [(meatyAvg - tolerance) > 0 ? meatyAvg - tolerance : 0, (meatyAvg + tolerance) < 1 ? meatyAvg + tolerance : 1],
-      "piquant": [(piquantAvg - tolerance) > 0 ? piquantAvg - tolerance : 0, (piquantAvg + tolerance) < 1 ? piquantAvg + 0.15 : 1]
+      "salty": [(saltyAvg - TOLERANCE) > 0 ? saltyAvg - TOLERANCE : 0, (saltyAvg + TOLERANCE) < 1 ? saltyAvg + TOLERANCE : 1],
+      "sour": [(sourAvg - TOLERANCE) > 0 ? sourAvg - TOLERANCE : 0, (sourAvg + TOLERANCE) < 1 ? sourAvg + TOLERANCE : 1],
+      "sweet": [(sweetAvg - TOLERANCE) > 0 ? sweetAvg - TOLERANCE : 0, (sweetAvg + TOLERANCE) < 1 ? sweetAvg + TOLERANCE : 1],
+      "bitter": [(bitterAvg - TOLERANCE) > 0 ? bitterAvg - TOLERANCE : 0, (bitterAvg + TOLERANCE) < 1 ? bitterAvg + TOLERANCE : 1],
+      "meaty": [(meatyAvg - TOLERANCE) > 0 ? meatyAvg - TOLERANCE : 0, (meatyAvg + TOLERANCE) < 1 ? meatyAvg + TOLERANCE : 1],
+      "piquant": [(piquantAvg - TOLERANCE) > 0 ? piquantAvg - TOLERANCE : 0, (piquantAvg + TOLERANCE) < 1 ? piquantAvg + 0.15 : 1]
     };
 
     resolve(userFlavorPrefs);
