@@ -55,7 +55,7 @@ exports.getObjectRecipeIds = function(obj){
 
 exports.query = {
 
-  course: function(numMeals, filterValues){
+  course: function(numMeals, course){
 
   },
   //compute query flavor range
