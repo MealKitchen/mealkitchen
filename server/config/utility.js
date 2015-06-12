@@ -82,17 +82,17 @@ exports.query = {
       queryModel.numBreakfasts*1 && queryModel.numBreakfasts*1 + 10,
       queryModel.numLunches*1 && queryModel.numLunches*1 + 10,
       queryModel.numDinners*1 && queryModel.numDinners*1 + 10
-    ],
+    ];
 
-    coursesForQuery = [
-    'Breakfast',
-    'Lunch',
-    'Dinner'
-    ],
+    var coursesForQuery = [
+      'Breakfast',
+      'Lunch',
+      'Dinner'
+    ];
 
-    filterQueryString = exports.query.filterForCourses(queryModel),
-    courseStrings = [],
-    courseQueryString;
+    var filterQueryString = exports.query.filterForCourses(queryModel);
+    var courseStrings = [];
+    var courseQueryString;
 
     //iterates through and creates 3 queries
     //0 -> Breakfast
@@ -119,6 +119,8 @@ exports.query = {
 
       courseStrings.push(courseQueryString);
     }
+
+    console.log('BFAST', courseStrings[0], 'LUNCH', courseStrings[1], 'DINNER', courseStrings[2]);
 
     return {
       "breakfastQuery": courseStrings[0],
@@ -172,23 +174,22 @@ exports.query = {
   },
   //figure out filter query
   filterValue: function(allowedValueList, filterValue){
-    var filterQueryString =  "&allowed" + filterValue + "[]=", oneFilterValue = false;
-
+    var filterQueryString = '';
+    var baseUnit = '&allowed' + filterValue + '%5B%5D=';
     var libraryName = 'allowed' + filterValue + 'Library';
     var keys = Object.keys(allowedValueList)
+
     for (var i = 0; i < keys.length; i++) {
       var key = keys[i];
       if(allowedValueList[key]){
-
-        if(oneFilterValue){
-          filterQueryString += '+';
+        filterQueryString += baseUnit + lib[libraryName][key];
+        if(i < keys.length - 1){
+          filterQueryString += '&';
         }
-
-        filterQueryString += lib[libraryName][key];
-        oneFilterValue = true;
       }
     }
-    return oneFilterValue ? filterQueryString: '';
+
+    return keys.length > 0 ? filterQueryString : '';
   }
 
 }
