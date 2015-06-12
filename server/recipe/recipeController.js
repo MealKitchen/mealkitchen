@@ -108,7 +108,6 @@ var writeQueries = function(queryModel, userFlavorPrefs){
   "&flavor.meaty.min=" + lunchPrefs.meaty[0] + "&flavor.meaty.max=" + lunchPrefs.meaty[1] +
   "&flavor.piquant.min=" + lunchPrefs.piquant[0] + "&flavor.piquant.max=" + lunchPrefs.piquant[1];
 
-
   var dinnerRangeString = 
   "&flavor.salty.min=" + dinnerPrefs.salty[0] + "&flavor.salty.max=" + dinnerPrefs.salty[1] +
   "&flavor.sour.min=" + dinnerPrefs.sour[0] + "&flavor.sour.max=" + dinnerPrefs.sour[1] +
@@ -116,9 +115,6 @@ var writeQueries = function(queryModel, userFlavorPrefs){
   "&flavor.bitter.min=" + dinnerPrefs.bitter[0] + "&flavor.bitter.max=" + dinnerPrefs.bitter[1] +
   "&flavor.meaty.min=" + dinnerPrefs.meaty[0] + "&flavor.meaty.max=" + dinnerPrefs.meaty[1] +
   "&flavor.piquant.min=" + dinnerPrefs.piquant[0] + "&flavor.piquant.max=" + dinnerPrefs.piquant[1];
-
-
-  // &flavor.sweet.min=0.8&flavor.sweet.max=1
 
   breakfastQueryString = numBreakfasts > 0 ?
     "http://api.yummly.com/v1/api/recipes?_app_id=" + appId +
@@ -137,10 +133,6 @@ var writeQueries = function(queryModel, userFlavorPrefs){
     "&_app_key=" + apiKey +
     queryString + dinnerRangeString + "&allowedCourse[]=" + lib.course.Dinner + "&requirePictures=true" +
     "&maxResult=" + numDinners + "&start=" + start : "";
-
-  console.log("breakfastQuery: ", breakfastQueryString);
-  console.log("lunchQuery: ", lunchQueryString);
-  console.log("dinnerQuery: ", dinnerQueryString);
 
   return {
     'breakfastQuery': breakfastQueryString,
@@ -167,7 +159,6 @@ var queryYummly = function(queryString){
 
         yummlyResponse.on('end', function () {
           results = JSON.parse(str);
-          console.log("queryYummly results: ", results);
           resolve(results.matches);
 
         });
@@ -343,8 +334,6 @@ var getUserFlavorPrefs = function (userid) {
     var dinnerPrefs = [];
 
     RecipePreferenceController.getUserPreferences(userid).then(function(preferences){
-      console.log("getUserFlavorPrefs results: ", preferences);
-
 
       for (var i = 0; i < preferences.length; i++) {
         var course = preferences[i].attributes.course;
@@ -363,7 +352,6 @@ var getUserFlavorPrefs = function (userid) {
         createUserFlavorProf(dinnerPrefs)
       ])
       .then(function(userFlavorPrefs) {
-        //console.log("userFlavorPrefs: ", userFlavorPrefs);
         resolve(userFlavorPrefs);
       })
     });
@@ -373,7 +361,6 @@ var getUserFlavorPrefs = function (userid) {
 
 module.exports = {
 
-
   createRecipes: function (queryModel, userid) {
 
     return new Promise(function(resolve, reject){
@@ -382,7 +369,6 @@ module.exports = {
         var queries = writeQueries(queryModel, userFlavorPrefs);
       
         //if course has 0 meals, that query will result in empty string
-        //var queries = writeQueries(queryModel, userFlavorPrefs);
 
         Promise.all([
           queryYummly(queries.breakfastQuery),
