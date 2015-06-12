@@ -112,7 +112,7 @@ module.exports = {
     });
   },
 
-  userFlavorProfileFromPrefrences: function (preferences) {
+  userFlavorProfileFromPreferences: function (preferences) {
 
     return new Promise(function(resolve, reject) {
       var userFlavorPrefs = {};

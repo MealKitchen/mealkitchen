@@ -14,7 +14,7 @@ module.exports = {
     .then(function(userPreferences){
 
       //get user flavor profile from user preferences
-      recipePreferenceController.userFlavorProfileFromPrefrences(userPreferences)
+      recipePreferenceController.userFlavorProfileFromPreferences(userPreferences)
       .then(function(userCourseFlavorProfile){
 
         //create recipes for our user
