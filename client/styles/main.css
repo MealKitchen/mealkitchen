@@ -158,6 +158,11 @@ p.suggested-action {
   text-align: center;
 }
 
+.action-buttons > .btn {
+  width: 75px;
+  margin: 0 5px;
+}
+
 .review-buttons {
   opacity: 0;
   margin-top: 10px;
@@ -196,6 +201,7 @@ p.suggested-action {
   -moz-transition: 250ms ease-out;
   -o-transition: 250ms ease-out;
   transition: 250ms ease-out;
+  z-index: 100;
 }
 
 
