@@ -20,7 +20,7 @@ catch (e) {
 
 var writeQueries = function(queryModel, userFlavorPrefs){
   console.log('writeQueries queryModel', queryModel);
-  console.log('userFlavorPrefs')
+  //console.log('writeQueries userFlavorPrefs', userFlavorPrefs);
   var allowedAllergyList = queryModel.allowedAllergies;
   var allowedCuisineList = queryModel.allowedCuisines;
   var allowedDietList = queryModel.allowedDiet;
@@ -86,32 +86,56 @@ var writeQueries = function(queryModel, userFlavorPrefs){
     }
   }
 
-  // TO-DO: Add ranges to query for user preferences
-  // "&flavor.salty.min=" + 0.8 + "&flavor.salty.max=" + 1 +
-  // "&flavor.sour.min=" + 0.8 + "&flavor.sour.max=" + 1 +
-  // "&flavor.sweet.min=" + 0.8 + "&flavor.sweet.max=" + 1 +
-  // "&flavor.bitter.min=" + 0.8 + "&flavor.bitter.max=" + 1 +
-  // "&flavor.meaty.min=" + 0.8 + "&flavor.meaty.max=" + 1 +
-  // "&flavor.piquant.min=" + 0 + "&flavor.piquant.max=" + 0.2
+  var breakfastPrefs = userFlavorPrefs[0];
+  var lunchPrefs = userFlavorPrefs[1];
+  var dinnerPrefs = userFlavorPrefs[2];
+
+  var breakfastRangeString = 
+  "&flavor.salty.min=" + breakfastPrefs.salty[0] + "&flavor.salty.max=" + breakfastPrefs.salty[1] +
+  "&flavor.sour.min=" + breakfastPrefs.sour[0] + "&flavor.sour.max=" + breakfastPrefs.sour[1] +
+  "&flavor.sweet.min=" + breakfastPrefs.sweet[0] + "&flavor.sweet.max=" + breakfastPrefs.sweet[1] +
+  "&flavor.bitter.min=" + breakfastPrefs.bitter[0] + "&flavor.bitter.max=" + breakfastPrefs.bitter[1] +
+  "&flavor.meaty.min=" + breakfastPrefs.meaty[0] + "&flavor.meaty.max=" + breakfastPrefs.meaty[1] +
+  "&flavor.piquant.min=" + breakfastPrefs.piquant[0] + "&flavor.piquant.max=" + breakfastPrefs.piquant[1];
+
+  var lunchRangeString = 
+  "&flavor.salty.min=" + lunchPrefs.salty[0] + "&flavor.salty.max=" + lunchPrefs.salty[1] +
+  "&flavor.sour.min=" + lunchPrefs.sour[0] + "&flavor.sour.max=" + lunchPrefs.sour[1] +
+  "&flavor.sweet.min=" + lunchPrefs.sweet[0] + "&flavor.sweet.max=" + lunchPrefs.sweet[1] +
+  "&flavor.bitter.min=" + lunchPrefs.bitter[0] + "&flavor.bitter.max=" + lunchPrefs.bitter[1] +
+  "&flavor.meaty.min=" + lunchPrefs.meaty[0] + "&flavor.meaty.max=" + lunchPrefs.meaty[1] +
+  "&flavor.piquant.min=" + lunchPrefs.piquant[0] + "&flavor.piquant.max=" + lunchPrefs.piquant[1];
+
+  var dinnerRangeString = 
+  "&flavor.salty.min=" + dinnerPrefs.salty[0] + "&flavor.salty.max=" + dinnerPrefs.salty[1] +
+  "&flavor.sour.min=" + dinnerPrefs.sour[0] + "&flavor.sour.max=" + dinnerPrefs.sour[1] +
+  "&flavor.sweet.min=" + dinnerPrefs.sweet[0] + "&flavor.sweet.max=" + dinnerPrefs.sweet[1] +
+  "&flavor.bitter.min=" + dinnerPrefs.bitter[0] + "&flavor.bitter.max=" + dinnerPrefs.bitter[1] +
+  "&flavor.meaty.min=" + dinnerPrefs.meaty[0] + "&flavor.meaty.max=" + dinnerPrefs.meaty[1] +
+  "&flavor.piquant.min=" + dinnerPrefs.piquant[0] + "&flavor.piquant.max=" + dinnerPrefs.piquant[1];
 
 
   breakfastQueryString = numBreakfasts > 0 ?
     "http://api.yummly.com/v1/api/recipes?_app_id=" + appId +
     "&_app_key=" + apiKey +
-    queryString + "&allowedCourse[]=" + lib.course.Breakfast + "&requirePictures=true" +
+    queryString + breakfastRangeString + "&allowedCourse[]=" + lib.course.Breakfast + "&requirePictures=true" +
     "&maxResult=" + numBreakfasts + "&start=" + start : "";
 
   lunchQueryString = numLunches > 0 ?
     "http://api.yummly.com/v1/api/recipes?_app_id=" + appId +
     "&_app_key=" + apiKey +
-    queryString + "&allowedCourse[]=" + lib.course.Lunch + "&requirePictures=true" +
+    queryString + lunchRangeString + "&allowedCourse[]=" + lib.course.Lunch + "&requirePictures=true" +
     "&maxResult=" + numLunches + "&start=" + start : "";
 
   dinnerQueryString = numDinners > 0 ?
     "http://api.yummly.com/v1/api/recipes?_app_id=" + appId +
     "&_app_key=" + apiKey +
-    queryString + "&allowedCourse[]=" + lib.course.Dinner + "&requirePictures=true" +
+    queryString + dinnerRangeString + "&allowedCourse[]=" + lib.course.Dinner + "&requirePictures=true" +
     "&maxResult=" + numDinners + "&start=" + start : "";
+
+  console.log("breakfastQuery: ", breakfastQueryString);
+  console.log("lunchQuery: ", lunchQueryString);
+  console.log("dinnerQuery: ", dinnerQueryString);
 
   return {
     'breakfastQuery': breakfastQueryString,
@@ -256,51 +280,86 @@ var saveRecipe = function(recipe, course){
   });
 }
 
+var createUserFlavorProf = function(preferences) {
+
+  return new Promise(function(resolve, reject) {
+
+    var saltyTotal = 0;
+    var sourTotal = 0;
+    var sweetTotal = 0;
+    var bitterTotal = 0;
+    var meatyTotal = 0;
+    var piquantTotal = 0;
+    var counter = 0;
+
+    for (var i = 0; i < preferences.length; i++){
+      var preferenceAttr = preferences[i].attributes;
+      if (preferenceAttr.salty && preferenceAttr.sour && preferenceAttr.sweet && preferenceAttr.bitter && preferenceAttr.meaty && preferenceAttr.piquant) {
+        console.log('preference Attributes: ', preferenceAttr);
+        saltyTotal += preferenceAttr.salty;
+        sourTotal += preferenceAttr.sour;
+        sweetTotal += preferenceAttr.sweet;
+        bitterTotal += preferenceAttr.bitter;
+        meatyTotal += preferenceAttr.meaty;
+        piquantTotal += preferenceAttr.piquant;
+        counter++;
+      }
+    }
+
+    var saltyAvg = saltyTotal / counter;
+    var sourAvg = sourTotal / counter;
+    var sweetAvg = sweetTotal / counter;
+    var bitterAvg = bitterTotal / counter;
+    var meatyAvg = meatyTotal / counter;
+    var piquantAvg = piquantTotal / counter;
+
+    userFlavorPrefs = {
+      "salty": [(saltyAvg - 0.1) > 0 ? saltyAvg - 0.1 : 0, (saltyAvg + 0.1) < 1 ? saltyAvg + 0.1 : 1],
+      "sour": [(sourAvg - 0.1) > 0 ? sourAvg - 0.1 : 0, (sourAvg + 0.1) < 1 ? sourAvg + 0.1 : 1],
+      "sweet": [(sweetAvg - 0.1) > 0 ? sweetAvg - 0.1 : 0, (sweetAvg + 0.1) < 1 ? sweetAvg + 0.1 : 1],
+      "bitter": [(bitterAvg - 0.1) > 0 ? bitterAvg - 0.1 : 0, (bitterAvg + 0.1) < 1 ? bitterAvg + 0.1 : 1],
+      "meaty": [(meatyAvg - 0.1) > 0 ? meatyAvg - 0.1 : 0, (meatyAvg + 0.1) < 1 ? meatyAvg + 0.1 : 1],
+      "piquant": [(piquantAvg - 0.1) > 0 ? piquantAvg - 0.1 : 0, (piquantAvg + 0.1) < 1 ? piquantAvg + 0.1 : 1]
+    };
+    
+    resolve(userFlavorPrefs);
+  })
+
+};
+
 var getUserFlavorPrefs = function (userid) {
   
   return new Promise(function(resolve, reject) {
     var userFlavorPrefs = {};
 
+    var breakfastPrefs = [];
+    var lunchPrefs = [];
+    var dinnerPrefs = [];
+
     RecipePreferenceController.getUserPreferences(userid).then(function(preferences){
       console.log("getUserFlavorPrefs results: ", preferences);
-      var saltyTotal = 0;
-      var sourTotal = 0;
-      var sweetTotal = 0;
-      var bitterTotal = 0;
-      var meatyTotal = 0;
-      var piquantTotal = 0;
-      var counter = 0;
 
-      for (var i = 0; i < preferences.length; i++){
-        var preferenceAttr = preferences[i].attributes;
-        if (preferenceAttr.salty && preferenceAttr.sour && preferenceAttr.sweet && preferenceAttr.bitter && preferenceAttr.meaty && preferenceAttr.piquant) {
-          console.log('preference Attributes: ', preferenceAttr);
-          saltyTotal += preferenceAttr.salty;
-          sourTotal += preferenceAttr.sour;
-          sweetTotal += preferenceAttr.sweet;
-          bitterTotal += preferenceAttr.bitter;
-          meatyTotal += preferenceAttr.meaty;
-          piquantTotal += preferenceAttr.piquant;
-          counter++;
+
+      for (var i = 0; i < preferences.length; i++) {
+        var course = preferences[i].attributes.course;
+        if (course === "breakfast" || course === "Breakfast and Brunch") {
+          breakfastPrefs.push(preferences[i]);
+        } else if (course === "lunch" || course === "Lunch and Snacks") {
+          lunchPrefs.push(preferences[i]);
+        } else if (course === "dinner" || course === "Main Dishes") {
+          dinnerPrefs.push(preferences[i]);
         }
-      }
+      } 
 
-      var saltyAvg = saltyTotal / counter;
-      var sourAvg = sourTotal / counter;
-      var sweetAvg = sweetTotal / counter;
-      var bitterAvg = bitterTotal / counter;
-      var meatyAvg = meatyTotal / counter;
-      var piquantAvg = piquantTotal / counter;
-
-      userFlavorPrefs = {
-        "salty": [(saltyAvg - 0.1) > 0 ? saltyAvg - 0.1 : 0, (saltyAvg + 0.1) < 1 ? saltyAvg + 0.1 : 1],
-        "sour": [(sourAvg - 0.1) > 0 ? sourAvg - 0.1 : 0, (sourAvg + 0.1) < 1 ? sourAvg + 0.1 : 1],
-        "sweet": [(sweetAvg - 0.1) > 0 ? sweetAvg - 0.1 : 0, (sweetAvg + 0.1) < 1 ? sweetAvg + 0.1 : 1],
-        "bitter": [(bitterAvg - 0.1) > 0 ? bitterAvg - 0.1 : 0, (bitterAvg + 0.1) < 1 ? bitterAvg + 0.1 : 1],
-        "meaty": [(meatyAvg - 0.1) > 0 ? meatyAvg - 0.1 : 0, (meatyAvg + 0.1) < 1 ? meatyAvg + 0.1 : 1],
-        "piquant": [(piquantAvg - 0.1) > 0 ? piquantAvg - 0.1 : 0, (piquantAvg + 0.1) < 1 ? piquantAvg + 0.1 : 1]
-      }
-      resolve(userFlavorPrefs);
+      Promise.all([
+        createUserFlavorProf(breakfastPrefs),
+        createUserFlavorProf(lunchPrefs),
+        createUserFlavorProf(dinnerPrefs)
+      ])
+      .then(function(userFlavorPrefs) {
+        //console.log("userFlavorPrefs: ", userFlavorPrefs);
+        resolve(userFlavorPrefs);
+      })
     });
   })
   
@@ -313,40 +372,35 @@ module.exports = {
 
     return new Promise(function(resolve, reject){
 
-      //queries takes form of
-      //{
-      //  breakfastQuery: "...",
-      //  lunchQuery: "...",
-      //  dinnerQuery: "..."
-      //}
       getUserFlavorPrefs(userid).then(function(userFlavorPrefs){
-        console.log("getUserFlavorPrefs results: ", userFlavorPrefs);
-      });
+        var queries = writeQueries(queryModel, userFlavorPrefs);
       
-      var queries = writeQueries(queryModel);
-      //if course has 0 meals, that query will result in empty string
-      //var queries = writeQueries(queryModel, userFlavorPrefs);
+        //if course has 0 meals, that query will result in empty string
+        //var queries = writeQueries(queryModel, userFlavorPrefs);
 
-      Promise.all([
-        queryYummly(queries.breakfastQuery),
-        queryYummly(queries.lunchQuery),
-        queryYummly(queries.dinnerQuery)
-      ])
-      .then(function(results){
-        //resolved value will be empty array if empty string is passed in
-        var breakfasts = results[0] || results[0].matches;
-        var lunches = results[1] || results[1].matches;
-        var dinners = results[2] || results[2].matches;
-        resolve({
-          'breakfastRecipes': breakfasts,
-          'lunchRecipes': lunches,
-          'dinnerRecipes': dinners
+        Promise.all([
+          queryYummly(queries.breakfastQuery),
+          queryYummly(queries.lunchQuery),
+          queryYummly(queries.dinnerQuery)
+        ])
+        .then(function(results){
+          //resolved value will be empty array if empty string is passed in
+          var breakfasts = results[0] || results[0].matches;
+          var lunches = results[1] || results[1].matches;
+          var dinners = results[2] || results[2].matches;
+          resolve({
+            'breakfastRecipes': breakfasts,
+            'lunchRecipes': lunches,
+            'dinnerRecipes': dinners
+          });
+
+        })
+        .catch(function(error){
+          reject({'error': error});
         });
 
-      })
-      .catch(function(error){
-        reject({'error': error});
       });
+      
     });
   },
 
