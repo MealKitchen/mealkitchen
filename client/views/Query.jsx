@@ -13,7 +13,6 @@ var Query = React.createClass({
       numLunches: 0,
       numDinners: 0,
       seeMoreAllergies: false,
-      seeMoreDiet: false,
       seeMoreCuisines: false
     };
   },
@@ -27,9 +26,6 @@ var Query = React.createClass({
     switch (filter){
       case 'allowed-allergies':
         this.setState({seeMoreAllergies: !this.state.seeMoreAllergies});
-        break;
-      case 'allowed-diet':
-        this.setState({seeMoreDiet: !this.state.seeMoreDiet});
         break;
       case 'allowed-cuisines':
         this.setState({seeMoreCuisines: !this.state.seeMoreCuisines});
@@ -138,7 +134,7 @@ var Query = React.createClass({
     //Determine whether to show all options or some options for filters based on whether the see more/see less button is clicked.
     var cuisineOptions = this.state.seeMoreCuisines ? allowedCuisines : allowedCuisinesShort;
     var allergyOptions = this.state.seeMoreAllergies ? allowedAllergies : allowedAllergiesShort;
-    var dietOptions = this.state.seeMoreDiet ? allowedDiet : allowedDietShort;
+    var dietOptions = allowedDiet;
 
     return (
       <div className="query-container">
@@ -147,9 +143,10 @@ var Query = React.createClass({
         <form onSubmit={this.handleSubmit}>
           <h3 className="section-header">Select Number of Meals by Type</h3>
           <div className="row">
+
             <div className="form-group col-md-3">
-              <select className="form-control" name="numBreakfasts" id="numBreakfasts" defaultValue="" onChange={this.handleChange} type="number">
-                <option value="" disabled># Breakfasts</option>
+              <select className="form-control" name="numDinners" id="numDinners" defaultValue="" onChange={this.handleChange} type="number">
+                <option value="" disabled># Dinners</option>
                 <option value="0">0</option>
                 <option value="1">1</option>
                 <option value="2">2</option>
@@ -176,8 +173,8 @@ var Query = React.createClass({
             </div>
 
             <div className="form-group col-md-3">
-              <select className="form-control" name="numDinners" id="numDinners" defaultValue="" onChange={this.handleChange} type="number">
-                <option value="" disabled># Dinners</option>
+              <select className="form-control" name="numBreakfasts" id="numBreakfasts" defaultValue="" onChange={this.handleChange} type="number">
+                <option value="" disabled># Breakfasts</option>
                 <option value="0">0</option>
                 <option value="1">1</option>
                 <option value="2">2</option>
@@ -196,53 +193,49 @@ var Query = React.createClass({
 
             <div className="form-group col-md-3">
               <div className="filter-label">Food Preferences</div>
-                {dietOptions.map(function(item, i){
-                  return [
-                    <div className="checkbox">
-                      <label>
-                        <input type="checkbox" name='allowedDiet' value={item} className="checkbox" onChange={this.handleChange} />{item}
-                      </label>
-                    </div>
-                  ];
-                }, this)}
-                <div className='toggle-filter' data-filter='allowed-diet' onClick={this._seeMoreToggle}>
-                  <span data-filter='allowed-diet'>{this.state.seeMoreDiet ? 'See less ' : 'See more '}</span>
-                  <span data-filter='allowed-diet' className={this.state.seeMoreDiet ? "glyphicon glyphicon-chevron-up" : "glyphicon glyphicon-chevron-down"} aria-hidden="true"></span>
-                </div>
+              {dietOptions.map(function(item, i){
+                return [
+                  <div className="checkbox">
+                    <label>
+                      <input type="checkbox" name='allowedDiet' value={item} className="checkbox" onChange={this.handleChange} />{item}
+                    </label>
+                  </div>
+                ];
+              }, this)}
             </div>
 
             <div className="form-group col-md-3">
               <div className="filter-label">Allergy Restrictions</div>
-                {allergyOptions.map(function(item, i){
-                  return [
-                    <div className="checkbox">
-                      <label>
-                        <input type="checkbox" name='allowedAllergies' value={item} className="checkbox" onChange={this.handleChange} />{item}
-                      </label>
-                    </div>
-                  ];
-                }, this)}
-                <div className='toggle-filter' data-filter='allowed-allergies' onClick={this._seeMoreToggle}>
-                  <span data-filter='allowed-allergies'>{this.state.seeMoreAllergies ? 'See less ' : 'See more '}</span>
-                  <span data-filter='allowed-allergies' className={this.state.seeMoreAllergies ? "glyphicon glyphicon-chevron-up" : "glyphicon glyphicon-chevron-down"} aria-hidden="true"></span>
-                </div>
+              {allergyOptions.map(function(item, i){
+                return [
+                  <div className="checkbox">
+                    <label>
+                      <input type="checkbox" name='allowedAllergies' value={item} className="checkbox" onChange={this.handleChange} />{item}
+                    </label>
+                  </div>
+                ];
+              }, this)}
+              <div className='toggle-filter' data-filter='allowed-allergies' onClick={this._seeMoreToggle}>
+                <span data-filter='allowed-allergies'>{this.state.seeMoreAllergies ? 'See less ' : 'See more '}</span>
+                <span data-filter='allowed-allergies' className={this.state.seeMoreAllergies ? "glyphicon glyphicon-chevron-up" : "glyphicon glyphicon-chevron-down"} aria-hidden="true"></span>
+              </div>
             </div>
 
             <div className="form-group col-md-3">
               <div className="filter-label">Cuisine Preferences</div>
-                {cuisineOptions.map(function(item, i){
-                  return [
-                    <div className="checkbox">
-                      <label>
-                        <input type="checkbox" name='allowedCuisines' value={item} className="checkbox" onChange={this.handleChange} />{item}
-                      </label>
-                    </div>
-                  ];
-                }, this)}
-                <div className='toggle-filter' data-filter='allowed-cuisines' onClick={this._seeMoreToggle}>
-                  <span data-filter='allowed-cuisines'>{this.state.seeMoreCuisines ? 'See less ' : 'See more '}</span>
-                  <span data-filter='allowed-cuisines' className={this.state.seeMoreCuisines ? "glyphicon glyphicon-chevron-up" : "glyphicon glyphicon-chevron-down"} aria-hidden="true"></span>
-                </div>
+              {cuisineOptions.map(function(item, i){
+                return [
+                  <div className="checkbox">
+                    <label>
+                      <input type="checkbox" name='allowedCuisines' value={item} className="checkbox" onChange={this.handleChange} />{item}
+                    </label>
+                  </div>
+                ];
+              }, this)}
+              <div className='toggle-filter' data-filter='allowed-cuisines' onClick={this._seeMoreToggle}>
+                <span data-filter='allowed-cuisines'>{this.state.seeMoreCuisines ? 'See less ' : 'See more '}</span>
+                <span data-filter='allowed-cuisines' className={this.state.seeMoreCuisines ? "glyphicon glyphicon-chevron-up" : "glyphicon glyphicon-chevron-down"} aria-hidden="true"></span>
+              </div>
             </div>
           </div>
         </form>
@@ -275,15 +268,6 @@ var allowedAllergiesShort = [
 ];
 
 var allowedDiet = [
-  "Vegetarian",
-  "Vegan",
-  "Pescetarian",
-  "Paleo",
-  "Lacto-Vegetarian",
-  "Ovo-Vegetarian"
-];
-
-var allowedDietShort = [
   "Vegetarian",
   "Vegan",
   "Pescetarian",

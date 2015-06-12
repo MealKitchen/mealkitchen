@@ -3,8 +3,6 @@
 //The AppView is the main container from which the rest of the App is rendered.
 var AppView = React.createClass({
 
-  mixins: [Backbone.Events],
-
   getInitialState: function(){
     return {
       loggedIn: false,
@@ -20,6 +18,8 @@ var AppView = React.createClass({
     };
   },
 
+
+  //The following _set methods are defined and passed to children to allow child view controller code to set models and collections on the app state.
   _setUser: function(user){
     this.setState({user: user});
   },
@@ -52,6 +52,7 @@ var AppView = React.createClass({
     this.setState({ingredientsCollection: ingredientsCollection});
   },
 
+  //This method determines whether or not to show the background image. It gets passed down and set on different children views.
   _setBGImg: function(bool){
     this.setState({bgImage: bool});
   },
@@ -125,6 +126,7 @@ var AppView = React.createClass({
       window.location.hash = '/login';
     }
 
+    //Models and collections as well as setters are passed to the children to allow access to the App state. The App state acts as a Store for all persistent data in the application.
     return (
       <div className={this.state.bgImage ? "background-image" : ""}>
 
