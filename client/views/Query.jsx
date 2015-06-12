@@ -69,20 +69,17 @@ var Query = React.createClass({
     }
   },
 
-  //Send the state to a backbone model to be sent to Yummly
   handleSubmit: function(e){
     e.preventDefault();
     var that = this;
 
-    //Prevent submission if no recipes were requested (meal plans with no recipes are meaningless)
+    //Prevent submission if no recipes were requested (meal plans with no recipes are meaningless).
     if((1*this.state.numBreakfasts) === 0 && (1*this.state.numLunches) === 0 && (1*this.state.numDinners) === 0){
       alert('Please request at least one recipe for Breakfast, Lunch, or Dinner!');
       return;
     }
 
-    //Send a POST request to the server with the QueryModel to get a list of recipes that match the query.
-    var query = new QueryModel();
-    query.set({
+    var query = new QueryModel({
       allowedCuisines: this.state.allowedCuisines,
       allowedDiet: this.state.allowedDiet,
       allowedAllergies: this.state.allowedAllergies,
@@ -90,15 +87,16 @@ var Query = React.createClass({
       numLunches: this.state.numLunches,
       numDinners: this.state.numDinners
     });
+
+    //Send a POST request to the server with the QueryModel to get a list of recipes that match the query.
     query.save({}, {
       success: function(model, res){
-        console.log("Response from the server on submitting Meal Query: ", res);
 
         var breakfastCollection = new RecipesCollection();
         var lunchCollection = new RecipesCollection();
         var dinnerCollection = new RecipesCollection();
 
-        //Generate recipe queues for breakfast, lunch, and dinner. The queues are sorted from 0-length where length is the closest to the user's palate. When a user rejects a recipe, the next recipe in the queue will be shown.
+        //Generate recipe queues for breakfast, lunch, and dinner. The queues are sorted from 0-length where the recipe at location:length is the closest to the user's palate. When a user rejects a recipe, the next recipe in the queue will be shown.
         var breakfastQ = res.breakfastRecipes;
         var lunchQ = res.lunchRecipes;
         var dinnerQ = res.dinnerRecipes;
@@ -106,11 +104,9 @@ var Query = React.createClass({
         for(var i=0; i<query.get('numBreakfasts'); i++){
           breakfastCollection.add(new RecipeModel(breakfastQ.pop()));
         }
-
         for(i=0; i<query.get('numLunches'); i++){
           lunchCollection.add(new RecipeModel(lunchQ.pop()));
         }
-
         for(i=0; i<query.get('numDinners'); i++){
           dinnerCollection.add(new RecipeModel(dinnerQ.pop()));
         }
@@ -122,6 +118,7 @@ var Query = React.createClass({
           'dinnerQ': dinnerQ
         });
 
+        //Set the collections and query on the app state to be passed to other views.
         that.props.setBreakfastCollection(breakfastCollection);
         that.props.setLunchCollection(lunchCollection);
         that.props.setDinnerCollection(dinnerCollection);
@@ -145,15 +142,11 @@ var Query = React.createClass({
 
     return (
       <div className="query-container">
-
         <h2 className="page-header">Create Meal Plan</h2>
 
         <form onSubmit={this.handleSubmit}>
-
           <h3 className="section-header">Select Number of Meals by Type</h3>
-
           <div className="row">
-
             <div className="form-group col-md-3">
               <select className="form-control" name="numBreakfasts" id="numBreakfasts" defaultValue="" onChange={this.handleChange} type="number">
                 <option value="" disabled># Breakfasts</option>
@@ -197,11 +190,8 @@ var Query = React.createClass({
             </div>
 
             <input type="submit" value="Create Plan" className="btn btn-primary btn-medium" />
-
           </div>
-
           <h3 className="section-header">Additional Filters</h3>
-
           <div className="row">
 
             <div className="form-group col-md-3">
@@ -254,11 +244,8 @@ var Query = React.createClass({
                   <span data-filter='allowed-cuisines' className={this.state.seeMoreCuisines ? "glyphicon glyphicon-chevron-up" : "glyphicon glyphicon-chevron-down"} aria-hidden="true"></span>
                 </div>
             </div>
-
           </div>
-
         </form>
-
       </div>
     );
   }
@@ -266,7 +253,6 @@ var Query = React.createClass({
 
 
 //The following arrays are for easier rendering of the filter checklists in the render method above. Do not delete them or the checklists will not render!
-
 var allowedAllergies = [
   "Egg-Free",
   "Gluten-Free",

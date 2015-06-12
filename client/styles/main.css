@@ -277,7 +277,6 @@ p.suggested-action {
   margin-bottom: 40px;
 }
 
-
 .page-header {
   color: #D74B1A;
   font-family: 'Lato', sans-serif;
@@ -302,8 +301,6 @@ p.suggested-action {
   min-height: 100%
 }
 
-
-
 .overlay {
   position: absolute;
   background-color: rgba(240, 240, 240, 0.73);
@@ -321,7 +318,7 @@ p.suggested-action {
 }
 
 .split-container{
-  margin-left: 5%;
+  margin: 0 5%;
 }
 
 .query-container {
@@ -335,7 +332,7 @@ p.suggested-action {
 *********************************/
 
 .library-container {
-  margin-left: 5%;
+  margin: 0 5%;
   max-width: 100%;
 }
 

@@ -27,13 +27,10 @@ var ShoppingList = React.createClass({
     console.log(this.props);
     return (
       <div className="split-container">
-
         <div className="row">
-
           <div className="primary-container col-md-10">
 
             <h2 className="page-header">Shopping List: {this.props.mealPlan.get('title')}</h2>
-
             <ul className='list-group'>
               {that.props.ingredients.map(function(ingredient, i) {
                 return [
@@ -44,13 +41,10 @@ var ShoppingList = React.createClass({
             </ul>
 
           </div>
-
           <div className="secondary-container col-md-2">
             <button className="btn btn-primary btn-large" onClick={window.print}>Print Shopping List</button>
           </div>
-
         </div>
-
       </div>
     );
   }

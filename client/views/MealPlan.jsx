@@ -32,14 +32,10 @@ var MealPlan = React.createClass({
 
   // dynamically render recipes on page according to Meal Plan
   render: function() {
-    console.log('****** rendering mealPlan', this.props.mealPlan);
       return (
         <div className="split-container">
-
           <div className="row">
-
             <div className="primary-container col-md-10">
-
               <h1 className="page-header">Meal Plan: {this.props.mealPlan.get('title')}</h1>
 
               <div className="course-container">
@@ -76,13 +72,10 @@ var MealPlan = React.createClass({
               </div>
 
             </div>
-
             <div className="secondary-container col-md-2">
               <button className="btn btn-primary btn-large" type='button' onClick={this._createShoppingList}>Create Shopping List</button>
             </div>
-
           </div>
-
         </div>
       );
     }

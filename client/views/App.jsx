@@ -1,17 +1,5 @@
 /** @jsx React.DOM */
 
-/////////////////////////////////////
-///////// BACKBONE STORES ///////////
-/////////////////////////////////////
-
-// var user = new UserModel();
-// var mealPlans = new MealPlansCollection();
-// var mealPlan = new MealPlanModel();
-// var queryModel = new QueryModel();
-// var breakfastCollection = new RecipesCollection();
-// var lunchCollection = new RecipesCollection();
-// var dinnerCollection = new RecipesCollection();
-
 //The AppView is the main container from which the rest of the App is rendered.
 var AppView = React.createClass({
 

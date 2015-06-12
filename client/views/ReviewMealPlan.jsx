@@ -127,13 +127,9 @@ var ReviewMeals = React.createClass({
   render: function() {
       return (
         <div className="split-container">
-
           <div className="row">
-
             <div className="primary-container col-md-10">
-
               <h2 className="page-header">Review Meal Plan</h2>
-
               <input type="text" className="form-control meal-plan-name" name="mealPlanTitle" placeholder="Enter Meal Plan Name" value={this.value} onChange={this.handleChange} />
 
               <div className="course-container">
@@ -170,13 +166,10 @@ var ReviewMeals = React.createClass({
               </div>
 
             </div>
-
             <div className="secondary-container col-md-2">
               <button type="button" className="btn btn-primary btn-large" onClick={this.handleSubmit}>Save meal plan</button>
             </div>
-
           </div>
-
         </div>
       );
     }
