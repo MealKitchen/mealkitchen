@@ -19,122 +19,55 @@ catch (e) {
 }
 
 var writeQueries = function(queryModel, userFlavorPrefs){
-  var allowedAllergyList = queryModel.allowedAllergies;
-  var allowedCuisineList = queryModel.allowedCuisines;
-  var allowedDietList = queryModel.allowedDiet;
 
-  //handling stringified number values from client so as to not concatenate 10
-  queryModel.numBreakfasts *= 1;
-  queryModel.numLunches *= 1;
-  queryModel.numDinners *= 1;
 
-  // If number of course meals specified, add 10 meals for queueing functionality
-  var numBreakfasts = queryModel.numBreakfasts && queryModel.numBreakfasts + 10;
-  var numLunches =  queryModel.numLunches && queryModel.numLunches + 10;
-  var numDinners =  queryModel.numDinners && queryModel.numDinners + 10;
+// refer to as initial data
 
-  //will likely have to track additional requests for each course
+// Query Data extraction
+var filterQueryString = utils.query.filter()
+
   var start = queryModel.additionalRequest ? queryModel.totalRecipesRequested : 0;
 
-  var breakfastQueryString, lunchQueryString, dinnerQueryString;
-  var queryString = '', newQueryProp = true;
-
-  if(allowedAllergyList){
-    queryString += "&allowedAllergy[]=";
-  }
-  for (var key in allowedAllergyList) {
-    if (allowedAllergyList[key]) {
-      if(newQueryProp){
-        queryString += "&allowedAllergy[]=";
-        newQueryProp = false;
-      }
-      else{
-        queryString += '&';
-      }
-      queryString += lib.allowedAllergyLibrary[key];
-    }
-  }
-  newQueryProp = true;
-
-  for (key in allowedCuisineList) {
-    if (allowedCuisineList[key]) {
-      if(newQueryProp){
-        queryString += "&allowedCuisine[]=";
-        newQueryProp = false;
-      }
-      else{
-        queryString += '&';
-      }
-      queryString +=  lib.allowedCuisineLibrary[key];
-    }
-  }
-  newQueryProp = true;
-
-  for (key in allowedDietList) {
-    if (allowedDietList[key]) {
-      if(newQueryProp){
-        queryString += "&allowedDiet[]=";
-        newQueryProp = false;
-      }
-      else{
-        queryString += '&';
-      }
-      queryString += lib.allowedDietLibrary[key];
-    }
+  var amoutOfCourse = {
+    'Breakfast': queryModel.numBreakfasts*1 && queryModel*1.numBreakfasts + 10,
+    'Lunch': queryModel.numLunches*1 && queryModel.numLunches*1 + 10,
+    'Dinner': queryModel.numDinners*1 && queryModel.numDinners*1 + 10  
   }
 
-  var breakfastPrefs = userFlavorPrefs[0];
-  var lunchPrefs = userFlavorPrefs[1];
-  var dinnerPrefs = userFlavorPrefs[2];
+    //if value is present
+  var allergyQuery =  queryModel.allowedAllergies ?
+                                utils.query.filterValue( queryModel.allowedAllergies, 'Allergy' )
+                                : "";
 
-  var breakfastRangeString =
-  "&flavor.salty.min=" + breakfastPrefs.salty[0] + "&flavor.salty.max=" + breakfastPrefs.salty[1] +
-  "&flavor.sour.min=" + breakfastPrefs.sour[0] + "&flavor.sour.max=" + breakfastPrefs.sour[1] +
-  "&flavor.sweet.min=" + breakfastPrefs.sweet[0] + "&flavor.sweet.max=" + breakfastPrefs.sweet[1] +
-  "&flavor.bitter.min=" + breakfastPrefs.bitter[0] + "&flavor.bitter.max=" + breakfastPrefs.bitter[1] +
-  "&flavor.meaty.min=" + breakfastPrefs.meaty[0] + "&flavor.meaty.max=" + breakfastPrefs.meaty[1] +
-  "&flavor.piquant.min=" + breakfastPrefs.piquant[0] + "&flavor.piquant.max=" + breakfastPrefs.piquant[1];
+  var dietQuery = queryModel.allowedCuisines ?
+                                utils.query.filterValue( queryModel.allowedCuisines, 'Cuisine' )
+                                : "";
+  var cuisineQuery = queryModel.allowedDiet  ?
+                                utils.query.filterValue( queryModel.allowedDiet, 'Diet' )
+    : "";
 
-  var lunchRangeString =
-  "&flavor.salty.min=" + lunchPrefs.salty[0] + "&flavor.salty.max=" + lunchPrefs.salty[1] +
-  "&flavor.sour.min=" + lunchPrefs.sour[0] + "&flavor.sour.max=" + lunchPrefs.sour[1] +
-  "&flavor.sweet.min=" + lunchPrefs.sweet[0] + "&flavor.sweet.max=" + lunchPrefs.sweet[1] +
-  "&flavor.bitter.min=" + lunchPrefs.bitter[0] + "&flavor.bitter.max=" + lunchPrefs.bitter[1] +
-  "&flavor.meaty.min=" + lunchPrefs.meaty[0] + "&flavor.meaty.max=" + lunchPrefs.meaty[1] +
-  "&flavor.piquant.min=" + lunchPrefs.piquant[0] + "&flavor.piquant.max=" + lunchPrefs.piquant[1];
+  var filterQueryString = allergyQuery + dietQuery + cuisineQuery;
 
-  var dinnerRangeString =
-  "&flavor.salty.min=" + dinnerPrefs.salty[0] + "&flavor.salty.max=" + dinnerPrefs.salty[1] +
-  "&flavor.sour.min=" + dinnerPrefs.sour[0] + "&flavor.sour.max=" + dinnerPrefs.sour[1] +
-  "&flavor.sweet.min=" + dinnerPrefs.sweet[0] + "&flavor.sweet.max=" + dinnerPrefs.sweet[1] +
-  "&flavor.bitter.min=" + dinnerPrefs.bitter[0] + "&flavor.bitter.max=" + dinnerPrefs.bitter[1] +
-  "&flavor.meaty.min=" + dinnerPrefs.meaty[0] + "&flavor.meaty.max=" + dinnerPrefs.meaty[1] +
-  "&flavor.piquant.min=" + dinnerPrefs.piquant[0] + "&flavor.piquant.max=" + dinnerPrefs.piquant[1];
+  var courseStrings = [];
 
-  breakfastQueryString = numBreakfasts > 0 ?
-    "http://api.yummly.com/v1/api/recipes?_app_id=" + appId +
-    "&_app_key=" + apiKey +
-    queryString + breakfastRangeString + "&allowedCourse[]=" + lib.course.Breakfast + "&requirePictures=true" +
-    "&maxResult=" + numBreakfasts + "&start=" + start : "";
+  var coursesForQuery = ['Breakfast', 'Lunch', 'Dinner']
 
-  lunchQueryString = numLunches > 0 ?
-    "http://api.yummly.com/v1/api/recipes?_app_id=" + appId +
-    "&_app_key=" + apiKey +
-    queryString + lunchRangeString + "&allowedCourse[]=" + lib.course.Lunch + "&requirePictures=true" +
-    "&maxResult=" + numLunches + "&start=" + start : "";
+  for(var i = 0; i < course.length; i++){
+    var courseQueryString = utils.query.course()
 
-  dinnerQueryString = numDinners > 0 ?
-    "http://api.yummly.com/v1/api/recipes?_app_id=" + appId +
-    "&_app_key=" + apiKey +
-    queryString + dinnerRangeString + "&allowedCourse[]=" + lib.course.Dinner + "&requirePictures=true" +
-    "&maxResult=" + numDinners + "&start=" + start : "";
+      filterQueryStr +
 
+      utils.query.courseflavorRange( userFlavorPrefs[i])
+
+      + "&allowedCourse[]=" + lib.course.[coursesForQuery[i]] + "&requirePictures=true" +
+      "&maxResult=" + numBreakfasts + "&start=" + start;
+    courseStrings.push(courseString);
+  }
 
   return {
-    'breakfastQuery': breakfastQueryString,
-    'lunchQuery': lunchQueryString,
-    'dinnerQuery': dinnerQueryString
-  };
+    "breakfastRecipes": courseStrings[0]
+  }
+
 };
 
 var queryYummly = function(queryString){
@@ -155,6 +88,8 @@ var queryYummly = function(queryString){
 
         yummlyResponse.on('end', function () {
           results = JSON.parse(str);
+
+          //we first have the matches here
           resolve(results.matches);
 
         });

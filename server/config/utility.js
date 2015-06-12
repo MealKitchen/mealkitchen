@@ -1,3 +1,5 @@
+var lib = require('../config/libraries');
+
 exports.createSession = function(req, res, newUser) {
   return req.session.regenerate(function() {
       req.session.user = newUser;
@@ -50,3 +52,33 @@ exports.getObjectRecipeIds = function(obj){
   return results
 }
 
+
+exports.query = {
+
+  course: function(numMeals, filterValues){
+
+  },
+  //compute query flavor range
+  courseflavorRange: function(range){
+    var queryStr = '', profile = ['salty', 'sour', 'sweet', 'bitter', 'meaty', 'piquant'];
+
+    for(var flavor in profile){
+        queryStr += '&flavor.' + flavor +'.min' + range[0] + '&flavor.salty.max=' + range[1]
+    }
+    console.log(queryStr)
+    return queryStr;
+  },
+  //figure out filter profile
+  filterValue: function(filtervalue){
+
+    var filterQueryString =  "&allowed" + value + "[]=&", first = true;
+
+    var libraryName = 'allowed'+Value+'Library'
+    for (var key in allowedValueList) {
+
+      filterQueryString += lib[libraryName][key];
+    }
+    return filterQueryString;
+  }
+
+}
