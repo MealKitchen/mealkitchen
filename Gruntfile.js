@@ -58,7 +58,7 @@ module.exports = function(grunt) {
           'client/dist/views/LandingPage.js',
           'client/dist/views/CallToAction.js',
           'client/dist/views/HowItWorks.js',
-          'client/dist/views/MealPLanLibrary.js',
+          'client/dist/views/MealPlanLibrary.js',
           'client/dist/views/NavbarLinks.js',
           'client/dist/views/Recipe.js',
           'client/dist/views/App.js'
