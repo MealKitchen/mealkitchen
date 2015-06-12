@@ -49,6 +49,8 @@ module.exports = function(grunt) {
           'client/collections/*.js',
           'client/dist/views/Signup.js',
           'client/dist/views/Login.js',
+          'client/dist/views/Dropdown.js',
+          'client/dist/views/Checklist.js',
           'client/dist/views/Query.js',
           'client/dist/views/ReviewMealPlan.js',
           'client/dist/views/ShoppingList.js',
