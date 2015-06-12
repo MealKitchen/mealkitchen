@@ -87,7 +87,7 @@ var writeQueries = function(queryModel, userFlavorPrefs){
   var lunchPrefs = userFlavorPrefs[1];
   var dinnerPrefs = userFlavorPrefs[2];
 
-  var breakfastRangeString = 
+  var breakfastRangeString =
   "&flavor.salty.min=" + breakfastPrefs.salty[0] + "&flavor.salty.max=" + breakfastPrefs.salty[1] +
   "&flavor.sour.min=" + breakfastPrefs.sour[0] + "&flavor.sour.max=" + breakfastPrefs.sour[1] +
   "&flavor.sweet.min=" + breakfastPrefs.sweet[0] + "&flavor.sweet.max=" + breakfastPrefs.sweet[1] +
@@ -95,7 +95,7 @@ var writeQueries = function(queryModel, userFlavorPrefs){
   "&flavor.meaty.min=" + breakfastPrefs.meaty[0] + "&flavor.meaty.max=" + breakfastPrefs.meaty[1] +
   "&flavor.piquant.min=" + breakfastPrefs.piquant[0] + "&flavor.piquant.max=" + breakfastPrefs.piquant[1];
 
-  var lunchRangeString = 
+  var lunchRangeString =
   "&flavor.salty.min=" + lunchPrefs.salty[0] + "&flavor.salty.max=" + lunchPrefs.salty[1] +
   "&flavor.sour.min=" + lunchPrefs.sour[0] + "&flavor.sour.max=" + lunchPrefs.sour[1] +
   "&flavor.sweet.min=" + lunchPrefs.sweet[0] + "&flavor.sweet.max=" + lunchPrefs.sweet[1] +
@@ -103,7 +103,7 @@ var writeQueries = function(queryModel, userFlavorPrefs){
   "&flavor.meaty.min=" + lunchPrefs.meaty[0] + "&flavor.meaty.max=" + lunchPrefs.meaty[1] +
   "&flavor.piquant.min=" + lunchPrefs.piquant[0] + "&flavor.piquant.max=" + lunchPrefs.piquant[1];
 
-  var dinnerRangeString = 
+  var dinnerRangeString =
   "&flavor.salty.min=" + dinnerPrefs.salty[0] + "&flavor.salty.max=" + dinnerPrefs.salty[1] +
   "&flavor.sour.min=" + dinnerPrefs.sour[0] + "&flavor.sour.max=" + dinnerPrefs.sour[1] +
   "&flavor.sweet.min=" + dinnerPrefs.sweet[0] + "&flavor.sweet.max=" + dinnerPrefs.sweet[1] +
@@ -128,6 +128,7 @@ var writeQueries = function(queryModel, userFlavorPrefs){
     "&_app_key=" + apiKey +
     queryString + dinnerRangeString + "&allowedCourse[]=" + lib.course.Dinner + "&requirePictures=true" +
     "&maxResult=" + numDinners + "&start=" + start : "";
+
 
   return {
     'breakfastQuery': breakfastQueryString,
@@ -287,7 +288,7 @@ var createUserFlavorProf = function(preferences) {
     for (var i = 0; i < preferences.length; i++){
       var preferenceAttr = preferences[i].attributes;
       if (preferenceAttr.salty && preferenceAttr.sour && preferenceAttr.sweet && preferenceAttr.bitter && preferenceAttr.meaty && preferenceAttr.piquant) {
-        console.log('preference Attributes: ', preferenceAttr);
+
         saltyTotal += preferenceAttr.salty;
         sourTotal += preferenceAttr.sour;
         sweetTotal += preferenceAttr.sweet;
@@ -305,22 +306,24 @@ var createUserFlavorProf = function(preferences) {
     var meatyAvg = meatyTotal / counter;
     var piquantAvg = piquantTotal / counter;
 
+    var TOLERANCE = .45;
+
     userFlavorPrefs = {
-      "salty": [(saltyAvg - 0.15) > 0 ? saltyAvg - 0.15 : 0, (saltyAvg + 0.15) < 1 ? saltyAvg + 0.15 : 1],
-      "sour": [(sourAvg - 0.15) > 0 ? sourAvg - 0.15 : 0, (sourAvg + 0.15) < 1 ? sourAvg + 0.15 : 1],
-      "sweet": [(sweetAvg - 0.15) > 0 ? sweetAvg - 0.15 : 0, (sweetAvg + 0.15) < 1 ? sweetAvg + 0.15 : 1],
-      "bitter": [(bitterAvg - 0.15) > 0 ? bitterAvg - 0.15 : 0, (bitterAvg + 0.15) < 1 ? bitterAvg + 0.15 : 1],
-      "meaty": [(meatyAvg - 0.15) > 0 ? meatyAvg - 0.15 : 0, (meatyAvg + 0.15) < 1 ? meatyAvg + 0.15 : 1],
-      "piquant": [(piquantAvg - 0.15) > 0 ? piquantAvg - 0.15 : 0, (piquantAvg + 0.15) < 1 ? piquantAvg + 0.15 : 1]
+      "salty": [(saltyAvg - TOLERANCE) > 0 ? saltyAvg - TOLERANCE : 0, (saltyAvg + TOLERANCE) < 1 ? saltyAvg + TOLERANCE : 1],
+      "sour": [(sourAvg - TOLERANCE) > 0 ? sourAvg - TOLERANCE : 0, (sourAvg + TOLERANCE) < 1 ? sourAvg + TOLERANCE : 1],
+      "sweet": [(sweetAvg - TOLERANCE) > 0 ? sweetAvg - TOLERANCE : 0, (sweetAvg + TOLERANCE) < 1 ? sweetAvg + TOLERANCE : 1],
+      "bitter": [(bitterAvg - TOLERANCE) > 0 ? bitterAvg - TOLERANCE : 0, (bitterAvg + TOLERANCE) < 1 ? bitterAvg + TOLERANCE : 1],
+      "meaty": [(meatyAvg - TOLERANCE) > 0 ? meatyAvg - TOLERANCE : 0, (meatyAvg + TOLERANCE) < 1 ? meatyAvg + TOLERANCE : 1],
+      "piquant": [(piquantAvg - TOLERANCE) > 0 ? piquantAvg - TOLERANCE : 0, (piquantAvg + TOLERANCE) < 1 ? piquantAvg + 0.15 : 1]
     };
-    
+
     resolve(userFlavorPrefs);
   })
 
 };
 
 var getUserFlavorPrefs = function (userid) {
-  
+
   return new Promise(function(resolve, reject) {
     var userFlavorPrefs = {};
 
@@ -362,7 +365,7 @@ module.exports = {
 
       getUserFlavorPrefs(userid).then(function(userFlavorPrefs){
         var queries = writeQueries(queryModel, userFlavorPrefs);
-      
+
         //if course has 0 meals, that query will result in empty string
 
         Promise.all([
@@ -387,7 +390,6 @@ module.exports = {
         });
 
       });
-      
     });
   },
 
