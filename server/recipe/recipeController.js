@@ -162,6 +162,10 @@ module.exports = {
       var queries = utils.query.createInitialCourseQueries(queryModel, userCourseFlavorPreferences);
       //if course has 0 meals, that query will result in empty string
 
+      var numBreakfastsExpected = queryModel.numBreakfasts*1 && queryModel.numBreakfasts*1 + 10,
+        numLunchesExpected = queryModel.numLunches*1 && queryModel.numLunches*1 + 10,
+        numDinnersExpected = queryModel.numDinners*1 && queryModel.numDinners*1 + 10;
+
       Promise.all([
         queryYummly(queries.breakfastQuery),
         queryYummly(queries.lunchQuery),
@@ -169,15 +173,24 @@ module.exports = {
       ])
       .then(function(results){
         //resolved value will be empty array if empty string is passed in
-        var breakfasts = results[0] || results[0].matches;
-        var lunches = results[1] || results[1].matches;
-        var dinners = results[2] || results[2].matches;
+        var breakfasts = results[0] || results[0].matches,
+        lunches = results[1] || results[1].matches,
+        dinners = results[2] || results[2].matches;
 
-        resolve({
-          'breakfastRecipes': breakfasts,
-          'lunchRecipes': lunches,
-          'dinnerRecipes': dinners
-        });
+        var expected = [numBreakfastsExpected, numLunchesExpected, numDinnersExpected];
+        var recieved = [breakfasts.length, lunches.length, dinners.length];
+        if(utils.resultsLengthValid(expected, recieved)){
+
+          resolve({
+            'breakfastRecipes': breakfasts,
+            'lunchRecipes': lunches,
+            'dinnerRecipes': dinners
+          });
+        } else{
+
+          console.log('not valid query results')
+          reject({'error': 'not valid query results', 'status': 406})
+        }
 
       })
       .catch(function(error){
