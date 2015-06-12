@@ -145,18 +145,60 @@ p.suggested-action {
   margin-right: 10px;
 }
 
+.btn {
+  margin-right: 10px;
+}
+
+.review-buttons > .btn {
+  width: 65px;
+  margin: 0 5px;
+}
+
 .action-buttons {
   text-align: center;
 }
 
 .review-buttons {
-  text-align: center;
+  opacity: 0;
   margin-top: 10px;
+  text-align: center;
+
 }
 
-.btn {
-  margin-right: 10px;
+.recipe-preview {
+  padding: 0px;
+  height: 250px;
+  width: 170px;
+  margin-right: 25px;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  background-position: center;
+  cursor: pointer;
 }
+
+.recipe-preview:hover {
+  -moz-box-shadow:    0 0 2px #000000;
+  -webkit-box-shadow: 0 0 2px #000000;
+  box-shadow:         0 0 2px #000000;
+  -webkit-transition: 200ms ease-out;
+  -moz-transition: 200ms ease-out;
+  -o-transition: 200ms ease-out;
+  transition: 200ms ease-out;
+}
+
+.recipe-preview:hover > .review-buttons {
+  text-align: center;
+  margin-top: 10px;
+  opacity: 1;
+  -webkit-transition: 250ms ease-out;
+  -moz-transition: 250ms ease-out;
+  -o-transition: 250ms ease-out;
+  transition: 250ms ease-out;
+}
+
+
 
 
 /*********************************
@@ -250,18 +292,7 @@ p.suggested-action {
   min-height: 100%
 }
 
-.recipe-preview {
-  padding: 0px;
-  height: 250px;
-  width: 170px;
-  margin-right: 25px;
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-  background-size: cover;
-  background-position: center;
-  cursor: pointer;
-}
+
 
 .overlay {
   position: absolute;
@@ -348,9 +379,9 @@ select {
   display: none;
 }
 
-.show {
+/*.show {
   display: inline;
-}
+}*/
 
 
 .heading {

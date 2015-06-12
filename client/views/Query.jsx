@@ -155,8 +155,8 @@ var Query = React.createClass({
           <div className="row">
 
             <div className="form-group col-md-3">
-              <select className="form-control" name="numBreakfasts" id="numBreakfasts" value={value} onChange={this.handleChange} type="number">
-                <option value="" disabled selected># Breakfasts</option>
+              <select className="form-control" name="numBreakfasts" id="numBreakfasts" defaultValue="" onChange={this.handleChange} type="number">
+                <option value="" disabled># Breakfasts</option>
                 <option value="0">0</option>
                 <option value="1">1</option>
                 <option value="2">2</option>
@@ -169,8 +169,8 @@ var Query = React.createClass({
             </div>
 
             <div className="form-group col-md-3">
-              <select className="form-control" name="numLunches" id="numLunches" value={value} onChange={this.handleChange} type="number">
-                <option value="" disabled selected># Lunches</option>
+              <select className="form-control" name="numLunches" id="numLunches" defaultValue="" onChange={this.handleChange} type="number">
+                <option value="" disabled># Lunches</option>
                 <option value="0">0</option>
                 <option value="1">1</option>
                 <option value="2">2</option>
@@ -183,8 +183,8 @@ var Query = React.createClass({
             </div>
 
             <div className="form-group col-md-3">
-              <select className="form-control" name="numDinners" id="numDinners" value={value} onChange={this.handleChange} type="number">
-                <option value="" disabled selected># Dinners</option>
+              <select className="form-control" name="numDinners" id="numDinners" defaultValue="" onChange={this.handleChange} type="number">
+                <option value="" disabled># Dinners</option>
                 <option value="0">0</option>
                 <option value="1">1</option>
                 <option value="2">2</option>
