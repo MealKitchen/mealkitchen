@@ -27,22 +27,22 @@ module.exports = {
           })
           .catch(function(error){
             console.error({'error in createRecipes': error});
-            res.status(500).send({'error in knn': error});
+            res.status(error.status || 500).send({'error in knn': error});
           })
         })
         .catch(function(error){
           console.error({'error in createRecipes': error});
-          res.status(500).send({'error in createRecipes': error});
+          res.status(error.status || 500).send({'error in createRecipes': error});
         })
       })
       .catch(function(error){
         console.error({'error in createRecipes': error});
-        res.status(500).send({'error getting userFlavor Profile': error});
+        res.status(error.status || 500).send({'error getting userFlavor Profile': error});
       })
     })
     .catch(function(error){
       console.error({'error in createRecipes': error});
-      res.status(500).send({'error getting userPreferences': error});
+      res.status(error.status || 500).send({'error getting userPreferences': error});
     })
 
   },

@@ -63,6 +63,15 @@ exports.getObjectRecipeIds = function(obj){
 }
 
 
+//check if results from yummly are valid
+exports.resultsLengthValid = function(expected, recieved){
+  for(var i = 0; i < 3; i++){
+    if(recieved[i] !== expected[i])
+      return false;
+  }
+  return true;
+}
+
 //Yummly API Queries
 exports.query = {
 
