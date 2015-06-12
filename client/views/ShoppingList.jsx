@@ -12,6 +12,10 @@ var ShoppingList = React.createClass({
     this.props.setBGImg(false);
   },
 
+  componentDidMount: function(){
+    window.addEventListener('touchend', this.crossout);
+  },
+
   //TODO: Refactor to persist checked class after refresh. Currently only adds checked class temporarily.
   crossout: function (event) {
     var id = event.target.dataset.id;

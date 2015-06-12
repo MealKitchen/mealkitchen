@@ -306,7 +306,7 @@ var createUserFlavorProf = function(preferences) {
     var meatyAvg = meatyTotal / counter;
     var piquantAvg = piquantTotal / counter;
 
-    var TOLERANCE = .45;
+    var TOLERANCE = 0.45;
 
     userFlavorPrefs = {
       "salty": [(saltyAvg - TOLERANCE) > 0 ? saltyAvg - TOLERANCE : 0, (saltyAvg + TOLERANCE) < 1 ? saltyAvg + TOLERANCE : 1],

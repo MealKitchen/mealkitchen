@@ -1,7 +1,7 @@
 module.exports = function(grunt) {
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
-    
+
     jshint: {
       files: [
         ['Gruntfile.js', 'server/**/*.js', 'index.js', 'client/collections/*.js', 'client/models/*.js', 'client/views/*.js']
@@ -14,7 +14,7 @@ module.exports = function(grunt) {
         ]
       }
     },
-    
+
     react: {
       files: {
         expand: true,
@@ -103,7 +103,7 @@ module.exports = function(grunt) {
       },
       dist: {
         files: {
-          'client/dist/public/style.min.css': ['client/lib/bootstrap/dist/css/bootstrap.min.css', 'client/styles/main.css']
+          'client/dist/public/style.min.css': ['client/styles/bootstrap.min.css', 'client/styles/main.css']
         }
       }
     },

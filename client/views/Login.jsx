@@ -34,7 +34,7 @@ var LogIn = React.createClass({
           email: res.email
         });
         that.props.setUser(user);
-        that.props.transitionTo('/mealquery');
+        that.props.transitionTo('/mealplans');
       },
       error: function (xhr, ajaxOptions, thrownError) {
         alert('Please check your username/password!');

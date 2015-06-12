@@ -1,5 +1,6 @@
 html, body {
   height: 100%;
+  font-family: 'Lato', sans-serif;
 }
 
 label {
@@ -145,18 +146,66 @@ p.suggested-action {
   margin-right: 10px;
 }
 
+.btn {
+  margin-right: 10px;
+}
+
+.review-buttons > .btn {
+  width: 65px;
+  margin: 0 5px;
+}
+
 .action-buttons {
   text-align: center;
 }
 
-.review-buttons {
-  text-align: center;
-  margin-top: 10px;
+.action-buttons > .btn {
+  width: 75px;
+  margin: 0 5px;
 }
 
-.btn {
-  margin-right: 10px;
+.review-buttons {
+  opacity: 0;
+  margin-top: 10px;
+  text-align: center;
+
 }
+
+.recipe-preview {
+  padding: 0px;
+  height: 250px;
+  width: 170px;
+  margin-right: 25px;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  background-position: center;
+  cursor: pointer;
+}
+
+.recipe-preview:hover {
+  -moz-box-shadow:    0 0 2px #000000;
+  -webkit-box-shadow: 0 0 2px #000000;
+  box-shadow:         0 0 2px #000000;
+  -webkit-transition: 200ms ease-out;
+  -moz-transition: 200ms ease-out;
+  -o-transition: 200ms ease-out;
+  transition: 200ms ease-out;
+}
+
+.recipe-preview:hover > .review-buttons {
+  text-align: center;
+  margin-top: 10px;
+  opacity: 1;
+  -webkit-transition: 250ms ease-out;
+  -moz-transition: 250ms ease-out;
+  -o-transition: 250ms ease-out;
+  transition: 250ms ease-out;
+  z-index: 100;
+}
+
+
 
 
 /*********************************
@@ -225,16 +274,19 @@ p.suggested-action {
 
 .secondary-container {
   margin-top: 40px;
+  margin-bottom: 40px;
 }
 
 
 .page-header {
   color: #D74B1A;
+  font-family: 'Lato', sans-serif;
 }
 
 .section-header {
   color: #D74B1A;
   font-size: 1.3em;
+  font-family: 'Lato', sans-serif;
 }
 
 .filter-label {
@@ -250,16 +302,7 @@ p.suggested-action {
   min-height: 100%
 }
 
-.recipe-preview {
-  padding: 0px;
-  height: 250px;
-  margin-right: 25px;
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-  background-size: cover;
-  background-position: center;
-}
+
 
 .overlay {
   position: absolute;
@@ -301,20 +344,59 @@ p.suggested-action {
   width: 300px;
   padding: 0px;
   text-align: center;
-  margin: 30px
+  margin: 30px;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  background-position: center;
+  cursor: pointer;
 }
 
-
-
-select {
-  max-width: 250px;
+.meal-plan-preview:hover{
+  -moz-box-shadow:    0 0 2px #000000;
+  -webkit-box-shadow: 0 0 2px #000000;
+  box-shadow:         0 0 2px #000000;
+  -webkit-transition: 200ms ease-out;
+  -moz-transition: 200ms ease-out;
+  -o-transition: 200ms ease-out;
+  transition: 200ms ease-out;
 }
+
+/*********************************
+  Shopping List Styles
+*********************************/
+
+.ingredient:hover {
+  background-color: rgba(169, 169, 169, 0.33);
+  -webkit-transition: 100ms ease-out;
+  -moz-transition: 100ms ease-out;
+  -o-transition: 100ms ease-out;
+  transition: 100ms ease-out;
+  cursor: pointer;
+}
+
 
 span.glyphicon-plus {
   font-size: 3em;
   margin: 0 auto;
   display: table;
-  top: 35%;
+  top: 43%;
+}
+
+.create-meal-plan {
+  background-color: rgba(169, 169, 169, 0.41);
+}
+
+.create-meal-plan > p {
+  bottom: 5%;
+  width: 100%;
+  text-align: center;
+  position: absolute;
+}
+
+select {
+  max-width: 250px;
 }
 
 
@@ -331,9 +413,9 @@ span.glyphicon-plus {
   display: none;
 }
 
-.show {
+/*.show {
   display: inline;
-}
+}*/
 
 
 .heading {

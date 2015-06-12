@@ -18,14 +18,22 @@ var Recipe = React.createClass({
       backgroundImage: 'url(' + imgUrl + ')',
     };
 
+
+
+    //Shorten the recipe name to fit in the recipe preview container if the recipe name is too long!
+    var recipeName = this.props.recipe.recipeName || this.props.recipe.get('recipeName');
+    if (recipeName.length > 35){
+      recipeName = recipeName.substring(0, 35) + '...';
+    };
+
     return (
-      <div className="thumbnail recipe-preview col-md-2" style={bgStyle} key={this.props.recipe} onClick={this._navigateToRecipe}>
-        <div className={this.props.forReview ? 'show review-buttons' : 'hide'} >
+      <div className="thumbnail recipe-preview col-sm-2" style={bgStyle} key={this.props.recipe} onClick={this.props.forReview ? function(){} : this._navigateToRecipe} >
+        <div className={this.props.forReview ? 'review-buttons' : 'hide'} >
           <button type='button' className="btn btn-default btn-small" onClick={this._navigateToRecipe}>View</button>
           <button type='button' className="btn btn-default btn-small" data-position={this.props.position} data-collection={this.props.collection} onClick={this.props.rejectRecipe}>Reject</button>
         </div>
         <div className="overlay">
-          <p className="overlay-title">{this.props.recipe.recipeName || this.props.recipe.get('recipeName')}</p>
+          <p className="overlay-title">{recipeName}</p>
         </div>
       </div>
     );
