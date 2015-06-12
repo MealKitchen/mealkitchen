@@ -2,11 +2,11 @@ var Promise = require('bluebird');
 var http = require('http');
 var Recipe = require('./recipeModel');
 var RecipePreference = require('../recipePreference/recipePreferenceModel');
+var RecipePreferenceController = require('../recipePreference/recipePreferenceController');
 var db = require('../db');
 var lib = require('../config/libraries');
 var MealPlan = require('../mealPlan/mealPlanModel');
 var utils = require('../config/utility');
-var RecipePreferenceController = require('../recipePreference/RecipePreferenceController');
 
 var appId, apiKey;
 try {
