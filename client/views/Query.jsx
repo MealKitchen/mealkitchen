@@ -21,18 +21,6 @@ var Query = React.createClass({
     this.props.setBGImg(false);
   },
 
-  _seeMoreToggle: function(e){
-    var filter = e.target.dataset.filter;
-    switch (filter){
-      case 'allowed-allergies':
-        this.setState({seeMoreAllergies: !this.state.seeMoreAllergies});
-        break;
-      case 'allowed-cuisines':
-        this.setState({seeMoreCuisines: !this.state.seeMoreCuisines});
-        break;
-    }
-  },
-
   //Every time a user interacts with the form, we need to update the state of the view to reflect that change.
   handleChange: function(event) {
     var name = event.target.name;
@@ -69,13 +57,14 @@ var Query = React.createClass({
     e.preventDefault();
     var that = this;
 
-    //Prevent submission if no recipes were requested (meal plans with no recipes are meaningless).
+    //Prevent submission if no recipes were requested (meal plans with no recipes are meaningless). The 1X multiplier converts strings to numbers for proper handling.
     if((1*this.state.numBreakfasts) === 0 && (1*this.state.numLunches) === 0 && (1*this.state.numDinners) === 0){
       alert('Please request at least one recipe for Breakfast, Lunch, or Dinner!');
       return;
     }
 
-    var query = new QueryModel({
+    var query = new QueryModel();
+    query.set({
       allowedCuisines: this.state.allowedCuisines,
       allowedDiet: this.state.allowedDiet,
       allowedAllergies: this.state.allowedAllergies,
@@ -87,6 +76,9 @@ var Query = React.createClass({
     //Send a POST request to the server with the QueryModel to get a list of recipes that match the query.
     query.save({}, {
       success: function(model, res){
+
+        console.log('MODEL: ', model);
+        console.log('RESPONSE: ', res);
 
         var breakfastCollection = new RecipesCollection();
         var lunchCollection = new RecipesCollection();
@@ -128,8 +120,91 @@ var Query = React.createClass({
     });
   },
 
+  _seeMoreToggle: function(e){
+    var filter = e.target.dataset.filter;
+    switch (filter){
+      case 'allowed-allergies':
+        this.setState({seeMoreAllergies: !this.state.seeMoreAllergies});
+        break;
+      case 'allowed-cuisines':
+        this.setState({seeMoreCuisines: !this.state.seeMoreCuisines});
+        break;
+    }
+  },
+
   render: function() {
     var value = this.state.value;
+
+    //FILTER ARRAYS:
+    //The following arrays are used for easier rendering of the filter checklists. To add a new option, include it in the correct filter array. Do not delete them or the checklists will not render!
+    //The short versions are shown by default, and the user is provided a see more button to see the full list of options.
+    var allowedAllergiesShort = [
+      "Egg-Free",
+      "Gluten-Free",
+      "Peanut-Free",
+      "Seafood-Free",
+      "Sesame-Free",
+      "Soy-Free"
+    ];
+
+    var allowedAllergies = [
+      "Egg-Free",
+      "Gluten-Free",
+      "Peanut-Free",
+      "Seafood-Free",
+      "Sesame-Free",
+      "Soy-Free",
+      "Sulfite-Free",
+      "Tree Nut-Free",
+      "Wheat-Free"
+    ];
+
+    var allowedDiet = [
+      "Vegetarian",
+      "Vegan",
+      "Pescetarian",
+      "Paleo",
+      "Lacto-Vegetarian",
+      "Ovo-Vegetarian"
+    ];
+
+    var allowedCuisinesShort = [
+      "American",
+      "Asian",
+      "Barbecue",
+      "Cajun & Creole",
+      "Chinese",
+      "Cuban"
+    ];
+
+    var allowedCuisines = [
+      "American",
+      "Asian",
+      "Barbecue",
+      "Cajun & Creole",
+      "Chinese",
+      "Cuban",
+      "English",
+      "French",
+      "German",
+      "Greek",
+      "Hawaiian",
+      "Hungarian",
+      "Indian",
+      "Irish",
+      "Italian",
+      "Japanese",
+      "Kid-Friendly",
+      "Mediterranean",
+      "Mexican",
+      "Moroccan",
+      "Portuguese",
+      "Southern & Soul Food",
+      "Southwestern",
+      "Spanish",
+      "Swedish",
+      "Thai"
+    ];
 
     //Determine whether to show all options or some options for filters based on whether the see more/see less button is clicked.
     var cuisineOptions = this.state.seeMoreCuisines ? allowedCuisines : allowedCuisinesShort;
@@ -142,174 +217,22 @@ var Query = React.createClass({
 
         <form onSubmit={this.handleSubmit}>
           <h3 className="section-header">Select Number of Meals by Type</h3>
+
           <div className="row">
-
-            <div className="form-group col-md-3">
-              <select className="form-control" name="numDinners" id="numDinners" defaultValue="" onChange={this.handleChange} type="number">
-                <option value="" disabled># Dinners</option>
-                <option value="0">0</option>
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-                <option value="6">6</option>
-                <option value="7">7</option>
-              </select>
-            </div>
-
-            <div className="form-group col-md-3">
-              <select className="form-control" name="numLunches" id="numLunches" defaultValue="" onChange={this.handleChange} type="number">
-                <option value="" disabled># Lunches</option>
-                <option value="0">0</option>
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-                <option value="6">6</option>
-                <option value="7">7</option>
-              </select>
-            </div>
-
-            <div className="form-group col-md-3">
-              <select className="form-control" name="numBreakfasts" id="numBreakfasts" defaultValue="" onChange={this.handleChange} type="number">
-                <option value="" disabled># Breakfasts</option>
-                <option value="0">0</option>
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-                <option value="6">6</option>
-                <option value="7">7</option>
-              </select>
-            </div>
-
+            <Dropdown name="numDinners" id="numDinners" defaultValue="" type="number" handleChange={this.handleChange} placeHolder="# Dinners" numOptions={7} />
+            <Dropdown name="numLunches" id="numLunches" defaultValue="" type="number" handleChange={this.handleChange} placeHolder="# Lunches" numOptions={7} />
+            <Dropdown name="numBreakfasts" id="numBreakfasts" defaultValue="" type="number" handleChange={this.handleChange} placeHolder="# Breakfasts" numOptions={7} />
             <input type="submit" value="Create Plan" className="btn btn-primary btn-medium" />
           </div>
+
           <h3 className="section-header">Additional Filters</h3>
           <div className="row">
-
-            <div className="form-group col-md-3">
-              <div className="filter-label">Food Preferences</div>
-              {dietOptions.map(function(item, i){
-                return [
-                  <div className="checkbox">
-                    <label>
-                      <input type="checkbox" name='allowedDiet' value={item} className="checkbox" onChange={this.handleChange} />{item}
-                    </label>
-                  </div>
-                ];
-              }, this)}
-            </div>
-
-            <div className="form-group col-md-3">
-              <div className="filter-label">Allergy Restrictions</div>
-              {allergyOptions.map(function(item, i){
-                return [
-                  <div className="checkbox">
-                    <label>
-                      <input type="checkbox" name='allowedAllergies' value={item} className="checkbox" onChange={this.handleChange} />{item}
-                    </label>
-                  </div>
-                ];
-              }, this)}
-              <div className='toggle-filter' data-filter='allowed-allergies' onClick={this._seeMoreToggle}>
-                <span data-filter='allowed-allergies'>{this.state.seeMoreAllergies ? 'See less ' : 'See more '}</span>
-                <span data-filter='allowed-allergies' className={this.state.seeMoreAllergies ? "glyphicon glyphicon-chevron-up" : "glyphicon glyphicon-chevron-down"} aria-hidden="true"></span>
-              </div>
-            </div>
-
-            <div className="form-group col-md-3">
-              <div className="filter-label">Cuisine Preferences</div>
-              {cuisineOptions.map(function(item, i){
-                return [
-                  <div className="checkbox">
-                    <label>
-                      <input type="checkbox" name='allowedCuisines' value={item} className="checkbox" onChange={this.handleChange} />{item}
-                    </label>
-                  </div>
-                ];
-              }, this)}
-              <div className='toggle-filter' data-filter='allowed-cuisines' onClick={this._seeMoreToggle}>
-                <span data-filter='allowed-cuisines'>{this.state.seeMoreCuisines ? 'See less ' : 'See more '}</span>
-                <span data-filter='allowed-cuisines' className={this.state.seeMoreCuisines ? "glyphicon glyphicon-chevron-up" : "glyphicon glyphicon-chevron-down"} aria-hidden="true"></span>
-              </div>
-            </div>
+            <Checklist label="Food Preferences" filterOptions={dietOptions} name="allowedDiet" handleChange={this.handleChange} />
+            <Checklist label="Allergy Restrictions" filterOptions={allergyOptions} name="allowedAllergies" handleChange={this.handleChange} dataFilter="allowed-allergies" seeMore={this.state.seeMoreAllergies} toggle={this._seeMoreToggle} truncated={true} />
+            <Checklist label="Cuisine Preferences" filterOptions={cuisineOptions} name="allowedCuisines" handleChange={this.handleChange} dataFilter="allowed-cuisines" seeMore={this.state.seeMoreCuisines} toggle={this._seeMoreToggle} truncated={true} />
           </div>
         </form>
       </div>
     );
   }
 });
-
-
-//The following arrays are for easier rendering of the filter checklists in the render method above. Do not delete them or the checklists will not render!
-var allowedAllergies = [
-  "Egg-Free",
-  "Gluten-Free",
-  "Peanut-Free",
-  "Seafood-Free",
-  "Sesame-Free",
-  "Soy-Free",
-  "Sulfite-Free",
-  "Tree Nut-Free",
-  "Wheat-Free"
-];
-
-var allowedAllergiesShort = [
-  "Egg-Free",
-  "Gluten-Free",
-  "Peanut-Free",
-  "Seafood-Free",
-  "Sesame-Free",
-  "Soy-Free"
-];
-
-var allowedDiet = [
-  "Vegetarian",
-  "Vegan",
-  "Pescetarian",
-  "Paleo",
-  "Lacto-Vegetarian",
-  "Ovo-Vegetarian"
-];
-
-var allowedCuisines = [
-  "American",
-  "Asian",
-  "Barbecue",
-  "Cajun & Creole",
-  "Chinese",
-  "Cuban",
-  "English",
-  "French",
-  "German",
-  "Greek",
-  "Hawaiian",
-  "Hungarian",
-  "Indian",
-  "Irish",
-  "Italian",
-  "Japanese",
-  "Kid-Friendly",
-  "Mediterranean",
-  "Mexican",
-  "Moroccan",
-  "Portuguese",
-  "Southern & Soul Food",
-  "Southwestern",
-  "Spanish",
-  "Swedish",
-  "Thai"
-];
-
-var allowedCuisinesShort = [
-  "American",
-  "Asian",
-  "Barbecue",
-  "Cajun & Creole",
-  "Chinese",
-  "Cuban"
-];

@@ -21,6 +21,7 @@ var MealPlanLibrary = React.createClass({
         var mealPlansArray = mealPlans.map(function(model, i){
           return model;
         });
+        mealPlansArray.reverse();
         that.setState({mealPlans: mealPlansArray});
         that.props.setMealPlans(mealPlans);
       },
