@@ -8,27 +8,43 @@ var utils = require('../config/utility');
 
 module.exports = {
   getUserRecipes: function(req, res){
-    Promise.all([
-      //if query was empty value will be empty array
-      recipeController.createRecipes(req.body, req.session.user.id),
 
-      //get user recipe preferences
-      recipePreferenceController.getUserPreferences(req.session.user.id)
+    //retrieve user preferences
+    recipePreferenceController.getUserPreferences(req.session.user.id)
+    .then(function(userPreferences){
 
-    ])
-    .then(function(results){
+      //get user flavor profile from user preferences
+      recipePreferenceController.userFlavorProfileFromPreferences(userPreferences)
+      .then(function(userCourseFlavorProfile){
 
-      var matches = results[0];      
-      var preferences = results[1];
+        //create recipes for our user
+        recipeController.createRecipes(req.body, userCourseFlavorProfile)
+        .then(function(courseMatches){
 
-      kNN.runMachine(matches, preferences).then(function(results){
-        res.status(200).send(results);
+          //run k nearest neighbor sorting algorithm
+          kNN.runMachine(courseMatches, userPreferences).then(function(results){
+            res.status(200).send(results);
+          })
+          .catch(function(error){
+            console.error({'error in createRecipes': error});
+            res.status(500).send({'error in knn': error});
+          })
+        })
+        .catch(function(error){
+          console.error({'error in createRecipes': error});
+          res.status(500).send({'error in createRecipes': error});
+        })
+      })
+      .catch(function(error){
+        console.error({'error in createRecipes': error});
+        res.status(500).send({'error getting userFlavor Profile': error});
       })
     })
     .catch(function(error){
-      console.log(error);
-      res.status(500).send({'error': error});
+      console.error({'error in createRecipes': error});
+      res.status(500).send({'error getting userPreferences': error});
     })
+
   },
 
   getUserMealPlans: function(req, res){
@@ -43,10 +59,10 @@ module.exports = {
   },
   saveUserMealPlan: function(req, res){
     var recipesPrefs = mealPlanController.saveMealPlanRecipePreferences(req);
-   
+
     for (var i = 0; i < recipesPrefs.length; i++) {
       recipePreferenceController.savePreference(recipesPrefs[i]);
-    }    
+    }
 
     recipeController.getMealPlanRecipes(req.body)
     .then(function(recipesFromYummly){
