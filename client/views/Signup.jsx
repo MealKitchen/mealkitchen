@@ -43,11 +43,11 @@ var SignUp = React.createClass({
           <form onSubmit={this.handleSignUp}>
             <div className="form-group">
               <label className="input-label" htmlFor="email">Email</label>
-              <input className="form-control" type="text" name="email" placeholder="Enter email" onChange={this.handleEmailChange} />
+              <input className="form-control" type="text" name="email" placeholder="Enter email" onChange={this.handleEmailChange} required />
             </div>
             <div className="form-group">
               <label className="input-label" htmlFor="password">Password</label>
-              <input className="form-control" type="password" name="password" placeholder="Enter password" onChange={this.handlePasswordChange}/>
+              <input className="form-control" pattern=".{5,10}" title="5 to 10 characters" type="password" name="password" placeholder="Enter password" onChange={this.handlePasswordChange} required />
             </div>
             <input type="submit" className="btn btn-default btn-large pull-right" value="Sign Up"></input>
           </form>

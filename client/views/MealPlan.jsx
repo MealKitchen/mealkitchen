@@ -32,22 +32,18 @@ var MealPlan = React.createClass({
 
   // dynamically render recipes on page according to Meal Plan
   render: function() {
-    console.log('****** rendering mealPlan', this.props.mealPlan);
       return (
         <div className="split-container">
-
           <div className="row">
-
             <div className="primary-container col-md-10">
-
               <h1 className="page-header">Meal Plan: {this.props.mealPlan.get('title')}</h1>
 
               <div className="course-container">
-                <h3 className="section-header">Breakfast</h3>
+                <h3 className="section-header">Dinner</h3>
                 <div className="row">
-                  {this.props.mealPlan.get('breakfastRecipes').map(function(item, i) {
+                  {this.props.mealPlan.get('dinnerRecipes').map(function(item, i) {
                     return [
-                      <Recipe recipe={item} position={i} forReview={false} collection='breakfastCollection' />
+                      <Recipe recipe={item} position={i} forReview={false} collection='dinnerCollection' />
                     ];
                   }, this)}
                 </div>
@@ -65,24 +61,21 @@ var MealPlan = React.createClass({
               </div>
 
               <div className="course-container">
-                <h3 className="section-header">Dinner</h3>
+                <h3 className="section-header">Breakfast</h3>
                 <div className="row">
-                  {this.props.mealPlan.get('dinnerRecipes').map(function(item, i) {
+                  {this.props.mealPlan.get('breakfastRecipes').map(function(item, i) {
                     return [
-                      <Recipe recipe={item} position={i} forReview={false} collection='dinnerCollection' />
+                      <Recipe recipe={item} position={i} forReview={false} collection='breakfastCollection' />
                     ];
                   }, this)}
                 </div>
               </div>
 
             </div>
-
             <div className="secondary-container col-md-2">
               <button className="btn btn-primary btn-large" type='button' onClick={this._createShoppingList}>Create Shopping List</button>
             </div>
-
           </div>
-
         </div>
       );
     }

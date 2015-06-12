@@ -38,7 +38,7 @@ var MealPlanLink = React.createClass({
       <div style={bgStyle} onClick={this._mealLink} className="col-md-3 thumbnail meal-plan-preview">
         <div className="overlay">
           <p className="overlay-title">{this.state.title}</p>
-          <p className="overlay-text">{this.state.breakfasts.length} B | {this.state.lunches.length} L | {this.state.dinners.length} D </p>
+          <p className="overlay-text">{this.state.dinners.length} D | {this.state.lunches.length} L | {this.state.breakfasts.length} B </p>
         </div>
       </div>
     );

@@ -11,16 +11,14 @@ var Recipe = React.createClass({
   },
 
   render : function() {
-    // Getting the image url and modifying it to get the correct size. Note: this could break if Yummly changes their img urls
+    // Get the image url and modify it to get the correct size. Note: this could break if Yummly changes their img urls.
     var imgUrl = this.props.recipe.smallImgUrl || this.props.recipe.get('smallImageUrls')[0];
     imgUrl = imgUrl.substring(0, imgUrl.length - 2) + '400';
     var bgStyle = {
       backgroundImage: 'url(' + imgUrl + ')',
     };
 
-
-
-    //Shorten the recipe name to fit in the recipe preview container if the recipe name is too long!
+    //Shorten the recipe name to fit in the recipe preview container if the recipe name is too long.
     var recipeName = this.props.recipe.recipeName || this.props.recipe.get('recipeName');
     if (recipeName.length > 35){
       recipeName = recipeName.substring(0, 35) + '...';

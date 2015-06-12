@@ -33,11 +33,12 @@ var LogIn = React.createClass({
           password: res.password,
           email: res.email
         });
+        //Set the user on the app view to be passed to other views.
         that.props.setUser(user);
         that.props.transitionTo('/mealplans');
       },
       error: function (xhr, ajaxOptions, thrownError) {
-        alert('Please check your username/password!');
+        alert('Please check your username and/or password!');
       }
     });
   },
@@ -50,11 +51,11 @@ var LogIn = React.createClass({
           <form onSubmit={this.handleLogin}>
             <div className="form-group">
               <label className="input-label" htmlFor="email">Email</label>
-              <input className="form-control" type="text" name="email" placeholder="Enter email" onChange={this.handleEmailChange} />
+              <input className="form-control" type="text" name="email" placeholder="Enter email" onChange={this.handleEmailChange} required />
             </div>
             <div className="form-group">
               <label className="input-label" htmlFor="password">Password</label>
-              <input className="form-control" type="password" name="password" placeholder="Enter password" onChange={this.handlePasswordChange}/>
+              <input className="form-control" type="password" name="password" placeholder="Enter password" onChange={this.handlePasswordChange} required />
             </div>
             <input type="submit" className="btn btn-default btn-large pull-right" value="Log In"></input>
           </form>
