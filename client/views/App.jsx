@@ -130,7 +130,7 @@ var AppView = React.createClass({
       case '/mealplans': Child = MealPlanLibrary; break;
       case '/mealplan': Child = MealPlan; break;
       case '/shoppinglist': Child = ShoppingList; break;
-      default:      Child = this.state.loggedIn ? Query : LogIn;
+      default:      Child = this.state.loggedIn ? MealPlanLibrary : LogIn;
     }
 
     if(Child !== SignUp && Child !== LogIn && Child !== LandingPage && !this.state.loggedIn){

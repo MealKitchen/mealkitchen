@@ -1,5 +1,6 @@
 html, body {
   height: 100%;
+  font-family: 'Lato', sans-serif;
 }
 
 label {
@@ -273,16 +274,19 @@ p.suggested-action {
 
 .secondary-container {
   margin-top: 40px;
+  margin-bottom: 40px;
 }
 
 
 .page-header {
   color: #D74B1A;
+  font-family: 'Lato', sans-serif;
 }
 
 .section-header {
   color: #D74B1A;
   font-size: 1.3em;
+  font-family: 'Lato', sans-serif;
 }
 
 .filter-label {
@@ -348,6 +352,30 @@ p.suggested-action {
   background-position: center;
   cursor: pointer;
 }
+
+.meal-plan-preview:hover{
+  -moz-box-shadow:    0 0 2px #000000;
+  -webkit-box-shadow: 0 0 2px #000000;
+  box-shadow:         0 0 2px #000000;
+  -webkit-transition: 200ms ease-out;
+  -moz-transition: 200ms ease-out;
+  -o-transition: 200ms ease-out;
+  transition: 200ms ease-out;
+}
+
+/*********************************
+  Shopping List Styles
+*********************************/
+
+.ingredient:hover {
+  background-color: rgba(169, 169, 169, 0.33);
+  -webkit-transition: 100ms ease-out;
+  -moz-transition: 100ms ease-out;
+  -o-transition: 100ms ease-out;
+  transition: 100ms ease-out;
+  cursor: pointer;
+}
+
 
 span.glyphicon-plus {
   font-size: 3em;

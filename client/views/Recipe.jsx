@@ -27,7 +27,7 @@ var Recipe = React.createClass({
     };
 
     return (
-      <div className="thumbnail recipe-preview col-md-2" style={bgStyle} key={this.props.recipe} onClick={this.props.forReview ? function(){} : this._navigateToRecipe} >
+      <div className="thumbnail recipe-preview col-sm-2" style={bgStyle} key={this.props.recipe} onClick={this.props.forReview ? function(){} : this._navigateToRecipe} >
         <div className={this.props.forReview ? 'review-buttons' : 'hide'} >
           <button type='button' className="btn btn-default btn-small" onClick={this._navigateToRecipe}>View</button>
           <button type='button' className="btn btn-default btn-small" data-position={this.props.position} data-collection={this.props.collection} onClick={this.props.rejectRecipe}>Reject</button>
