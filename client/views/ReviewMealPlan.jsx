@@ -113,11 +113,9 @@ var ReviewMeals = React.createClass({
       //TODO: set model id's correctly on first save!
       this.props.query.set('id', 'temp');
       this.props.query.save({}, {
-        success: function(){
-          console.log('SUCCESSFUL REFILL OF QUERY: ', that.props);
-        },
         error: function(){
           alert('There was an error with your request, please create a new Meal Plan.');
+          window.location.hash('/mealquery');
         }
       });
     }
