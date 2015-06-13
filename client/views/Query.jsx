@@ -89,6 +89,13 @@ var Query = React.createClass({
 
     query.save({}, {
       success: function(model, res){
+
+        /*
+        COURSE COLLECTIONS
+        The course collections live on the App State and contain all of the current
+        recipe suggestions for each course. They are pulled in order of relevance from
+        a queue of recipes returned from the server.
+         */
         var breakfastCollection = new RecipesCollection();
         for(var i=0; i<query.get('numBreakfasts'); i++){
           breakfastCollection.add(new RecipeModel(model.get('breakfastRecipes').pop()));

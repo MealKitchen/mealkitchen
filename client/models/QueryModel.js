@@ -1,6 +1,6 @@
 var QueryModel = Backbone.Model.extend({
 
-  url: 'api/recipes',
+  url: 'api/queries',
 
   defaults: {
     'offsetB': 0,
