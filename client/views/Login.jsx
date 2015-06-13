@@ -16,7 +16,7 @@ var LogIn = React.createClass({
 
   handleUsernameChange: function(e) {
     this.setState({
-      id: e.target.value
+      id: e.target.value,
       username: e.target.value
     });
   },
