@@ -21,6 +21,7 @@ module.exports = function(app, express) {
 
   // 'api/recipes' routing
   app.post('/api/recipes', appController.getUserRecipes);
+  app.put('/api/recipes', appController.refillCourseQueue);
   //app.get('/api/recipes', utils.checkUser, recipeController.getYummlyRecipe);
   app.post('/api/recipes/ingredients', recipeController.createIngredientsList);
   // 'api/mealplan' routing

@@ -129,7 +129,25 @@ exports.query = {
     }
 
   },
+  createRefillCourseQuery: function(queryModel, course, userFlavorPrefs, numMeals, offset){
 
+    var filterQueryString = exports.query.filterForCourses(queryModel);
+
+    var courseQueryString =
+
+      exports.query.yummlySearchValidation() +
+
+      filterQueryString +
+
+      exports.query.courseFlavorRange(userFlavorPrefs) +
+
+      "&allowedCourse[]=" + lib.course[course] + "&requirePictures=true" +
+
+      "&maxResult=" + numMeals + "&start=" + offset;
+
+    return courseQueryString;
+
+  },
   //creates filter query from query Model
   //allergy, diet, cuisine settings
   filterForCourses: function(queryModel){

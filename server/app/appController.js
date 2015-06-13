@@ -90,6 +90,27 @@ module.exports = {
     .catch(function(error){
       res.status(500).send({'error saving user meal plan': error});
     })
+  },
+  refillCourseQueue: function(req, res){
+
+    recipePreferenceController.getUserPreferences(req.session.user.id)
+    .then(function(userPreferences){
+
+      //get user flavor profile from user preferences
+      recipePreferenceController.userFlavorProfileFromPreferences(userPreferences)
+      .then(function(userCourseFlavorProfile){
+
+        recipeController.courseRefillQuery(req.body, userCourseFlavorProfile)
+        .then(function(recipes){
+
+          res.status(200).send(req.body);
+        })
+        .catch(function(error){
+          console.log('error in refill course queue', error);
+          res.status(500).send({'error getting refill recipes': error});
+        })
+      })
+    })
   }
 
 };

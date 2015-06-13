@@ -199,7 +199,52 @@ module.exports = {
 
     });
   },
+  courseRefillQuery: function(queryModel, userCourseFlavorPreferences){
 
+    return new Promise(function(resolve, reject){
+      //function(queryModel, course, userFlavorPrefs, numMeals, offset)
+      var course, userFlavorPrefs, numMeals, offset, returnKey;
+
+      if(queryModel.offsetB > 0 && queryModel.breakfastRecipes.length === 0){
+
+        course = "Breakfast";
+        numMeals = queryModel.numBreakfasts;
+        userFlavorPrefs = userCourseFlavorPreferences[0];
+        offset = queryModel.offsetB;
+        returnKey = 'breakfastRecipes';
+
+      } else if(queryModel.offsetL > 0 && queryModel.lunchRecipes.length === 0){
+
+        course = "Lunch";
+        numMeals = queryModel.numLunches;
+        userFlavorPrefs = userCourseFlavorPreferences[1];
+        offset = queryModel.offsetL;
+        returnKey = 'lunchRecipes';
+
+      } else if(queryModel.offsetD > 0 && queryModel.dinnerRecipes.length === 0){
+
+        course = "Dinner";
+        numMeals = queryModel.numDinners;
+        userFlavorPrefs = userCourseFlavorPreferences[2];
+        offset = queryModel.offsetD;
+        returnKey = 'dinnerRecipes';
+
+      }
+
+      var refillQueryString = utils.query.createRefillCourseQuery(queryModel, course, userFlavorPrefs, numMeals*1 + 10, offset);
+
+      queryYummly(refillQueryString)
+      .then(function(matches){
+        queryModel[returnKey] = matches;
+        resolve();
+      })
+      .catch(function(error){
+        reject({'error in courseRefillQuery': error})
+      })
+
+    });
+
+  },
   //optimization note: lookup in database for preexisting recipes
   //potentially save two separate ids for recipes
   //matchId -> id from yummly match
