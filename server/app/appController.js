@@ -113,29 +113,43 @@ module.exports = {
     })
   },
   login: function(req, res){
-    console.log('req.params', req.params)
-    userController.login(req.params.username, req.params.password)
-    .then(function(user){
-      console.log('logged in ', user);
 
+    //validate user
+    userController.login(req.query.username, req.query.password)
+    .then(function(user){
+      //create user session
       utils.createSession(user, req)
       .then(function(){
-        console.log('cereated session');
-        res.status(200).send(user);
-      });
+
+        res.status(200).send({
+          id: user.username
+        });
+      })
+      .catch(function(error){
+        rest.status(500).send({'error creating session': error})
+      })
 
     })
     .catch(function(error){
       res.status(error.status || 500).send({'login error': error});
     })
-
-
   },
   signup: function(req, res){
 
+    //create new user
     userController.signup(req.body.username, req.body.password)
     .then(function(user){
-      res.status(200).send(user);
+      //create session for user
+      utils.createSession(user, req)
+      .then(function(){
+
+        res.status(200).send({
+          id: user.username
+        });
+      })
+      .catch(function(error){
+        rest.status(500).send({'error creating session': error})
+      })
     })
     .catch(function(error){
       res.status(error.status || 500).send({'signup error': error});

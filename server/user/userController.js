@@ -5,8 +5,8 @@ var User = require('./userModel');
 
 module.exports = {
   login: function(username, password) {
-    console.log('login with', username, password);
     return new Promise(function(resolve, reject){
+
       new User({username: username}).fetch().then(function(user){
         if( !user ){
           reject({error: 'No such user.', status: 401});
@@ -25,6 +25,7 @@ module.exports = {
   signup: function(username, password) {
 
     return new Promise(function(resolve, reject){
+      
       new User({username: username}).fetch().then(function(user) {
         if (!user) {
           new User({username: username, password: password}).save()

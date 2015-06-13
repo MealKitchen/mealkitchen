@@ -22,9 +22,12 @@ module.exports = function(app, express) {
   }));
 
 
-  // 'api/users' routing
-  // router.get('/api/users', utils.checkUser, utils.sendLoggedInStatus);
+  /**** 'api/users' routing ****/
+  //check if logged in
+  router.get('/users', utils.checkUser, utils.sendLoggedInStatus);
+  //log in
   router.get('/users/:username', appController.login);
+  //sign up
   router.post('/users', appController.signup);
 
   // 'api/recipes' routing
@@ -42,6 +45,6 @@ module.exports = function(app, express) {
 
 
   router.get('/logout', utils.logout);
-  
+
   app.use('/api', router);
 };

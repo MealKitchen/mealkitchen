@@ -24,7 +24,6 @@ exports.isLoggedIn = function(req) {
 };
 
 exports.checkUser = function(req, res, next) {
-  console.log("checking user", req.session);
   if (!exports.isLoggedIn(req)){
     res.status(401).send({loggedIn: false});
   } else {
