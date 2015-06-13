@@ -24,7 +24,7 @@ var HowItWorks = React.createClass({
           <p>Built by &nbsp;
           <a href="https://www.linkedin.com/in/asponring" target="_blank">Andy Sponring</a>,&nbsp; 
           <a href="https://www.linkedin.com/in/marktausch" target="_blank">Mark Tausch</a>,&nbsp;
-          <a href="https://www.linkedin.com/in/zfisch" target="_blank">Zack Fischmann</a>,&nbsp;and&nbsp; 
+          <a href="http://zackfischmann.com/" target="_blank">Zack Fischmann</a>,&nbsp;and&nbsp; 
           <a href="https://www.linkedin.com/in/melaniegin" target="_blank">Melanie Gin</a>&nbsp;|&nbsp;
           View on &nbsp; 
           <a href="https://github.com/Unconditional-Chocolate/mealplan" target="_blank">GitHub</a>
