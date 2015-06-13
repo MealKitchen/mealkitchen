@@ -17,9 +17,11 @@ Meal Kitchen is a personalized recipe recommendation application that helps you 
 1. [Requirements](#requirements)
 1. [Development](#development)
   1. [Installing Dependencies](#installing-dependencies)
-  1. [Setting Up Postgres](#setting-up-postgres)
-  1. [Tasks](#tasks)
-1. [Team](#team)
+  1. [Setting Up PostgreSQL](#setting-up-postgresql)
+  1. [Starting development](#starting-development)
+  1. [Testing](#testing)
+  1. [Deployment](#deployment)
+1. [Roadmap](#roadmap)
 1. [Contributing](#contributing)
 
 ## Usage
@@ -54,7 +56,7 @@ npm install -g grunt-cli
 
 npm will install almost all the dependencies you need. Additionally, it will install a local copy of Bower, which is run after `npm install`, in order to fetch client dependencies. Installing grunt-cli will allow you to accomplish required development tasks described below.
 
-### Setting Up Postgres ###
+### Setting Up PostgreSQL ###
 To run the app for development, PostgreSQL must be installed with the proper role set up. Follow the directions below to set up the DB.
 
 #### If Postgres is not Installed ####
