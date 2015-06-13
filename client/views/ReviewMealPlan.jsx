@@ -14,15 +14,13 @@ var ReviewMeals = React.createClass({
   },
 
   componentDidMount: function() {
+    var that = this;
 
     /*
     LISTENERS
     The following listeners re-render the page whenever a user rejects a recipe so
     that a new recipe suggestion can be displayed.
     */
-
-    var that = this;
-
     this.listenTo(this.props.breakfastCollection, 'add remove', function() {
       that.forceUpdate();
     });
@@ -44,8 +42,8 @@ var ReviewMeals = React.createClass({
   is updated. Whenever the queue of recipes runs out, a new request is sent to Yummly to
   refill it.
    */
-
   _rejectRecipe: function(event) {
+    var that = this;
     var modelId = event.target.dataset.position;
     var collection = event.target.dataset.collection;
     var courseQueue;
@@ -63,6 +61,12 @@ var ReviewMeals = React.createClass({
         courseQueue = this.props.query.get('dinnerRecipes');
         this.props.query.incrementOffset('dinner');
         break;
+    }
+
+    //Don't allow users to reject a recipe if there are no recipes in the Queue!
+    //This clause will force a user to wait until the queue is refilled
+    if(courseQueue.length === 0){
+      return;
     }
 
     var rejectedRecipe = this.props[collection].remove(this.props[collection].at(modelId));
@@ -97,13 +101,25 @@ var ReviewMeals = React.createClass({
     }
     preference.save();
 
-    //Update the collections with new recipe recommendations, and refill the queue if necesarry.
+    /*
+    RECIPE QUEUE
+    When a user rejects a recipe, the next recipe in the queue is suggested to them. If the queue
+    runs out, send a PUT request to the server to refill the queue with relevant recipes.
+     */
+    var nextRecipe = new RecipeModel(courseQueue.pop());
+    that.props[collection].add(nextRecipe, {at: modelId});
+
     if(courseQueue.length === 0){
       //TODO: set model id's correctly on first save!
       this.props.query.set('id', 'temp');
-      this.props.query.save();
-    } else {
-      this.props[collection].add(new RecipeModel(courseQueue.pop()), {at: modelId});
+      this.props.query.save({}, {
+        success: function(){
+          console.log('SUCCESSFUL REFILL OF QUERY: ', that.props);
+        },
+        error: function(){
+          alert('There was an error with your request, please create a new Meal Plan.');
+        }
+      });
     }
 
   },

@@ -76,7 +76,6 @@ var AppView = React.createClass({
 
   _transitionTo: function(route){
     var that = this;
-    console.log('ROUTING', route);
     if(route === '/signup' || route === '/login'){
       window.location.hash = route;
     } else {
