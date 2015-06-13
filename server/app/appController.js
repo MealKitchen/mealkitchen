@@ -20,7 +20,6 @@ module.exports = {
         //create recipes for our user
         recipeController.createRecipes(req.body, userCourseFlavorProfile)
         .then(function(courseMatches){
-
           //run k nearest neighbor sorting algorithm
           kNN.runMachine(courseMatches, userPreferences).then(function(results){
             res.status(200).send(results);
