@@ -16,8 +16,8 @@ var MealPlanLibrary = React.createClass({
     //This method call gets the user's previous Meal Plans from the server to display on the page.
     var mealPlans = new MealPlansCollection();
     mealPlans.fetch({
-      data: {userId: this.props.user.get('id')},
-      success: function(model, res){
+      data: { userId: this.props.user.id },
+      success: function(collection, res, options){
         var mealPlansArray = mealPlans.map(function(model, i){
           return model;
         });
@@ -25,7 +25,7 @@ var MealPlanLibrary = React.createClass({
         that.setState({mealPlans: mealPlansArray});
         that.props.setMealPlans(mealPlans);
       },
-      error: function(){
+      error: function(collection, res, options){
         console.error('There was an error fetching your mealplans!');
       }
     });

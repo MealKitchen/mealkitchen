@@ -30,41 +30,40 @@ var AppView = React.createClass({
   The following _set methods are defined and passed to children to allow child view
   controller code to set models and collections on the app state.
   */
-
   _setUser: function(user){
-    this.setState({user: user});
+    this.setState({ user: user });
   },
 
   _setMealPlans: function(mealPlans){
-    this.setState({mealPlans: mealPlans});
+    this.setState({ mealPlans: mealPlans });
   },
 
   _setMealPlan: function(mealPlan){
-    this.setState({mealPlan: mealPlan});
+    this.setState({ mealPlan: mealPlan });
   },
 
   _setQueryModel: function(queryModel){
-    this.setState({queryModel: queryModel});
+    this.setState({ queryModel: queryModel });
   },
 
   _setBreakfastCollection: function(breakfastCollection){
-    this.setState({breakfastCollection: breakfastCollection});
+    this.setState({ breakfastCollection: breakfastCollection });
   },
 
   _setLunchCollection: function(lunchCollection){
-    this.setState({lunchCollection: lunchCollection});
+    this.setState({ lunchCollection: lunchCollection });
   },
 
   _setDinnerCollection: function(dinnerCollection){
-    this.setState({dinnerCollection: dinnerCollection});
+    this.setState({ dinnerCollection: dinnerCollection });
   },
 
   _setIngredientsCollection: function(ingredientsCollection){
-    this.setState({ingredientsCollection: ingredientsCollection});
+    this.setState({ ingredientsCollection: ingredientsCollection });
   },
 
   _setBGImg: function(bool){
-    this.setState({bgImage: bool});
+    this.setState({ bgImage: bool });
   },
 
   /*
@@ -73,7 +72,6 @@ var AppView = React.createClass({
   for convenience. When a user tries to visit a page in the app, their authentication status is
   first checked against the server, and if they are not logged in, they are redirected to the login page.
   */
-
   _transitionTo: function(route){
     var that = this;
     if(route === '/signup' || route === '/login'){
@@ -185,34 +183,34 @@ var AppView = React.createClass({
     correct child component is selected by the router.
      */
     return (
-      <div className={this.state.bgImage ? "background-image" : ""}>
+      <div className = {this.state.bgImage ? "background-image" : ""}>
 
         <Navbar
-          bgImage={this.state.bgImage}
-          linkHandler={this._linkHandler}
-          logOut={this._logOut} />
+          bgImage = {this.state.bgImage}
+          linkHandler = {this._linkHandler}
+          logOut = {this._logOut} />
 
         <Child
-          setBGImg={this._setBGImg}
-          isAuth={this._isAuth}
-          linkHandler={this._linkHandler}
-          transitionTo={this._transitionTo}
-          breakfastCollection={this.state.breakfastCollection}
-          lunchCollection={this.state.lunchCollection}
-          dinnerCollection={this.state.dinnerCollection}
-          query={this.state.queryModel}
-          user={this.state.user}
-          mealPlan={this.state.mealPlan}
-          mealPlans={this.state.mealPlans}
-          ingredients={this.state.ingredientsCollection}
-          setUser={this._setUser}
-          setMealPlans={this._setMealPlans}
-          setMealPlan={this._setMealPlan}
-          setQueryModel={this._setQueryModel}
-          setBreakfastCollection={this._setBreakfastCollection}
-          setLunchCollection={this._setLunchCollection}
-          setDinnerCollection={this._setDinnerCollection}
-          setIngredientsCollection={this._setIngredientsCollection} />
+          setBGImg = {this._setBGImg}
+          isAuth = {this._isAuth}
+          linkHandler = {this._linkHandler}
+          transitionTo = {this._transitionTo}
+          breakfastCollection = {this.state.breakfastCollection}
+          lunchCollection = {this.state.lunchCollection}
+          dinnerCollection = {this.state.dinnerCollection}
+          query = {this.state.queryModel}
+          user = {this.state.user}
+          mealPlan = {this.state.mealPlan}
+          mealPlans = {this.state.mealPlans}
+          ingredients = {this.state.ingredientsCollection}
+          setUser = {this._setUser}
+          setMealPlans = {this._setMealPlans}
+          setMealPlan = {this._setMealPlan}
+          setQueryModel = {this._setQueryModel}
+          setBreakfastCollection = {this._setBreakfastCollection}
+          setLunchCollection = {this._setLunchCollection}
+          setDinnerCollection = {this._setDinnerCollection}
+          setIngredientsCollection = {this._setIngredientsCollection} />
 
       </div>
     );
