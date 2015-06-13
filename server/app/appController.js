@@ -100,12 +100,11 @@ module.exports = {
       .then(function(userCourseFlavorProfile){
 
         recipeController.courseRefillQuery(req.body, userCourseFlavorProfile)
-        .then(function(recipes){
-
+        .spread(function(matches, returnKey){
+          req.body[returnKey] = matches;
           res.status(200).send(req.body);
         })
         .catch(function(error){
-          console.log('error in refill course queue', error);
           res.status(500).send({'error getting refill recipes': error});
         })
       })

@@ -209,44 +209,60 @@ module.exports = {
 
     });
   },
-  courseRefillQuery: function(queryModel, userCourseFlavorPreferences){
+
+  courseRefillQuery: function(queryModel, userCourseFlavorPreferences, attempts){
 
     return new Promise(function(resolve, reject){
-      //function(queryModel, course, userFlavorPrefs, numMeals, offset)
+      attempts = attempts || 0;
+      attempts++;
+
       var course, userFlavorPrefs, numMeals, offset, returnKey;
 
-      if(queryModel.offsetB > 0 && queryModel.breakfastRecipes.length === 0){
+      if (attempts > 2) {
+        console.log('not valid query results')
+        reject({'error': 'not valid query results', 'status': 406})
+      } else {
+        if(queryModel.offsetB > 0 && queryModel.breakfastRecipes.length === 0){
 
-        course = "Breakfast";
-        numMeals = queryModel.numBreakfasts;
-        userFlavorPrefs = userCourseFlavorPreferences[0];
-        offset = queryModel.offsetB;
-        returnKey = 'breakfastRecipes';
+          course = "Breakfast";
+          numMeals = queryModel.numBreakfasts;
+          userFlavorPrefs = userCourseFlavorPreferences && userCourseFlavorPreferences[0];
+          offset = queryModel.offsetB;
+          returnKey = 'breakfastRecipes';
 
-      } else if(queryModel.offsetL > 0 && queryModel.lunchRecipes.length === 0){
+        } else if(queryModel.offsetL > 0 && queryModel.lunchRecipes.length === 0){
 
-        course = "Lunch";
-        numMeals = queryModel.numLunches;
-        userFlavorPrefs = userCourseFlavorPreferences[1];
-        offset = queryModel.offsetL;
-        returnKey = 'lunchRecipes';
+          course = "Lunch";
+          numMeals = queryModel.numLunches;
+          userFlavorPrefs = userCourseFlavorPreferences && userCourseFlavorPreferences[1];
+          offset = queryModel.offsetL;
+          returnKey = 'lunchRecipes';
 
-      } else if(queryModel.offsetD > 0 && queryModel.dinnerRecipes.length === 0){
+        } else if(queryModel.offsetD > 0 && queryModel.dinnerRecipes.length === 0){
 
-        course = "Dinner";
-        numMeals = queryModel.numDinners;
-        userFlavorPrefs = userCourseFlavorPreferences[2];
-        offset = queryModel.offsetD;
-        returnKey = 'dinnerRecipes';
+          course = "Dinner";
+          numMeals = queryModel.numDinners;
+          userFlavorPrefs = userCourseFlavorPreferences && userCourseFlavorPreferences[2];
+          offset = queryModel.offsetD;
+          returnKey = 'dinnerRecipes';
 
+        }
       }
 
       var refillQueryString = utils.query.createRefillCourseQuery(queryModel, course, userFlavorPrefs, numMeals*1 + 10, offset);
 
       queryYummly(refillQueryString)
       .then(function(matches){
-        queryModel[returnKey] = matches;
-        resolve();
+        if (matches.length >= numMeals*1 + 10) {
+          resolve([matches, returnKey]);
+        } else {
+          //if not, recursively call this function
+          module.exports.courseRefillQuery(queryModel, null, attempts).spread(function(matches, returnKey) {
+            resolve([matches, returnKey]);
+          }).catch(function(error) {
+            reject({'error in courseRefillQuery': error});
+          });
+        }
       })
       .catch(function(error){
         reject({'error in courseRefillQuery': error})

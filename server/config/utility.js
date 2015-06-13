@@ -132,9 +132,12 @@ exports.query = {
     var courseQueryString =
       exports.query.yummlySearchValidation() +
       filterQueryString +
-      exports.query.courseFlavorRange(userFlavorPrefs) +
       "&allowedCourse[]=" + lib.course[course] + "&requirePictures=true" +
       "&maxResult=" + numMeals + "&start=" + offset;
+
+    if (userFlavorPrefs) {
+      courseQueryString += exports.query.courseFlavorRange(userFlavorPrefs);
+    }
 
     return courseQueryString;
   },
