@@ -24,7 +24,13 @@ Meal Kitchen is a personalized recipe recommendation application that helps you 
 
 ## Usage
 
-> Some usage instructions
+To view Meal Kitchen on production, visit [http://meal.kitchen](http://meal.kitchen).
+
+You will have to sign up (or log in if you already have an account). Start by creating a meal plan - the link is inside the landing page after login and also in the nav bar. Enter your recipe search parameters. You have the option to request a certain amount of breakfasts, lunches and dinners. Note that you can also select preferred cuisines, allergy restrictions and diet restrictions.
+
+Once you submit your recipe query, the app will query Yummly for recipes, taking into account both your search paramaters AND your flavor preferences which the app has learned from your previous interactions. You can review the recipes that were found and reject ones you don't like - new ones will appear to replace them. When you're satisfied, give your meal plan a name and save it. On the next page you can choose to create a shopping list which will include all the ingredients of the recipes you selected. 
+
+Every time you reject a recipe or save a meal plan, the app gets a better idea of your taste preferences. The more you use our app, the better the recommendations will be!
 
 ## Requirements
 
