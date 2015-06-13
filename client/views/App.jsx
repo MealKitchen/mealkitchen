@@ -76,13 +76,18 @@ var AppView = React.createClass({
 
   _transitionTo: function(route){
     var that = this;
-    this._isAuth(function(){
-      if(!that.state.loggedIn && route !== '/signup'){
-        window.location.hash = '/login';
-      } else {
-        window.location.hash = route;
-      }
-    });
+    console.log('ROUTING', route);
+    if(route === '/signup' || route === '/login'){
+      window.location.hash = route;
+    } else {
+      this._isAuth(function(){
+        if(!that.state.loggedIn){
+          window.location.hash = '/login';
+        } else {
+          window.location.hash = route;
+        }
+      });
+    }
   },
 
   _linkHandler: function(event){
