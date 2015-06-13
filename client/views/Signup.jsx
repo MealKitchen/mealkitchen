@@ -3,7 +3,10 @@
 var SignUp = React.createClass({
 
   getInitialState: function() {
-    return {username: null, password: null};
+    return {
+      username: null,
+      password: null
+    };
   },
 
   componentWillMount: function(){
@@ -11,11 +14,11 @@ var SignUp = React.createClass({
   },
 
   handleUsernameChange: function(e) {
-     this.setState({username: e.target.value});
+     this.setState({ username: e.target.value });
   },
 
   handlePasswordChange: function(e) {
-     this.setState({password: e.target.value});
+     this.setState({ password: e.target.value });
   },
 
   handleSignUp: function(e) {

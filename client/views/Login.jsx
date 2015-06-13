@@ -3,7 +3,11 @@
 var LogIn = React.createClass({
 
   getInitialState: function() {
-    return {username: null, password: null};
+    return {
+      id: null,
+      username: null,
+      password: null
+    };
   },
 
   componentWillMount: function(){
@@ -11,11 +15,14 @@ var LogIn = React.createClass({
   },
 
   handleUsernameChange: function(e) {
-     this.setState({username: e.target.value});
+    this.setState({
+      id: e.target.value
+      username: e.target.value
+    });
   },
 
   handlePasswordChange: function(e) {
-     this.setState({password: e.target.value});
+    this.setState({ password: e.target.value });
   },
 
   handleLogin: function(e) {
