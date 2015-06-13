@@ -23,25 +23,25 @@ module.exports = function(app, express) {
 
 
   // 'api/users' routing
-  router.get('/api/users', utils.checkUser, utils.sendLoggedInStatus);
-  router.get('/api/users/:id', appController.login)
-  router.post('/api/users', appController.signup);
+  // router.get('/api/users', utils.checkUser, utils.sendLoggedInStatus);
+  router.get('/users/:username', appController.login);
+  router.post('/users', appController.signup);
 
   // 'api/recipes' routing
-  router.post('/api/recipes', appController.getUserRecipes);
-  router.put('/api/recipes', appController.refillCourseQueue);
-  //router.get('/api/recipes', utils.checkUser, recipeController.getYummlyRecipe);
-  router.post('/api/recipes/ingredients', recipeController.createIngredientsList);
+  router.post('/recipes', appController.getUserRecipes);
+  router.put('/recipes', appController.refillCourseQueue);
+  //router.get('/recipes', utils.checkUser, recipeController.getYummlyRecipe);
+  router.post('/recipes/ingredients', recipeController.createIngredientsList);
   // 'api/mealplan' routing
-  router.post('/api/mealplan', utils.checkUser, appController.saveUserMealPlan);
-  router.get('/api/mealplan', utils.checkUser, appController.getUserMealPlans);
+  router.post('/mealplan', utils.checkUser, appController.saveUserMealPlan);
+  router.get('/mealplan', utils.checkUser, appController.getUserMealPlans);
 
   // 'api/preferences' routing
-  router.post('/api/recipePreferences', recipePreferenceController.updatePreferences);
-  router.put('/api/recipePreferences', recipePreferenceController.updatePreferences);
+  router.post('/recipePreferences', recipePreferenceController.updatePreferences);
+  router.put('/recipePreferences', recipePreferenceController.updatePreferences);
 
 
-  router.get('/api/logout', utils.logout);
-  // app.post('/api/users/signup', userController.signUp);
-  // app.post('/api/users/signin', userController.signIn);
+  router.get('/logout', utils.logout);
+  
+  app.use('/api', router);
 };

@@ -1,5 +1,5 @@
 var lib = require('../config/libraries');
-
+var Promise = require('bluebird')
 var appId, apiKey;
 try {
   appId = process.env.APPLICATION_ID || require('../config/config.js').APPLICATION_ID;
@@ -10,12 +10,13 @@ catch (e) {
   apiKey = 98765;
 }
 
-exports.createSession = function(req, res, newUser) {
-  return req.session.regenerate(function() {
-      req.session.user = newUser;
-      // res.redirect('/');
-      res.status(200).send(newUser);
+exports.createSession = function(newUser, req) {
+  return new Promise(function(resolve, reject){
+    req.session.regenerate(function() {
+        req.session.user = newUser;
+        resolve();
     });
+  })
 };
 
 exports.isLoggedIn = function(req) {
@@ -23,7 +24,7 @@ exports.isLoggedIn = function(req) {
 };
 
 exports.checkUser = function(req, res, next) {
-  // console.log("checking user", req.session);
+  console.log("checking user", req.session);
   if (!exports.isLoggedIn(req)){
     res.status(401).send({loggedIn: false});
   } else {

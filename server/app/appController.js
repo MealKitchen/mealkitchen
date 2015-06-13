@@ -112,18 +112,28 @@ module.exports = {
       })
     })
   },
-  handleLogin: function(req, res){
-
+  login: function(req, res){
+    console.log('req.params', req.params)
     userController.login(req.params.username, req.params.password)
     .then(function(user){
-      res.status(200).send(user);
+      console.log('logged in ', user);
+
+      utils.createSession(user, req)
+      .then(function(){
+        console.log('cereated session');
+        res.status(200).send(user);
+      });
+
     })
     .catch(function(error){
       res.status(error.status || 500).send({'login error': error});
     })
+
+
   },
-  handleSignUp: function(req, res){
-    userController.signUp(req.body.username, req.body.password)
+  signup: function(req, res){
+    ]
+    userController.signup(req.body.username, req.body.password)
     .then(function(user){
       res.status(200).send(user);
     })
