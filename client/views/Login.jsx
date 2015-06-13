@@ -25,8 +25,8 @@ var LogIn = React.createClass({
     e.preventDefault();
     var that = this;
     $.ajax({
-      type: "GET",
-      url: "api/users/" + that.state.username,
+      type: "POST",
+      url: "api/users/login",
       data: that.state,
       dataType: "json",
       contentType: "application/json",

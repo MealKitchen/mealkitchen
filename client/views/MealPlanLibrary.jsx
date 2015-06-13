@@ -14,7 +14,7 @@ var MealPlanLibrary = React.createClass({
     var that = this;
     debugger;
     //This method call gets the user's previous Meal Plans from the server to display on the page.
-    var mealPlans = new MealPlansCollection({ username: this.props.user.get('username') });
+    var mealPlans = new MealPlansCollection(this.props.user);
     mealPlans.fetch({
       success: function(collection, res, options){
         // var mealPlansArray = mealPlans.map(function(model, i){

@@ -100,12 +100,12 @@ var AppView = React.createClass({
     } else {
       this.state.user.fetch({
         success: function(){
-          that.setState({loggedIn: true}, function(){
+          that.setState({ loggedIn: true }, function(){
             callback();
           });
         },
         error: function(){
-          that.setState({loggedIn: false}, function(){
+          that.setState({ loggedIn: false }, function(){
             callback();
           });
         }
