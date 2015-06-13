@@ -15,6 +15,10 @@ label {
 .default-header {
   color: white;
 }
+
+.thumbnail {
+  border-radius: 15px;
+}
 /************************************
   Landing Page Styles
 ************************************/

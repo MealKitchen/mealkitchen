@@ -11,14 +11,28 @@ var Dropdown = React.createClass({
 
     return (
       <div className="form-group col-md-3">
-        <select className="form-control" name={this.props.name} id={this.props.id} defaultValue={this.props.defaultValue} onChange={this.props.handleChange} type={this.props.type}>
-          <option value="" disabled>{this.props.placeHolder}</option>
+
+        <select
+          className="form-control"
+          name={this.props.name}
+          id={this.props.id}
+          defaultValue={this.props.defaultValue}
+          onChange={this.props.handleChange}
+          type={this.props.type}>
+
+          <option
+            value=""
+            disabled>
+            {this.props.placeHolder}
+          </option>
+
           {numOptions.map(function(option, i){
               return [
                 <option value={i}>{i}</option>
               ]
           }, this)}
         </select>
+
       </div>
     );
   }

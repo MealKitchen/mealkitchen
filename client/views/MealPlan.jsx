@@ -43,7 +43,11 @@ var MealPlan = React.createClass({
                 <div className="row">
                   {this.props.mealPlan.get('dinnerRecipes').map(function(item, i) {
                     return [
-                      <Recipe recipe={item} position={i} forReview={false} collection='dinnerCollection' />
+                      <Recipe
+                        recipe={item}
+                        position={i}
+                        forReview={false}
+                        collection='dinnerCollection' />
                     ];
                   }, this)}
                 </div>
@@ -54,7 +58,11 @@ var MealPlan = React.createClass({
                 <div className="row">
                   {this.props.mealPlan.get('lunchRecipes').map(function(item, i) {
                     return [
-                      <Recipe recipe={item} position={i} forReview={false} collection='lunchCollection' />
+                      <Recipe
+                        recipe={item}
+                        position={i}
+                        forReview={false}
+                        collection='lunchCollection' />
                     ];
                   }, this)}
                 </div>
@@ -65,7 +73,11 @@ var MealPlan = React.createClass({
                 <div className="row">
                   {this.props.mealPlan.get('breakfastRecipes').map(function(item, i) {
                     return [
-                      <Recipe recipe={item} position={i} forReview={false} collection='breakfastCollection' />
+                      <Recipe
+                        recipe={item}
+                        position={i}
+                        forReview={false}
+                        collection='breakfastCollection' />
                     ];
                   }, this)}
                 </div>
@@ -73,7 +85,14 @@ var MealPlan = React.createClass({
 
             </div>
             <div className="secondary-container col-md-2">
-              <button className="btn btn-primary btn-large" type='button' onClick={this._createShoppingList}>Create Shopping List</button>
+
+              <button
+                className="btn btn-primary btn-large"
+                type='button'
+                onClick={this._createShoppingList}>
+                Create Shopping List
+              </button>
+
             </div>
           </div>
         </div>
