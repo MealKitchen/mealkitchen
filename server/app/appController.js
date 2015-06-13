@@ -132,7 +132,7 @@ module.exports = {
 
   },
   signup: function(req, res){
-    ]
+
     userController.signup(req.body.username, req.body.password)
     .then(function(user){
       res.status(200).send(user);
