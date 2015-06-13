@@ -1,8 +1,8 @@
 [![Build Status](https://travis-ci.org/Unconditional-Chocolate/mealplan.svg?branch=master)](https://travis-ci.org/Unconditional-Chocolate/mealplan)
 
-# MealPlan
+# Meal Kitchen
 
-Mealplan helps you cook better food.
+Meal Kitchen is a personalized recipe recommendation application that helps you plan and manage your meals for the week.
 
 
 ## Team
