@@ -26,7 +26,7 @@ module.exports = function(app, express) {
   //check if logged in
   router.get('/users', utils.checkUser, utils.sendLoggedInStatus);
   //log in
-  router.get('/users/:username', appController.login);
+  router.post('/users/login', appController.login);
   //sign up
   router.post('/users', appController.signup);
 
@@ -36,8 +36,8 @@ module.exports = function(app, express) {
   //router.get('/recipes', utils.checkUser, recipeController.getYummlyRecipe);
   router.post('/recipes/ingredients', recipeController.createIngredientsList);
   // 'api/mealplan' routing
-  router.post('/mealplan', utils.checkUser, appController.saveUserMealPlan);
-  router.get('/mealplan', utils.checkUser, appController.getUserMealPlans);
+  router.post('/mealplans', utils.checkUser, appController.saveUserMealPlan);
+  router.get('/mealplans', utils.checkUser, appController.getUserMealPlans);
 
   // 'api/preferences' routing
   router.post('/recipePreferences', recipePreferenceController.updatePreferences);
