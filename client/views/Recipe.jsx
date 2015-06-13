@@ -7,14 +7,13 @@ var Recipe = React.createClass({
   },
 
   _navigateToRecipe: function(){
-    //Open a new tab with the yummly baseUrl plus the recipeID.
-    //This opens the actual recipe in the browser.
     var baseUrl = 'http://www.yummly.com/recipe/external/';
     window.open(baseUrl + (this.props.recipe.id || this.props.recipe.get('id')));
   },
 
   render : function() {
-    // Get the image url and modify it to get the correct size. Note: this could break if Yummly changes their img urls.
+    //Get the image url from Yummly and modify it to get a bigger image.
+    //Note: this will probably break if Yummly changes their image urls.
     var imgUrl = this.props.recipe.smallImgUrl || this.props.recipe.get('smallImageUrls')[0];
     imgUrl = imgUrl.substring(0, imgUrl.length - 2) + '400';
     var bgStyle = {
