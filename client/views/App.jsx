@@ -3,6 +3,13 @@
 //The AppView is the main container from which the rest of the App is rendered.
 var AppView = React.createClass({
 
+  /*
+  APP STATE
+  The app state acts as a store for all models and collections that need to be passed between views.
+  Much of the contents of the store is created in child views, so App State setters are provided and passed
+  to children.
+  */
+
   getInitialState: function(){
     return {
       loggedIn: false,
@@ -18,8 +25,12 @@ var AppView = React.createClass({
     };
   },
 
+  /*
+  APP STATE SET METHODS
+  The following _set methods are defined and passed to children to allow child view
+  controller code to set models and collections on the app state.
+  */
 
-  //The following _set methods are defined and passed to children to allow child view controller code to set models and collections on the app state.
   _setUser: function(user){
     this.setState({user: user});
   },
@@ -52,19 +63,17 @@ var AppView = React.createClass({
     this.setState({ingredientsCollection: ingredientsCollection});
   },
 
-  //This method determines whether or not to show the background image. It gets passed down and set on different children views.
   _setBGImg: function(bool){
     this.setState({bgImage: bool});
   },
 
-  _logOut: function(){
-    this.replaceState(this.getInitialState());
-    $.get("api/logout", function(data) {
-      window.location.hash = '/login';
-    });
-  },
+  /*
+  AUTHENTICATION
+  Sessions are handled by the server, and there is a loggedIn property stored on the App State
+  for convenience. When a user tries to visit a page in the app, their authentication status is
+  first checked against the server, and if they are not logged in, they are redirected to the login page.
+  */
 
-  //Checks authentication before allowing a user to transition to any new location in the application. If a user is not logged in, they are redirected to the login page.
   _transitionTo: function(route){
     var that = this;
     this._isAuth(function(){
@@ -76,13 +85,11 @@ var AppView = React.createClass({
     });
   },
 
-  //Triggered when a user clicks a link. The event represents the clicked link, and all links have a data-route property with the appropriate route, which gets sent to the _transitionTo method.
   _linkHandler: function(event){
     var route = event.target.dataset.route;
     this._transitionTo(route);
   },
 
-  //Checks the server to see if a user is logged in before executing a callback function.
   _isAuth: function(callback){
     callback = callback || function(){};
     var that = this;
@@ -91,13 +98,11 @@ var AppView = React.createClass({
     } else {
       this.state.user.fetch({
         success: function(){
-          console.log('user logged in');
           that.setState({loggedIn: true}, function(){
             callback();
           });
         },
         error: function(){
-          console.log('user not logged in');
           that.setState({loggedIn: false}, function(){
             callback();
           });
@@ -106,31 +111,76 @@ var AppView = React.createClass({
     }
   },
 
+  _logOut: function(){
+    this.replaceState(this.getInitialState());
+    $.get("api/logout", function(data) {
+      window.location.hash = '/login';
+    });
+  },
+
+
+  /*
+  APP RENDER
+  This function renders the App View, which acts as a container for the entire application.
+  You will find an internal router as well as a system for passing props to children inside
+  of this method.
+   */
   render: function() {
-    console.log(this.state);
+
+    /*
+    INTERNAL ROUTER
+    Whenever the State changes on the app, the appropriate view is selected and rendered
+    by the internal router.
+     */
 
     var Child;
     switch (this.props.route) {
-      case '': Child = LandingPage; break;
-      case '/signup': Child = SignUp; break;
-      case '/login': Child = LogIn; break;
-      case '/mealquery': Child = Query; break;
-      case '/reviewmeals': Child = ReviewMeals; break;
-      case '/mealplans': Child = MealPlanLibrary; break;
-      case '/mealplan': Child = MealPlan; break;
-      case '/shoppinglist': Child = ShoppingList; break;
-      default:      Child = this.state.loggedIn ? MealPlanLibrary : LogIn;
+      case '':
+        Child = LandingPage;
+        break;
+      case '/signup':
+        Child = SignUp;
+        break;
+      case '/login':
+        Child = LogIn;
+        break;
+      case '/mealquery':
+        Child = Query;
+        break;
+      case '/reviewmeals':
+        Child = ReviewMeals;
+        break;
+      case '/mealplans':
+        Child = MealPlanLibrary;
+        break;
+      case '/mealplan':
+        Child = MealPlan;
+        break;
+      case '/shoppinglist':
+        Child = ShoppingList;
+        break;
+      default:
+        Child = this.state.loggedIn ? MealPlanLibrary : LogIn;
     }
 
+    //If a user is not logged in and tries to access internal app content, redirect them to login.
     if(Child !== SignUp && Child !== LogIn && Child !== LandingPage && !this.state.loggedIn){
       window.location.hash = '/login';
     }
 
-    //Models and collections as well as setters are passed to the children to allow access to the App state. The App state acts as a Store for all persistent data in the application.
+    /*
+    PASSING PROPS
+    Setters and App State are passed to children views below.
+    The navbar changes based on the bgImage property, and the
+    correct child component is selected by the router.
+     */
     return (
       <div className={this.state.bgImage ? "background-image" : ""}>
 
-        <Navbar bgImage={this.state.bgImage} linkHandler={this._linkHandler} logOut={this._logOut} />
+        <Navbar
+          bgImage={this.state.bgImage}
+          linkHandler={this._linkHandler}
+          logOut={this._logOut} />
 
         <Child
           setBGImg={this._setBGImg}
@@ -159,14 +209,15 @@ var AppView = React.createClass({
   }
 });
 
-//Every time the window.location changes, rerender AppView and display the correct children components.
+/*
+EXTERNAL ROUTER
+The external router listens for changes on the window.location property, and
+executes the App View router when necesarry.
+ */
+
 function render () {
   var route = window.location.hash.substr(1);
   React.render(<AppView route={route} />, document.body);
 }
-
-//Listen to changes on window.location to rerender the child views.
 window.addEventListener('hashchange', render);
-
-//Initial rendering of AppView.
 render();

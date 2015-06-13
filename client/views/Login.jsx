@@ -48,18 +48,39 @@ var LogIn = React.createClass({
       <div className="jumbotron-container">
         <div className="jumbotron">
         <h1 className="default-header">Log In</h1>
+
           <form onSubmit={this.handleLogin}>
             <div className="form-group">
               <label className="input-label" htmlFor="email">Email</label>
-              <input className="form-control" type="text" name="email" placeholder="Enter email" onChange={this.handleEmailChange} required />
+
+              <input
+                className="form-control"
+                type="text"
+                name="email"
+                placeholder="Enter email"
+                onChange={this.handleEmailChange}
+                required />
+
             </div>
             <div className="form-group">
               <label className="input-label" htmlFor="password">Password</label>
-              <input className="form-control" type="password" name="password" placeholder="Enter password" onChange={this.handlePasswordChange} required />
+
+              <input
+                className="form-control"
+                type="password"
+                name="password"
+                placeholder="Enter password"
+                onChange={this.handlePasswordChange}
+                required />
+
             </div>
             <input type="submit" className="btn btn-default btn-large pull-right" value="Log In"></input>
           </form>
-          <p className="suggested-action">Don&#39;t have an account with us? <a href="/#/signup">Sign up here.</a></p>
+
+          <p className="suggested-action">
+            Don&#39;t have an account with us?
+            <a href="/#/signup">Sign up here.</a>
+          </p>
         </div>
       </div>
     );

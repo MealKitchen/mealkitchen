@@ -7,7 +7,10 @@ var Recipe = React.createClass({
   },
 
   _navigateToRecipe: function(){
-    window.open('http://www.yummly.com/recipe/external/' + (this.props.recipe.id || this.props.recipe.get('id')));
+    //Open a new tab with the yummly baseUrl plus the recipeID.
+    //This opens the actual recipe in the browser.
+    var baseUrl = 'http://www.yummly.com/recipe/external/';
+    window.open(baseUrl + (this.props.recipe.id || this.props.recipe.get('id')));
   },
 
   render : function() {
@@ -25,10 +28,29 @@ var Recipe = React.createClass({
     };
 
     return (
-      <div className="thumbnail recipe-preview col-sm-2" style={bgStyle} key={this.props.recipe} onClick={this.props.forReview ? function(){} : this._navigateToRecipe} >
+      <div
+        className="thumbnail recipe-preview col-sm-2"
+        style={bgStyle} key={this.props.recipe}
+        onClick={this.props.forReview ? function(){} : this._navigateToRecipe} >
+
         <div className={this.props.forReview ? 'review-buttons' : 'hide'} >
-          <button type='button' className="btn btn-default btn-small" onClick={this._navigateToRecipe}>View</button>
-          <button type='button' className="btn btn-default btn-small" data-position={this.props.position} data-collection={this.props.collection} onClick={this.props.rejectRecipe}>Reject</button>
+
+          <button
+            type='button'
+            className="btn btn-default btn-small"
+            onClick={this._navigateToRecipe}>
+              View
+          </button>
+
+          <button
+          type='button'
+          className="btn btn-default btn-small"
+          data-position={this.props.position}
+          data-collection={this.props.collection}
+          onClick={this.props.rejectRecipe}>
+            Reject
+          </button>
+
         </div>
         <div className="overlay">
           <p className="overlay-title">{recipeName}</p>

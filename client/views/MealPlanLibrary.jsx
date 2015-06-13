@@ -36,15 +36,26 @@ var MealPlanLibrary = React.createClass({
       <div className="library-container">
         <h1 className="page-header">Meal Plan Library ({this.state.mealPlans.length})</h1>
         <div className="row">
-          <div className="col-md-3 thumbnail meal-plan-preview create-meal-plan" data-route='/mealquery' onClick={this.props.linkHandler}>
+
+          <div
+            className="col-md-3 thumbnail meal-plan-preview create-meal-plan"
+            data-route='/mealquery'
+            onClick={this.props.linkHandler}>
+
             <span className="glyphicon glyphicon-plus" aria-hidden="true"></span>
             <p className="overlay-title">Create New Meal Plan</p>
           </div>
+
           {this.state.mealPlans.map(function(mealPlan, i) {
               return (
-                <MealPlanLink key={i} mealPlan={mealPlan} setMealPlan={this.props.setMealPlan} transitionTo={this.props.transitionTo} />
+                <MealPlanLink
+                  key={i}
+                  mealPlan={mealPlan}
+                  setMealPlan={this.props.setMealPlan}
+                  transitionTo={this.props.transitionTo} />
               )
             }, this)}
+
         </div>
       </div>
     );
