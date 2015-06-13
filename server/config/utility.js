@@ -77,7 +77,6 @@ exports.query = {
 
   //gets initial recipes for potential 3 course mealPlan
   createInitialCourseQueries: function(queryModel, userFlavorPrefs){
-
     var numCourseMeals = [
       queryModel.numBreakfasts*1 && queryModel.numBreakfasts*1 + 10,
       queryModel.numLunches*1 && queryModel.numLunches*1 + 10,
@@ -98,24 +97,22 @@ exports.query = {
     //0 -> Breakfast
     //1 -> Lunch
     //2 -> Dinner
-    for(var i = 0; i < coursesForQuery.length; i++){
+    for (var i = 0; i < coursesForQuery.length; i++) {
 
-      if(numCourseMeals[i]){
+      if (numCourseMeals[i]) {
         //course has meals
         courseQueryString =
-
           exports.query.yummlySearchValidation() +
-
           filterQueryString +
-
-          exports.query.courseFlavorRange( userFlavorPrefs[i]) +
-
-          "&allowedCourse[]=" + lib.course[coursesForQuery[i]] + "&requirePictures=true" +
-
+          "&allowedCourse%5B%5D=" + lib.course[coursesForQuery[i]] + "&requirePictures=true" +
           "&maxResult=" + numCourseMeals[i] + "&start=" + 0;
-      }
-      else
+
+        if (userFlavorPrefs) {
+          courseQueryString += exports.query.courseFlavorRange(userFlavorPrefs[i]);
+        }
+      } else {
         courseQueryString = "";
+      }
 
       courseStrings.push(courseQueryString);
     }
@@ -127,27 +124,24 @@ exports.query = {
       "lunchQuery": courseStrings[1],
       "dinnerQuery": courseStrings[2]
     }
-
   },
-  createRefillCourseQuery: function(queryModel, course, userFlavorPrefs, numMeals, offset){
 
+  createRefillCourseQuery: function(queryModel, course, userFlavorPrefs, numMeals, offset){
     var filterQueryString = exports.query.filterForCourses(queryModel);
 
     var courseQueryString =
-
       exports.query.yummlySearchValidation() +
-
       filterQueryString +
-
-      exports.query.courseFlavorRange(userFlavorPrefs) +
-
       "&allowedCourse[]=" + lib.course[course] + "&requirePictures=true" +
-
       "&maxResult=" + numMeals + "&start=" + offset;
 
-    return courseQueryString;
+    if (userFlavorPrefs) {
+      courseQueryString += exports.query.courseFlavorRange(userFlavorPrefs);
+    }
 
+    return courseQueryString;
   },
+
   //creates filter query from query Model
   //allergy, diet, cuisine settings
   filterForCourses: function(queryModel){
