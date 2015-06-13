@@ -223,7 +223,18 @@ var ReviewMeals = React.createClass({
                 </div>
               </div>
 
+              <div className="secondary-container col-md-2">
+
+                <p>Recipe search powered by 
+                  <a href='http://www.yummly.com/recipes' target="_blank">
+                    <img alt='Yummly' src='http://static.yummly.com/api-logo.png'/>
+                  </a>
+                </p>
+
+              </div>
+
             </div>
+            
             <div className="secondary-container col-md-2">
 
               <button
@@ -236,6 +247,7 @@ var ReviewMeals = React.createClass({
               </button>
 
             </div>
+
           </div>
         </div>
       );
