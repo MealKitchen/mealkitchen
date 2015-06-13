@@ -67,7 +67,7 @@ label {
 }
 
 @media (max-width: 750px) {
-  .how-it-works-container .default-header{
+  .how-it-works-container .default-header {
     font-size: 1.2em;
     text-align: center;
   }
@@ -83,8 +83,19 @@ label {
   }
 }
 
+.attribution-container {
+  background-color: rgba(255, 255, 255, 0.2);
+  margin: 0;
+  padding: 10px 0;
+}
 
-
+.attribution-container p {
+  margin: 0;
+}
+.attribution-container a {
+  color: rgb(255, 255, 255);
+  text-decoration: underline;
+}
 /*********************************
   End Landing Page Styles
 *********************************/
