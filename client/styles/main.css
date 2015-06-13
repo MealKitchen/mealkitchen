@@ -186,6 +186,7 @@ p.suggested-action {
   background-size: cover;
   background-position: center;
   cursor: pointer;
+  overflow: hidden;
 }
 
 .recipe-preview:hover {
@@ -352,6 +353,7 @@ p.suggested-action {
   background-size: cover;
   background-position: center;
   cursor: pointer;
+  overflow: hidden;
 }
 
 .meal-plan-preview:hover{
@@ -404,6 +406,7 @@ select {
 /*This class exists to allow users to cross things out in a list (see ShoppingList view)*/
 .checked {
   text-decoration:line-through;
+  background-color: rgba(169, 169, 169, 0.41);
 }
 
 /* navbar */
