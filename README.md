@@ -36,6 +36,10 @@ Every time you reject a recipe or save a meal plan, the app gets a better idea o
 
 - Node 0.12.x
 - Postgresql 9.4.x
+- Grunt-cli 0.1.x
+- Yummly API keys
+- Heroku
+- Travis-CI
 
 ## Development
 
@@ -44,33 +48,73 @@ Every time you reject a recipe or save a meal plan, the app gets a better idea o
 From within the root directory:
 
 ```sh
-sudo npm install -g bower
 npm install
-bower install
+npm install -g grunt-cli
 ```
 
+npm will install almost all the dependencies you need. Additionally, it will install a local copy of Bower, which is run after `npm install`, in order to fetch client dependencies. Installing grunt-cli will allow you to accomplish required development tasks described below.
+
 ### Setting Up Postgres ###
-To run the app, Postgres must be installed with proper role set up. Follow the directions below to set up the DB.
+To run the app for development, PostgreSQL must be installed with the proper role set up. Follow the directions below to set up the DB.
 
 #### If Postgres is not Installed ####
 1. Install brew (http://brew.sh/)
-2. Then type command `brew update`.
-3. Then type command `brew install postgres`.
+2. Type command `brew update`
+3. Type command `brew install postgres`
 
 #### Run Postgres ####
 1. Install Postgres.app http://postgresapp.com/
-2. Open Postgres.app.
+2. Open Postgres.app
 
 #### Set Up Root DB Role ####
-1. Type command `psql`.
-2. Will be in Postgres shell. Prompt should be `=#` (instead of $).
-3. Then type command `CREATE ROLE root WITH LOGIN;`
-4. Then type command `ALTER ROLE root WITH SUPERUSER;`
-5. Then type command `ALTER ROLE root WITH CREATEROLE;`
-6. Then type command `ALTER ROLE root WITH CREATEDB;`
-7. Then type command `ALTER ROLE root WITH REPLICATION;`
+1. Type command `psql` to open the Postgres shell
+2. Type command `CREATE ROLE root WITH LOGIN;`
+3. Type command `ALTER ROLE root WITH SUPERUSER;`
+4. Type command `ALTER ROLE root WITH CREATEROLE;`
+5. Type command `ALTER ROLE root WITH CREATEDB;`
+6. Type command `ALTER ROLE root WITH REPLICATION;`
 
-### Roadmap
+#### Create mealplan database ####
+Almost done! The app requires a database named "mealplan" so run the following:
+
+```psql
+CREATE DATABASE mealplan;
+```
+
+### Starting development
+To begin actual development you first need to kick off two tasks.
+
+In the root directory run:
+
+```sh
+grunt serve
+```
+
+This will start the node server using nodemon. nodemon will monitor your server files for changes and restart the server.
+
+Then open a new Terminal window and run the main Grunt task:
+
+```sh
+grunt
+```
+
+This task will build all the client files necessary for the app to run. Now you can visit localhost:3000.
+
+### Testing
+Currently integration tests have been implemented using Mocha and Chai, and test various API endpoints. To test, run
+
+```sh
+npm test
+```
+
+The test spec is held in /test/serverSpec.js.
+
+### Deployment
+Deployment is accomplished through Heroku with a PostgreSQL DB add-on. To be deployed to Heroku, the build must pass a Travis-CI build.
+
+When you make a pull request to /Unconditional-Chocolate/mealplan, Travis will initiate a build and run `npm test`. If the tests pass, and the changes are merged in, Travis will automatically deploy the new code to Heroku. The changes will be live on prdouction at [http://meal.kitchen](http://meal.kitchen).
+
+## Roadmap
 
 View the project roadmap [here](https://github.com/Unconditional-Chocolate/mealplan/issues).
 
