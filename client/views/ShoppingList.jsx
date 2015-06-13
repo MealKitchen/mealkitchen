@@ -16,20 +16,18 @@ var ShoppingList = React.createClass({
     window.addEventListener('touchend', this.crossout);
   },
 
-  //TODO: Refactor to persist checked class after refresh. Currently only adds checked class temporarily.
-  crossout: function (event) {
-    var id = event.target.dataset.id;
+  crossout: function (e) {
+    var id = e.target.dataset.id;
     var node = React.findDOMNode(this.refs[id]).classList.toggle("checked");
   },
 
   render: function () {
     var that = this;
-    console.log(this.props);
+
     return (
       <div className="split-container">
         <div className="row">
           <div className="primary-container col-md-10">
-
             <h2 className="page-header">
               Shopping List: {this.props.mealPlan.get('title')}
             </h2>
@@ -49,7 +47,6 @@ var ShoppingList = React.createClass({
               }
 
             </ul>
-
           </div>
           <div className="secondary-container col-md-2">
 

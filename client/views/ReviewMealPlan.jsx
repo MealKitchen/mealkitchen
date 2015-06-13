@@ -4,6 +4,7 @@ var ReviewMeals = React.createClass({
 
   mixins: [Backbone.Events],
 
+  //The user has the ability to set the meal plan title from the view.
   getInitialState: function() {
     return { mealPlanTitle: '' };
   },
@@ -36,11 +37,17 @@ var ReviewMeals = React.createClass({
 
   },
 
-  //Every time a user interacts with the recipes, we need to update the state of the view to reflect that change.
+  /*
+  RECIPE REJECTION
+  When a user does not like a suggested recipe, they have the option to reject it.
+  When the recipe gets rejected, a new recipe is suggested, and the user's flavor profile
+  is updated. Whenever the queue of recipes runs out, a new request is sent to Yummly to
+  refill it.
+   */
+
   _rejectRecipe: function(event) {
     var modelId = event.target.dataset.position;
     var collection = event.target.dataset.collection;
-    var preference = new PreferenceModel();
     var courseQueue;
 
     switch (collection){
@@ -60,6 +67,13 @@ var ReviewMeals = React.createClass({
 
     var rejectedRecipe = this.props[collection].remove(this.props[collection].at(modelId));
 
+    /*
+    PREFERENCES
+    Whenever a recipe is rejected, a preference model with the recipe's id and flavor
+    profile is sent to the server to be run through the machine learning algorithm.
+    This improves future recipe recommendations by Meal Kitchen.
+     */
+    var preference = new PreferenceModel();
     if(!rejectedRecipe.get('flavors')){
       preference.set({
         'preference': false,
@@ -81,24 +95,11 @@ var ReviewMeals = React.createClass({
         'piquant': rejectedRecipe.get('flavors').piquant
       });
     }
+    preference.save();
 
-    //Send rejected recipe preference to the server as POST request for user preferences update.
-    preference.save({}, {
-      success: function(model, res){
-        console.log('success!');
-        console.log('model', model);
-        console.log('res', res);
-      },
-      error: function(model, err){
-        console.log('error!');
-        console.log('model', model);
-        console.log('err', err);
-      }
-    });
-
-    // Add new recipe to collection from the queue of recipes.
-    //TODO: add handling in case queues are empty!
+    //Update the collections with new recipe recommendations, and refill the queue if necesarry.
     if(courseQueue.length === 0){
+      //TODO: set model id's correctly on first save!
       this.props.query.set('id', 'temp');
       this.props.query.save();
     } else {
@@ -111,8 +112,15 @@ var ReviewMeals = React.createClass({
     this.setState({ "mealPlanTitle": e.target.value });
   },
 
-  //TODO: Send the state to a backbone model to be sent to Yummly
+  /*
+  SAVING MEAL PLANS
+  When a user accepts the suggested recipes, create a Meal Plan model and save it to the server
+  with the recipes and user information. The meal plan is stored in the DB and can be recalled
+  by the user in future sessions.
+   */
   handleSubmit: function(e){
+    var that = this;
+
     var mealPlan = new MealPlanModel({
       'title': this.state.mealPlanTitle,
       'userId': this.props.user.get('id'),
@@ -121,10 +129,8 @@ var ReviewMeals = React.createClass({
       'dinnerRecipes': this.props.dinnerCollection
     });
 
-    var that = this;
     mealPlan.save({}, {
       success: function(model, res) {
-        console.log("Meal plan saved! Response from server:", res);
         that.props.setMealPlan(mealPlan);
         that.props.transitionTo('/mealplan');
       },

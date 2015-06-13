@@ -9,7 +9,6 @@ var QueryModel = Backbone.Model.extend({
   },
 
   incrementOffset: function(course){
-    console.log('incrementOffset', course);
     switch(course){
       case "breakfast":
         this.set({
@@ -27,7 +26,6 @@ var QueryModel = Backbone.Model.extend({
         });
         break;
     }
-    console.log(this);
   }
 
 });

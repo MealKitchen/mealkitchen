@@ -29,8 +29,10 @@ var SignUp = React.createClass({
       dataType: "json",
       contentType: "application/json",
       success: function(){
-        console.log('success!');
         that.props.transitionTo('/login');
+      },
+      error: function (xhr, ajaxOptions, thrownError) {
+        alert('There was an error with your signup, please try a different email / password!');
       }
     });
   },
