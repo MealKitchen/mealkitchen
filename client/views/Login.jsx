@@ -4,7 +4,6 @@ var LogIn = React.createClass({
 
   getInitialState: function() {
     return {
-      id: null,
       username: null,
       password: null
     };
@@ -15,10 +14,7 @@ var LogIn = React.createClass({
   },
 
   handleUsernameChange: function(e) {
-    this.setState({
-      id: e.target.value,
-      username: e.target.value
-    });
+    this.setState({ username: e.target.value });
   },
 
   handlePasswordChange: function(e) {
@@ -28,13 +24,18 @@ var LogIn = React.createClass({
   handleLogin: function(e) {
     e.preventDefault();
     var that = this;
-    var user = new UserModel(this.state);
-    user.fetch({}, {
-      success: function(){
+    $.ajax({
+      type: "GET",
+      url: "api/users/" + that.state.username,
+      data: that.state,
+      dataType: "json",
+      contentType: "application/json",
+      success: function(res){
+        var user = new UserModel(res);
         that.props.setUser(user);
         that.props.transitionTo('/mealplans');
       },
-      error: function(){
+      error: function (xhr, ajaxOptions, thrownError) {
         alert('Please check your username and/or password!');
       }
     });
