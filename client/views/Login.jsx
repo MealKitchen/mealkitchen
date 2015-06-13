@@ -3,37 +3,35 @@
 var LogIn = React.createClass({
 
   getInitialState: function() {
-    return {email: null, password: null, login: true};
+    return {
+      username: null,
+      password: null
+    };
   },
 
   componentWillMount: function(){
     this.props.setBGImg(true);
   },
 
-  handleEmailChange: function(e) {
-     this.setState({email: e.target.value});
+  handleUsernameChange: function(e) {
+    this.setState({ username: e.target.value });
   },
 
   handlePasswordChange: function(e) {
-     this.setState({password: e.target.value});
+    this.setState({ password: e.target.value });
   },
 
   handleLogin: function(e) {
     e.preventDefault();
     var that = this;
     $.ajax({
-      type: "POST",
-      url: "api/user",
-      data: JSON.stringify(that.state),
+      type: "GET",
+      url: "api/users/" + that.state.username,
+      data: that.state,
       dataType: "json",
       contentType: "application/json",
       success: function(res){
-        var user = new UserModel({
-          id: res.id,
-          password: res.password,
-          email: res.email
-        });
-        //Set the user on the app view to be passed to other views.
+        var user = new UserModel(res);
         that.props.setUser(user);
         that.props.transitionTo('/mealplans');
       },
@@ -51,20 +49,28 @@ var LogIn = React.createClass({
 
           <form onSubmit={this.handleLogin}>
             <div className="form-group">
-              <label className="input-label" htmlFor="email">Email</label>
 
+              <label
+                className="input-label"
+                htmlFor="username">
+                  Username
+              </label>
               <input
                 className="form-control"
                 type="text"
-                name="email"
-                placeholder="Enter email"
-                onChange={this.handleEmailChange}
+                name="username"
+                placeholder="Enter username"
+                onChange={this.handleUsernameChange}
                 required />
 
             </div>
             <div className="form-group">
-              <label className="input-label" htmlFor="password">Password</label>
 
+              <label
+              className="input-label"
+              htmlFor="password">
+                Password
+              </label>
               <input
                 className="form-control"
                 type="password"
@@ -74,13 +80,20 @@ var LogIn = React.createClass({
                 required />
 
             </div>
-            <input type="submit" className="btn btn-default btn-large pull-right" value="Log In"></input>
+
+            <input
+              type="submit"
+              className="btn btn-default btn-large pull-right"
+              value="Log In">
+            </input>
+
           </form>
 
           <p className="suggested-action">
             Don&#39;t have an account with us?
             <a href="/#/signup">Sign up here.</a>
           </p>
+
         </div>
       </div>
     );

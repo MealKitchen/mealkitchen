@@ -9,6 +9,8 @@ var appController = require('../app/appController');
 
 module.exports = function(app, express) {
 
+  var router = express.Router();
+
   app.use(bodyParser.json());
 
   app.use(express.static(__dirname + '/../../client'));
@@ -19,24 +21,30 @@ module.exports = function(app, express) {
     saveUninitialized: true
   }));
 
+
+  /**** 'api/users' routing ****/
+  //check if logged in
+  router.get('/users', utils.checkUser, utils.sendLoggedInStatus);
+  //log in
+  router.get('/users/:username', appController.login);
+  //sign up
+  router.post('/users', appController.signup);
+
   // 'api/recipes' routing
-  app.post('/api/recipes', appController.getUserRecipes);
-  app.put('/api/recipes', appController.refillCourseQueue);
-  //app.get('/api/recipes', utils.checkUser, recipeController.getYummlyRecipe);
-  app.post('/api/recipes/ingredients', recipeController.createIngredientsList);
+  router.post('/recipes', appController.getUserRecipes);
+  router.put('/recipes', appController.refillCourseQueue);
+  //router.get('/recipes', utils.checkUser, recipeController.getYummlyRecipe);
+  router.post('/recipes/ingredients', recipeController.createIngredientsList);
   // 'api/mealplan' routing
-  app.post('/api/mealplan', utils.checkUser, appController.saveUserMealPlan);
-  app.get('/api/mealplan', utils.checkUser, appController.getUserMealPlans);
+  router.post('/mealplan', utils.checkUser, appController.saveUserMealPlan);
+  router.get('/mealplan', utils.checkUser, appController.getUserMealPlans);
 
   // 'api/preferences' routing
-  app.post('/api/recipePreferences', recipePreferenceController.updatePreferences);
-  app.put('/api/recipePreferences', recipePreferenceController.updatePreferences);
+  router.post('/recipePreferences', recipePreferenceController.updatePreferences);
+  router.put('/recipePreferences', recipePreferenceController.updatePreferences);
 
-  // 'api/users' routing
-  app.get('/api/user', utils.checkUser, utils.sendLoggedInStatus);
-  app.post('/api/user', userController.routeUser);
 
-  app.get('/api/logout', utils.logout);
-  // app.post('/api/users/signup', userController.signUp);
-  // app.post('/api/users/signin', userController.signIn);
+  router.get('/logout', utils.logout);
+
+  app.use('/api', router);
 };

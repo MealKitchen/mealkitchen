@@ -1,43 +1,45 @@
+var Promise = require('bluebird');
 var http = require('http');
 var createSession = require('../config/utility').createSession;
 var User = require('./userModel');
 
-var signup = function(email, password, request, response) {
-  new User({email: email}).fetch().then(function(user) {
-    if (!user) {
-      new User({email: email, password: password}).save().then(function(user) {
-        response.status(200).send(user);
-      });
-    } else {
-      response.status(409).send({error: 'Account already exists.'});
-    }
-  });
-};
+module.exports = {
+  login: function(username, password) {
+    return new Promise(function(resolve, reject){
 
-var login = function(email, password, request, response) {
-  new User({email: email}).fetch().then(function(user){
-    if( !user ){
-      response.status(401).send({error: 'No such user.'});
-    } else {
-      user.comparePassword(password, function(match){
-        if (match) {
-          createSession(request, response, user);
-          // response.status(200).send(user);
+      new User({username: username}).fetch().then(function(user){
+        if( !user ){
+          reject({error: 'No such user.', status: 401});
         } else {
-          response.status(401).send({error: 'Incorrect password.'});
+          user.comparePassword(password, function(match){
+            if (match) {
+              resolve(user);
+            } else {
+              reject({error: 'Incorrect password.', status: 401})
+            }
+          });
         }
       });
-    }
-  });
-};
+    })
+  },
+  signup: function(username, password) {
 
-module.exports = {
-  routeUser: function(request, response) {
-    if (request.body.login) {
-      login(request.body.email, request.body.password, request, response);
-    } else if (request.body.signup) {
-      signup(request.body.email, request.body.password, request, response);
-    }
+    return new Promise(function(resolve, reject){
+      
+      new User({username: username}).fetch().then(function(user) {
+        if (!user) {
+          new User({username: username, password: password}).save()
+          .then(function(user) {
+            resolve(user);
+          })
+          .catch(function(error){
+            reject({'error saving new user to database ': error})
+          })
+        } else {
+          reject({error: 'Account already exists.', status: 409});
+        }
+      });
+    });
   }
 };
 

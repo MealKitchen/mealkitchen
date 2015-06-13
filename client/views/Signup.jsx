@@ -3,36 +3,35 @@
 var SignUp = React.createClass({
 
   getInitialState: function() {
-    return {email: null, password: null, signup: true};
+    return {
+      username: null,
+      password: null
+    };
   },
 
   componentWillMount: function(){
     this.props.setBGImg(true);
   },
 
-  handleEmailChange: function(e) {
-     this.setState({email: e.target.value});
+  handleUsernameChange: function(e) {
+     this.setState({ username: e.target.value });
   },
 
   handlePasswordChange: function(e) {
-     this.setState({password: e.target.value});
+     this.setState({ password: e.target.value });
   },
 
   handleSignUp: function(e) {
-    console.log('calling handlesignup');
     e.preventDefault();
     var that = this;
-    $.ajax({
-      type: "POST",
-      url: "api/user",
-      data: JSON.stringify(that.state),
-      dataType: "json",
-      contentType: "application/json",
+    var user = new UserModel(this.state);
+    user.save({}, {
       success: function(){
-        that.props.transitionTo('/login');
+        that.props.setUser(user);
+        that.props.transitionTo('/mealplans');
       },
-      error: function (xhr, ajaxOptions, thrownError) {
-        alert('There was an error with your signup, please try a different email / password!');
+      error: function(){
+        alert('There was an error with your signup, please try a different username / password!');
       }
     });
   },
@@ -47,19 +46,21 @@ var SignUp = React.createClass({
             <div className="form-group">
               <label
                 className="input-label"
-                htmlFor="email">
-                  Email
+                htmlFor="username">
+                  Username
               </label>
               <input
                 className="form-control"
                 type="text"
-                name="email"
-                placeholder="Enter email"
-                onChange={this.handleEmailChange}
+                name="username"
+                placeholder="Enter username"
+                onChange={this.handleUsernameChange}
                 required />
+
             </div>
 
             <div className="form-group">
+
               <label
                 className="input-label"
                 htmlFor="password">
@@ -74,6 +75,7 @@ var SignUp = React.createClass({
                 pattern=".{5,10}"
                 title="5 to 10 characters"
                 required />
+
             </div>
 
             <input
