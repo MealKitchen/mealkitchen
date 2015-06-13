@@ -13,7 +13,7 @@ Meal Kitchen is a personalized recipe recommendation application that helps you 
 
 ## Table of Contents
 
-1. [Usage](#Usage)
+1. [Usage](#usage)
 1. [Requirements](#requirements)
 1. [Development](#development)
   1. [Installing Dependencies](#installing-dependencies)
@@ -28,11 +28,11 @@ Meal Kitchen is a personalized recipe recommendation application that helps you 
 
 To view Meal Kitchen on production, visit [http://meal.kitchen](http://meal.kitchen).
 
-You will have to sign up (or log in if you already have an account). Start by creating a meal plan - the link is inside the landing page after login and also in the nav bar. Enter your recipe search parameters. You have the option to request a certain amount of breakfasts, lunches and dinners. Note that you can also select preferred cuisines, allergy restrictions and diet restrictions.
+You will have to sign up (or log in if you already have an account). Start by creating a meal plan - the link to do so is inside the landing page after login and also in the nav bar. Enter your recipe search parameters. You have the option to request a certain amount of breakfasts, lunches and dinners. Note that you can also select preferred cuisines, allergy restrictions and diet restrictions.
 
-Once you submit your recipe query, the app will query Yummly for recipes, taking into account both your search paramaters AND your flavor preferences which the app has learned from your previous interactions. You can review the recipes that were found and reject ones you don't like - new ones will appear to replace them. When you're satisfied, give your meal plan a name and save it. On the next page you can choose to create a shopping list which will include all the ingredients of the recipes you selected. 
+Once you submit your recipe query, the app will query Yummly for recipes, taking into account both your search paramaters AND your flavor preferences which the app has learned from your previous interactions. You can review the recipes that were found and reject ones you don't like - new ones will appear to replace them. Once you're satisfied, give your meal plan a name and save it. On the next page you can choose to create a shopping list which will include all the ingredients of the recipes you selected. 
 
-Every time you reject a recipe or save a meal plan, the app gets a better idea of your taste preferences. The more you use our app, the better the recommendations will be!
+Every time you reject a recipe or save a meal plan, the app gains a better understanding of your taste preferences. The more you use the app, the better the recommendations will be!
 
 ## Requirements
 
@@ -54,7 +54,7 @@ npm install
 npm install -g grunt-cli
 ```
 
-npm will install almost all the dependencies you need. Additionally, it will install a local copy of Bower, which is run after `npm install`, in order to fetch client dependencies. Installing grunt-cli will allow you to accomplish required development tasks described below.
+npm will install almost all the dependencies you need. Additionally, it will install a local copy of Bower, which is run after `npm install`, in order to fetch client dependencies. Installing grunt-cli will allow you to accomplish required development tasks (described below).
 
 ### Setting Up PostgreSQL ###
 To run the app for development, PostgreSQL must be installed with the proper role set up. Follow the directions below to set up the DB.
@@ -77,14 +77,14 @@ To run the app for development, PostgreSQL must be installed with the proper rol
 6. Type command `ALTER ROLE root WITH REPLICATION;`
 
 #### Create mealplan database ####
-Almost done! The app requires a database named "mealplan" so run the following:
+Almost done! The app requires a database named "mealplan", so run the following:
 
 ```psql
 CREATE DATABASE mealplan;
 ```
 
 ### Starting development
-To begin actual development you first need to kick off two tasks.
+To begin actual development you first need to kick off two processes.
 
 In the root directory run:
 
@@ -92,9 +92,9 @@ In the root directory run:
 grunt serve
 ```
 
-This will start the node server using nodemon. nodemon will monitor your server files for changes and restart the server.
+This will start the node server using nodemon. Nodemon will monitor your server files for changes and restart the server.
 
-Then open a new Terminal window and run the main Grunt task:
+Then open a new Terminal window and run the default Grunt task:
 
 ```sh
 grunt
@@ -103,7 +103,7 @@ grunt
 This task will build all the client files necessary for the app to run. Now you can visit localhost:3000.
 
 ### Testing
-Currently integration tests have been implemented using Mocha and Chai, and test various API endpoints. To test, run
+Currently integration tests have been implemented using Mocha and Chai. These test various API endpoints. To test, run
 
 ```sh
 npm test
@@ -112,9 +112,9 @@ npm test
 The test spec is held in /test/serverSpec.js.
 
 ### Deployment
-Deployment is accomplished through Heroku with a PostgreSQL DB add-on. To be deployed to Heroku, the build must pass a Travis-CI build.
+Deployment is accomplished through Heroku with a PostgreSQL DB add-on. To be deployed to Heroku, the code must pass a Travis-CI build.
 
-When you make a pull request to /Unconditional-Chocolate/mealplan, Travis will initiate a build and run `npm test`. If the tests pass, and the changes are merged in, Travis will automatically deploy the new code to Heroku. The changes will be live on prdouction at [http://meal.kitchen](http://meal.kitchen).
+When you make a pull request to /Unconditional-Chocolate/mealplan, Travis will initiate a build and run `npm test`. If the tests pass, and if the changes are merged in, Travis will automatically deploy the new code to Heroku. The changes will be live on prdouction at [http://meal.kitchen](http://meal.kitchen).
 
 ## Roadmap
 
