@@ -170,7 +170,13 @@ var AppView = React.createClass({
 
     //If a user is not logged in and tries to access internal app content, redirect them to login.
     if(Child !== SignUp && Child !== LogIn && Child !== LandingPage && !this.state.loggedIn){
-      window.location.hash = '/login';
+      Child = LogIn;
+    }
+
+    //If a user tries to visit review meals without first submitting a query, redirect them to Query.
+    if(!this.state.queryModel && Child === ReviewMeals){
+      window.location.hash = '/mealquery';
+      Child = Query;
     }
 
     /*
@@ -217,7 +223,8 @@ var AppView = React.createClass({
 /*
 EXTERNAL ROUTER
 The external router listens for changes on the window.location property, and
-executes the App View router when necesarry.
+executes the App View router when necesarry. If a user tries to access review
+meals, they get redirected to the Query View since there are no recipes to review!
  */
 
 function render () {
