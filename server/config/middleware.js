@@ -35,7 +35,7 @@ module.exports = function(app, express) {
   router.put('/queries', appController.refillCourseQueue);
 
   //router.get('/recipes', utils.checkUser, recipeController.getYummlyRecipe);
-  router.post('/mealplans/:id/shoppinglist', recipeController.createIngredientsList);
+  router.get('/mealplans/:id/shoppinglist', recipeController.createIngredientsList);
 
   // 'api/mealplan' routing
   router.post('/users/:id/mealplans', utils.checkUser, appController.saveUserMealPlan);
@@ -43,8 +43,8 @@ module.exports = function(app, express) {
 
   //router.get('/users/:id/mealplans/:id' )
   // 'api/preferences' routing
-  router.post('/recipePreferences', recipePreferenceController.updatePreferences);
-  router.put('/recipePreferences', recipePreferenceController.updatePreferences);
+  router.post('/users/:id/preferences', recipePreferenceController.updatePreferences);
+  router.put('/users/:id/preferences', recipePreferenceController.updatePreferences);
 
 
   router.get('/logout', utils.logout);

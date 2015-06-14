@@ -77,7 +77,7 @@ var ReviewMeals = React.createClass({
     profile is sent to the server to be run through the machine learning algorithm.
     This improves future recipe recommendations by Meal Kitchen.
      */
-    var preference = new PreferenceModel();
+    var preference = new PreferenceModel(this.props.user);
     if(!rejectedRecipe.get('flavors')){
       preference.set({
         'preference': false,

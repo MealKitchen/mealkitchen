@@ -4,8 +4,8 @@ var utils = require('../config/utility');
 var MealPlan = require('./mealPlanModel');
 
 
-var processIndividualMealPlan = function(mealPlan, attachedRecipes){
-  var mealPlan = mealPlan.attributes, recipe;
+var processIndividualMealPlan = function(mealPlanBookshelf, attachedRecipes){
+  var mealPlan = mealPlanBookshelf.attributes, recipe;
   var mealPlanObject = {
     breakfastRecipes: [],
     lunchRecipes: [],
