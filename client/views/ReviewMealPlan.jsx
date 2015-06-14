@@ -135,6 +135,10 @@ var ReviewMeals = React.createClass({
   handleSubmit: function(e){
     var that = this;
 
+    if(this.state.mealPlanTitle === ''){
+      return alert('Please enter a name for your Meal Plan before continuing!');
+    }
+
     var mealPlan = new MealPlanModel({
       'title': this.state.mealPlanTitle,
       'userId': this.props.user.get('id'),
