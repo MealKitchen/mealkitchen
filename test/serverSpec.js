@@ -95,39 +95,39 @@ describe('Node server', function() {
     ensureTableCreated('recipes', testRecipeSave);
   });
 
-  // it('should block users from logging in with wrong password', function(done) {
-  //   request
-  //     .post({url: 'http://127.0.0.1:3000/api/user', json: true, body: {login: true, email: 'aoeui@aoeui.com', password: 'asdf'}})
-  //     .on('response', function(response) {
-  //       expect(response.statusCode).to.equal(401);
-  //       done();
-  //     });
-  // });
+  it('should block users from logging in with wrong password', function(done) {
+    request
+      .post({url: 'http://127.0.0.1:3000/api/users/login', json: true, body: {username: 'aoeui@aoeui.com', password: 'asdf'}})
+      .on('response', function(response) {
+        expect(response.statusCode).to.equal(401);
+        done();
+      });
+  });
 
-  // it('should log in users if they have the correct password', function(done) {
-  //   request
-  //     .post({url: 'http://127.0.0.1:3000/api/user', json: true, body: {login: true, email: 'aoeui@aoeui.com', password: 'aoeui'}})
-  //     .on('response', function(response) {
-  //       expect(response.statusCode).to.equal(200);
-  //       expect(response.headers['set-cookie']).to.exist;
-  //       testCookie = response.headers['set-cookie'][0].split(';')[0];
-  //       done();
-  //     });
-  // });
+  it('should log in users if they have the correct password', function(done) {
+    request
+      .post({url: 'http://127.0.0.1:3000/api/users/login', json: true, body: {username: 'aoeui@aoeui.com', password: 'aoeui'}})
+      .on('response', function(response) {
+        expect(response.statusCode).to.equal(200);
+        expect(response.headers['set-cookie']).to.exist;
+        testCookie = response.headers['set-cookie'][0].split(';')[0];
+        done();
+      });
+  });
 
-  // it('should verify a user is checked in by hitting api/users with a GET', function(done) {
-  //   request({
-  //     url: 'http://127.0.0.1:3000/api/user', 
-  //     method: 'GET',
-  //     headers: {
-  //       'Cookie': testCookie
-  //     }
-  //   })
-  //     .on('response', function(response) {
-  //       expect(response.statusCode).to.equal(200);
-  //       done();
-  //     });
-  // });
+  it('should verify a user is checked in by hitting api/users with a GET', function(done) {
+    request({
+      url: 'http://127.0.0.1:3000/api/users/' + testUserId, 
+      method: 'GET',
+      headers: {
+        'Cookie': testCookie
+      }
+    })
+      .on('response', function(response) {
+        expect(response.statusCode).to.equal(200);
+        done();
+      });
+  });
 
   // it('should save meal plans', function(done) {
   //   request
