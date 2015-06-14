@@ -21,8 +21,11 @@ var db = require('bookshelf')(knex);
 db.knex.schema.hasTable('recipes').then(function(exists) {
   if (!exists) {
     db.knex.schema.createTable('recipes', function (recipe) {
+      //individual recipe get-request id
       recipe.string('id').primary();
+      //search request id
       recipe.string('matchId');
+
       recipe.string('recipeName');
       recipe.string('sourceDisplayName');
       recipe.string('smallImgUrl');
@@ -102,6 +105,7 @@ db.knex.schema.hasTable('recipes').then(function(exists) {
                 db.knex.schema.createTable('recipePreferences', function (recipePreferences) {
                   recipePreferences.increments('id').primary();
                   recipePreferences.integer('userId').references('users.id');
+                  recipePreferences.string('recipeMatchId');
                   recipePreferences.boolean('preference');
                   recipePreferences.float('salty');
                   recipePreferences.float('sour');

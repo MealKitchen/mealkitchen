@@ -75,6 +75,7 @@ module.exports = {
 
     new RecipePreference({
       'userId': preference.userId,
+      'matchId': preference.recipeId,
       'preference': preference.preference,
       'salty': preference.salty,
       'sour': preference.sour,
