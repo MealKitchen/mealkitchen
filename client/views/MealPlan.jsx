@@ -8,7 +8,6 @@ var MealPlan = React.createClass({
 
   _createShoppingList: function(){
     var that = this;
-    console.log(that.props.mealPlan);
     $.ajax({
       type: "POST",
       url: "api/mealplans/" + that.props.mealPlan.id + "/shoppinglist",

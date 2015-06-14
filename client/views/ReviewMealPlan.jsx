@@ -150,7 +150,12 @@ var ReviewMeals = React.createClass({
 
     mealPlan.save({}, {
       success: function(model, res) {
-        that.props.setMealPlan(mealPlan);
+        model.set({
+          'breakfastRecipes': that.props.breakfastCollection,
+          'lunchRecipes': that.props.lunchCollection,
+          'dinnerRecipes': that.props.dinnerCollection
+        });
+        that.props.setMealPlan(model);
         that.props.transitionTo('/mealplan');
       },
       error: function(model, err) {

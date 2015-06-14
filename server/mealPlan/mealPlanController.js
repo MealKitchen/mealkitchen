@@ -143,18 +143,18 @@ module.exports = {
 
       new MealPlan({id: mealPlanId}).fetch({withRelated: 'recipes'})
       .then(function(model){
-        var ingredients = [];
+        var ingredients = [], recipeIngredients;
 
         model.related('recipes').forEach(function(item){
 
-          var recipeIngredients = item.get('ingredients');
+          recipeIngredients = item.get('ingredients');
 
           recipeIngredients = recipeIngredients.split('|');
 
           ingredients = ingredients.concat(recipeIngredients);
         });
 
-        resolve(recipeIngredients);
+        resolve(ingredients);
       })
       .catch(function(error){
         reject({'error fetching mealPlan ingredients': error});
