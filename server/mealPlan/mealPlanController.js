@@ -3,39 +3,6 @@ var http = require('http');
 var utils = require('../config/utility');
 var MealPlan = require('./mealPlanModel');
 
-// var processIndividualMealPlan = function(mealPlanBookshelf, attachedRecipes){
-//   var mealPlan = mealPlanBookshelf.attributes, recipe;
-//   var mealPlanObject = {
-//     breakfastRecipes: [],
-//     lunchRecipes: [],
-//     dinnerRecipes: [],
-//     title: mealPlan.title,
-//     userId: mealPlan.userId,
-//     id: mealPlan.id
-//   };
-
-//   var mealPlanRecipes = attachedRecipes.models;
-
-//   for(var j = 0; j < mealPlanRecipes.length; j++){
-//     recipe = mealPlanRecipes[j].attributes;
-//     console.log(recipe);
-//     switch(recipe.course){
-//       case 'breakfast':
-//         mealPlanObject.breakfastRecipes.push(recipe);
-//         break;
-//       case 'lunch':
-//         mealPlanObject.lunchRecipes.push(recipe);
-//         break;
-//       case 'dinner':
-//         mealPlanObject.dinnerRecipes.push(recipe);
-//         break;
-//       default:
-//         break;
-//     }
-//   }
-//   return mealPlanObject;
-// }
-
 var processMealPlansInformation = function(mealPlansBookshelf){
 
   var mealPlansArray = [], mealPlan, mealPlanObject, recipe;
