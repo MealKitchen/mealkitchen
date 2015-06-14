@@ -35,7 +35,7 @@ label {
 
 .how-it-works-container .glyphicon {
   text-align: center;
-  font-size: 2em;
+  font-size: 3em;
 }
 
 .how-it-works-container .default-header {
@@ -44,9 +44,13 @@ label {
   text-align: left;
 }
 
+.row {
+  margin: 0;
+}
+
 .step {
-  margin: 25px 0;
-  font-size: 1.3em;
+  padding: 3%;
+  font-size: 1.5em;
 }
 
 @media (max-width: 1000px) {
@@ -57,12 +61,12 @@ label {
 
   .how-it-works-container .glyphicon {
     text-align: center;
-    font-size: 1.3em;
+    font-size: 2.5em;
   }
 
   .step {
-    margin: 2% 0;
-    font-size: 1em;
+    padding: 2%;
+    font-size: 1.25em;
   }
 }
 
@@ -74,11 +78,11 @@ label {
 
   .how-it-works-container .glyphicon {
     text-align: center;
-    font-size: 1em;
+    font-size: 2em;
   }
 
   .step {
-    margin: 2% 0;
+    padding: 1%;
     font-size: 1em;
   }
 }
@@ -104,6 +108,16 @@ label {
   Jumbotron Styles
 *********************************/
 
+.jumbotron h1 {
+  font-size: 3em;
+  margin: 0;
+}
+
+.jumbotron h3 {
+  line-height: 1.4;
+  margin: 10px 0 20px 0;
+}
+
 .jumbotron .default-header {
   text-align: center;
   margin-top: 1%;
@@ -114,7 +128,7 @@ label {
 }
 
 .jumbotron {
-  padding: 1% 50px;
+  padding: 2% 50px;
   border-radius: 10px;
   background: rgb(192, 192, 192); /* This is for ie8 and below */
   background: rgba(192, 192, 192, 0.3);
