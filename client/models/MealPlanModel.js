@@ -1,5 +1,7 @@
 var MealPlanModel = Backbone.Model.extend({
 
-  url: 'api/mealplan'
+  initialize: function(){
+    this.url = 'api/users/' + this.userId + '/mealplans';
+  },
 
 });

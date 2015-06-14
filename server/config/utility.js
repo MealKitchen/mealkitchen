@@ -25,19 +25,19 @@ exports.isLoggedIn = function(req) {
 
 exports.checkUser = function(req, res, next) {
   if (!exports.isLoggedIn(req)){
-    res.status(401).send({loggedIn: false});
+    res.status(401).send();
   } else {
     next();
   }
 };
 
 exports.sendLoggedInStatus = function(req, res) {
-  res.status(200).send({loggedIn: true});
+  res.status(200).send(req.session.user);
 };
 
 exports.logout = function(req, res) {
   req.session.destroy(function(){
-      res.status(200).send({loggedIn: false});
+      res.status(200).send({});
     });
 };
 

@@ -111,17 +111,15 @@ module.exports = {
     })
   },
   login: function(req, res){
-
+    console.log(req.body);
     //validate user
-    userController.login(req.query.username, req.query.password)
+    userController.login(req.body.username, req.body.password)
     .then(function(user){
       //create user session
       utils.createSession(user, req)
       .then(function(){
 
-        res.status(200).send({
-          id: user.username
-        });
+        res.status(200).send(user);
       })
       .catch(function(error){
         rest.status(500).send({'error creating session': error})
@@ -141,9 +139,7 @@ module.exports = {
       utils.createSession(user, req)
       .then(function(){
 
-        res.status(200).send({
-          id: user.username
-        });
+        res.status(200).send(user);
       })
       .catch(function(error){
         rest.status(500).send({'error creating session': error})

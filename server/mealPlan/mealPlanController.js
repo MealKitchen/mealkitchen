@@ -3,7 +3,40 @@ var http = require('http');
 var utils = require('../config/utility');
 var MealPlan = require('./mealPlanModel');
 
-var processMealPlanInformation = function(mealPlansBookshelf){
+
+var processIndividualMealPlan = function(mealPlan, attachedRecipes){
+  var mealPlan = mealPlan.attributes, recipe;
+  var mealPlanObject = {
+    breakfastRecipes: [],
+    lunchRecipes: [],
+    dinnerRecipes: [],
+    title: mealPlan.title,
+    userId: mealPlan.userId,
+    id: mealPlan.id
+  };
+
+  var mealPlanRecipes = attachedRecipes.models;
+
+  for(var j = 0; j < mealPlanRecipes.length; j++){
+    recipe = mealPlanRecipes[j].attributes;
+    switch(recipe.course){
+      case 'breakfast':
+        mealPlanObject.breakfastRecipes.push(recipe);
+        break;
+      case 'lunch':
+        mealPlanObject.lunchRecipes.push(recipe);
+        break;
+      case 'dinner':
+        mealPlanObject.dinnerRecipes.push(recipe);
+        break;
+      default:
+        break;
+    }
+  }
+  return mealPlanObject;
+}
+
+var processMealPlansInformation = function(mealPlansBookshelf){
 
   var mealPlansArray = [], mealPlan, mealPlanObject, recipe;
 
@@ -15,7 +48,7 @@ var processMealPlanInformation = function(mealPlansBookshelf){
       dinnerRecipes: [],
       title: mealPlan.attributes.title,
       userId: mealPlan.attributes.userId,
-      mealPlanId: mealPlan.attributes.id
+      id: mealPlan.attributes.id
     };
 
     mealPlanRecipes = mealPlan.relations.recipes.models;
@@ -47,9 +80,9 @@ module.exports = {
     var recipeObject = {
       "breakfast": req.body.breakfastRecipes,
       "lunch": req.body.lunchRecipes,
-      "dinner": req.body.dinnerRecipes      
+      "dinner": req.body.dinnerRecipes
     };
-    
+
     for (var key in recipeObject) {
       for (var i = 0; i < recipeObject[key].length; i++) {
         var requestAlias = {};
@@ -86,12 +119,12 @@ module.exports = {
   },
 
   createMealPlan: function (userId, title, recipes) {
-
     return new Promise(function(resolve, reject){
       new MealPlan({ 'userId': userId, 'title': title}).save({}, {method: 'insert'})
       .then(function(mealPlan){
-        mealPlan.recipes().attach(recipes).then(function() {
-          resolve(mealPlan.id);
+        mealPlan.recipes().attach(recipes).then(function(attachedRecipes) {
+          var newMealPlan = processIndividualMealPlan(mealPlan, attachedRecipes);
+          resolve(newMealPlan);
         })
         .catch(function(error) {
           console.error("On attaching recipes to meal plan got:", error);
@@ -104,14 +137,15 @@ module.exports = {
       });
     });
   },
+
   fetchMealPlans: function (userId) {
     return new Promise(function(resolve, reject){
 
       new MealPlan().query({where: {userId: userId}})
         .fetchAll({withRelated: 'recipes'})
         .then(function(mealPlans) {
-          //resolve processed data
-          resolve(processMealPlanInformation(mealPlans));
+          
+          resolve(processMealPlansInformation(mealPlans));
 
         }).catch(function(error) {
           console.error("Sorry, could not find any meal plans for that user. Error:", error);
