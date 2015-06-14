@@ -6,7 +6,7 @@ var CallToAction = React.createClass({
     return (
       <div className="jumbotron-container">
         <div className="jumbotron">
-          <h1 className="default-header">Cook Better Food</h1>
+          <h1 className="default-header">Cook better food</h1>
           <h3 className="sub-header">Create personalized meal plans with recipes you&#39;ll love</h3>
           <div className="action-buttons">
 
