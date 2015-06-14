@@ -20,6 +20,10 @@ var Recipe = React.createClass({
       backgroundImage: 'url(' + imgUrl + ')',
     };
 
+    var recipeClasses = this.props.forReview ?
+                        'thumbnail recipe-preview link-to-recipe col-sm-2' :
+                        'thumbnail recipe-preview col-sm-2';
+
     //Shorten the recipe name to fit in the recipe preview container if the recipe name is too long.
     var recipeName = this.props.recipe.recipeName || this.props.recipe.get('recipeName');
     if (recipeName.length > 35){
@@ -28,7 +32,7 @@ var Recipe = React.createClass({
 
     return (
       <div
-        className="thumbnail recipe-preview col-sm-2"
+        className={recipeClasses}
         style={bgStyle} key={this.props.recipe}
         onClick={this.props.forReview ? function(){} : this._navigateToRecipe} >
 
