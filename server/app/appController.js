@@ -111,7 +111,7 @@ module.exports = {
     })
   },
   login: function(req, res){
-
+    console.log(req.body);
     //validate user
     userController.login(req.body.username, req.body.password)
     .then(function(user){

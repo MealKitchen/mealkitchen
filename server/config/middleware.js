@@ -35,7 +35,7 @@ module.exports = function(app, express) {
   router.put('/queries', appController.refillCourseQueue);
 
   //router.get('/recipes', utils.checkUser, recipeController.getYummlyRecipe);
-  router.post('/recipes/ingredients', recipeController.createIngredientsList);
+  router.post('/mealplans/:id/shoppinglist', recipeController.createIngredientsList);
 
   // 'api/mealplan' routing
   router.post('/users/:id/mealplans', utils.checkUser, appController.saveUserMealPlan);

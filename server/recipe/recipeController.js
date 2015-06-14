@@ -315,12 +315,12 @@ module.exports = {
     });
   },
   createIngredientsList: function (request, response) {
-    if (!request.body.mealPlanId) {
+    if (!request.body.id) {
       response.status(404).send({error: "Meal plan not found!"});
     }
-    var mealPlanId = request.body.mealPlanId;
+    var id = request.body.id;
 
-    new MealPlan({id: mealPlanId}).fetch({withRelated: 'recipes'}).then(function(model){
+    new MealPlan({id: id}).fetch({withRelated: 'recipes'}).then(function(model){
       var ingredients = [];
       model.related('recipes').forEach(function(item){
         var recipeIngredients = item.get('ingredients');
