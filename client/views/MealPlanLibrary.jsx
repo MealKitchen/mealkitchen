@@ -17,10 +17,6 @@ var MealPlanLibrary = React.createClass({
     var mealPlans = new MealPlansCollection(this.props.user);
     mealPlans.fetch({
       success: function(collection, res, options){
-        // var mealPlansArray = mealPlans.map(function(model, i){
-        //   return model;
-        // });
-        // mealPlansArray.reverse();
         that.replaceState({ mealPlans: collection });
         that.props.setMealPlans(collection);
       },

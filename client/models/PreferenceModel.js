@@ -1,5 +1,9 @@
 var PreferenceModel = Backbone.Model.extend({
 
+  initialize: function(user){
+    this.url = 'api/users/' + user.id + '/preferences';
+  },
+
   defaults: {
     'preference': null,
     'recipeId': null,
@@ -11,7 +15,5 @@ var PreferenceModel = Backbone.Model.extend({
     'meaty': null,
     'piquant': null
   },
-
-  url: 'api/recipePreferences'
 
 });
