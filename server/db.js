@@ -105,7 +105,7 @@ db.knex.schema.hasTable('recipes').then(function(exists) {
                 db.knex.schema.createTable('recipePreferences', function (recipePreferences) {
                   recipePreferences.increments('id').primary();
                   recipePreferences.integer('userId').references('users.id');
-                  recipePreferences.string('recipeMatchId');
+                  recipePreferences.string('matchId');
                   recipePreferences.boolean('preference');
                   recipePreferences.float('salty');
                   recipePreferences.float('sour');

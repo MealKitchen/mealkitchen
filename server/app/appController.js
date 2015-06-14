@@ -111,8 +111,7 @@ module.exports = {
     })
   },
   login: function(req, res){
-    console.log(req.body);
-    //validate user
+
     userController.login(req.body.username, req.body.password)
     .then(function(user){
       //create user session
@@ -142,11 +141,22 @@ module.exports = {
         res.status(200).send(user);
       })
       .catch(function(error){
-        rest.status(500).send({'error creating session': error})
+        res.status(500).send({'error creating session': error})
       })
     })
     .catch(function(error){
       res.status(error.status || 500).send({'signup error': error});
+    })
+  },
+
+  createShoppingList: function(req, res){
+
+    mealPlanController.fetchMealPlanIngredients(req.params.id)
+    .then(function(mealPlanShoppingList){
+      res.status(200).send(mealPlanShoppingList);
+    })
+    .catch(function(error){
+      res.status(error.status || 500).send({'error creating shoppingList': error})
     })
   }
 };

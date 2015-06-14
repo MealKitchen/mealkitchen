@@ -138,13 +138,37 @@ module.exports = {
     });
   },
 
+  fetchMealPlanIngredients: function(mealPlanId){
+    return new Promise(function(resolve, reject){
+
+      new MealPlan({id: mealPlanId}).fetch({withRelated: 'recipes'})
+      .then(function(model){
+        var ingredients = [];
+
+        model.related('recipes').forEach(function(item){
+
+          var recipeIngredients = item.get('ingredients');
+
+          recipeIngredients = recipeIngredients.split('|');
+
+          ingredients = ingredients.concat(recipeIngredients);
+        });
+
+        resolve(recipeIngredients);
+      })
+      .catch(function(error){
+        reject({'error fetching mealPlan ingredients': error});
+      })
+    });
+  },
+
   fetchMealPlans: function (userId) {
     return new Promise(function(resolve, reject){
 
       new MealPlan().query({where: {userId: userId}})
         .fetchAll({withRelated: 'recipes'})
         .then(function(mealPlans) {
-          
+
           resolve(processMealPlansInformation(mealPlans));
 
         }).catch(function(error) {
