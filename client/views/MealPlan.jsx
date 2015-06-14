@@ -15,7 +15,6 @@ var MealPlan = React.createClass({
 
   _createShoppingList: function(){
     var that = this;
-    var mealPlanId = {mealPlanId: that.props.mealPlan.get('mealPlanId')};
     $.ajax({
       type: "POST",
       url: "api/recipes/ingredients",
@@ -85,7 +84,7 @@ var MealPlan = React.createClass({
 
               <div className="secondary-container col-md-2">
 
-                <p>Recipe search powered by 
+                <p>Recipe search powered by
                   <a href='http://www.yummly.com/recipes' target="_blank">
                     <img alt='Yummly' src='http://static.yummly.com/api-logo.png'/>
                   </a>

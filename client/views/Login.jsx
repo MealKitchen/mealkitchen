@@ -27,7 +27,7 @@ var LogIn = React.createClass({
     $.ajax({
       type: "POST",
       url: "api/users/login",
-      data: that.state,
+      data: JSON.stringify(that.state),
       dataType: "json",
       contentType: "application/json",
       success: function(res){
