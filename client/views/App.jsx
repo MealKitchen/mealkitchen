@@ -9,7 +9,6 @@ var AppView = React.createClass({
   Much of the contents of the store is created in child views, so App State setters are provided and passed
   to children.
   */
-
   getInitialState: function(){
     return {
       loggedIn: false,
@@ -120,13 +119,6 @@ var AppView = React.createClass({
     });
   },
 
-
-  /*
-  APP RENDER
-  This function renders the App View, which acts as a container for the entire application.
-  You will find an internal router as well as a system for passing props to children inside
-  of this method.
-   */
   render: function() {
 
     /*
@@ -134,7 +126,6 @@ var AppView = React.createClass({
     Whenever the State changes on the app, the appropriate view is selected and rendered
     by the internal router.
      */
-
     var Child;
     switch (this.props.route) {
       case '':
@@ -174,6 +165,12 @@ var AppView = React.createClass({
     if(!this.state.queryModel && Child === ReviewMeals){
       window.location.hash = '/mealquery';
       Child = Query;
+    }
+
+    //If a user tries to visit a meal plan without selecting a meal plan, send them to their meal plan library.
+    if(!this.state.mealPlan && Child === MealPlan){
+      window.location.hash = '/mealplans';
+      Child = MealPlanLibrary;
     }
 
     /*
@@ -223,7 +220,6 @@ The external router listens for changes on the window.location property, and
 executes the App View router when necesarry. If a user tries to access review
 meals, they get redirected to the Query View since there are no recipes to review!
  */
-
 function render () {
   var route = window.location.hash.substr(1);
   React.render(<AppView route={route} />, document.body);

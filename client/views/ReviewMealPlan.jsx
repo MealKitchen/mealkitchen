@@ -169,6 +169,7 @@ var ReviewMeals = React.createClass({
         <div className="split-container">
           <div className="row">
             <div className="primary-container col-md-10">
+
               <h2 className="page-header">Review Meal Plan</h2>
 
               <input
@@ -179,10 +180,10 @@ var ReviewMeals = React.createClass({
                 value={this.value}
                 onChange={this.handleChange} />
 
+
               <div className="course-container">
                 <h3 className="section-header">Dinner</h3>
                 <div className="row">
-
                   {this.props.dinnerCollection.map(function(item, i) {
                     return [
                       <Recipe
@@ -193,14 +194,13 @@ var ReviewMeals = React.createClass({
                         rejectRecipe={this._rejectRecipe} />
                     ];
                   }, this)}
-
                 </div>
               </div>
+
 
               <div className="course-container">
                 <h3 className="section-header">Lunch</h3>
                 <div className="row">
-
                   {this.props.lunchCollection.map(function(item, i) {
                     return [
                       <Recipe
@@ -211,14 +211,12 @@ var ReviewMeals = React.createClass({
                         rejectRecipe={this._rejectRecipe} />
                     ];
                   }, this)}
-
                 </div>
               </div>
 
               <div className="course-container">
                 <h3 className="section-header">Breakfast</h3>
                 <div className="row">
-
                   {this.props.breakfastCollection.map(function(item, i) {
                     return [
                       <Recipe
@@ -229,24 +227,20 @@ var ReviewMeals = React.createClass({
                         rejectRecipe={this._rejectRecipe} />
                     ];
                   }, this)}
-
                 </div>
               </div>
 
               <div className="secondary-container col-md-2">
-
                 <p>Recipe search powered by
                   <a href='http://www.yummly.com/recipes' target="_blank">
                     <img alt='Yummly' src='http://static.yummly.com/api-logo.png'/>
                   </a>
                 </p>
-
               </div>
 
             </div>
 
             <div className="secondary-container col-md-2">
-
               <button
                 type="button"
                 className="btn
@@ -255,7 +249,6 @@ var ReviewMeals = React.createClass({
                 onClick={this.handleSubmit}>
                   Save meal plan
               </button>
-
             </div>
 
           </div>
