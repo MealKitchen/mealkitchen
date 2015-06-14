@@ -2,13 +2,6 @@
 
 var MealPlan = React.createClass({
 
-  mixins: [Backbone.Events],
-
-  //TODO: state should be the recipes collection returned from yummly
-  getInitialState: function() {
-    return {};
-  },
-
   componentWillMount: function(){
     this.props.setBGImg(false);
   },
@@ -17,14 +10,16 @@ var MealPlan = React.createClass({
     var that = this;
     $.ajax({
       type: "POST",
-      url: "api/recipes/ingredients",
-      data: JSON.stringify(mealPlanId),
+      url: "api/mealplans/" + that.props.mealPlan.id + "/shoppinglist",
+      // data: JSON.stringify(that.props.mealPlan.id),
       dataType: "json",
       contentType: "application/json",
       success: function(res){
-        console.log("response: ", res);
-        that.props.setIngredientsCollection(res);
+        that.props.setShoppingList(res);
         that.props.transitionTo('/shoppinglist');
+      },
+      error: function(xhr, ajaxOptions, thrownError){
+        alert('There was an error with your request!');
       }
     });
   },

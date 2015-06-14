@@ -1,6 +1,8 @@
 var IngredientsCollection = Backbone.Collection.extend({
 
-  url: 'api/recipes/collection',
+  initialize: function(mealplan){
+    this.url = '/mealplans/' + mealplan.id + '/ingredients'
+  },
 
   model: IngredientModel
 

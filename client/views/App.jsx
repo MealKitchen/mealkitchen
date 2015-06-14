@@ -21,7 +21,7 @@ var AppView = React.createClass({
       breakfastCollection: null,
       lunchCollection: null,
       dinnerCollection: null,
-      ingredientsCollection: null
+      shoppingList: null
     };
   },
 
@@ -58,8 +58,8 @@ var AppView = React.createClass({
     this.setState({ dinnerCollection: dinnerCollection });
   },
 
-  _setIngredientsCollection: function(ingredientsCollection){
-    this.setState({ ingredientsCollection: ingredientsCollection });
+  _setShoppingList: function(shoppingList){
+    this.setState({ shoppingList: shoppingList });
   },
 
   _setBGImg: function(bool){
@@ -210,7 +210,7 @@ var AppView = React.createClass({
           setBreakfastCollection = {this._setBreakfastCollection}
           setLunchCollection = {this._setLunchCollection}
           setDinnerCollection = {this._setDinnerCollection}
-          setIngredientsCollection = {this._setIngredientsCollection} />
+          setShoppingList = {this._setShoppingList} />
 
       </div>
     );

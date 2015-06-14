@@ -72,7 +72,7 @@ var ReviewMeals = React.createClass({
     var rejectedRecipe = this.props[collection].remove(this.props[collection].at(modelId));
 
     /*
-    PREFERENCES
+    USER PREFERENCES
     Whenever a recipe is rejected, a preference model with the recipe's id and flavor
     profile is sent to the server to be run through the machine learning algorithm.
     This improves future recipe recommendations by Meal Kitchen.
@@ -139,7 +139,8 @@ var ReviewMeals = React.createClass({
       return alert('Please enter a name for your Meal Plan before continuing!');
     }
 
-    var mealPlan = new MealPlanModel({
+    var mealPlan = new MealPlanModel(this.props.user);
+    var mealPlan.set({
       'title': this.state.mealPlanTitle,
       'userId': this.props.user.get('id'),
       'breakfastRecipes': this.props.breakfastCollection,

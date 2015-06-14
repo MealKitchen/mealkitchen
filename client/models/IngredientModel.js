@@ -1,5 +1,7 @@
 var IngredientModel = Backbone.Model.extend({
 
-  url: 'api/recipes/ingredients'
+  initialize: function(mealplan){
+    this.url = '/mealplans/' + mealplan.id + '/ingredients'
+  },
 
 });
