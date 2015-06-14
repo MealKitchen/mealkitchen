@@ -34,7 +34,7 @@ module.exports = function(app, express) {
   router.post('/queries', appController.getUserRecipes);
   router.put('/queries', appController.refillCourseQueue);
 
-  router.get('/mealplans/:id/shoppinglist', appController.createShoppingList);
+  router.post('/mealplans/:id/shoppinglist', appController.createShoppingList);
 
   // 'api/mealplan' routing
   router.post('/users/:id/mealplans', utils.checkUser, appController.saveUserMealPlan);

@@ -75,7 +75,8 @@ module.exports = {
 
         mealPlanController.createMealPlan(req.session.user.id, req.body.title, utils.getObjectRecipeIds(recipesFromYummly))
         .then(function(mealPlanId){
-          res.status(200).send({mealPlanId: mealPlanId});
+          req.body.id = mealPlanId;
+          res.status(200).send(req.body);
         })
         .catch(function(error){
           res.status(500).send({'error saving mealplan': error});
@@ -150,7 +151,7 @@ module.exports = {
   },
 
   createShoppingList: function(req, res){
-
+    console.log('creating shopping list', req.params.id);
     mealPlanController.fetchMealPlanIngredients(req.params.id)
     .then(function(mealPlanShoppingList){
       res.status(200).send(mealPlanShoppingList);

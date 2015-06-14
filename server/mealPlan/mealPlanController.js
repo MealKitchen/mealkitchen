@@ -3,38 +3,38 @@ var http = require('http');
 var utils = require('../config/utility');
 var MealPlan = require('./mealPlanModel');
 
+// var processIndividualMealPlan = function(mealPlanBookshelf, attachedRecipes){
+//   var mealPlan = mealPlanBookshelf.attributes, recipe;
+//   var mealPlanObject = {
+//     breakfastRecipes: [],
+//     lunchRecipes: [],
+//     dinnerRecipes: [],
+//     title: mealPlan.title,
+//     userId: mealPlan.userId,
+//     id: mealPlan.id
+//   };
 
-var processIndividualMealPlan = function(mealPlanBookshelf, attachedRecipes){
-  var mealPlan = mealPlanBookshelf.attributes, recipe;
-  var mealPlanObject = {
-    breakfastRecipes: [],
-    lunchRecipes: [],
-    dinnerRecipes: [],
-    title: mealPlan.title,
-    userId: mealPlan.userId,
-    id: mealPlan.id
-  };
+//   var mealPlanRecipes = attachedRecipes.models;
 
-  var mealPlanRecipes = attachedRecipes.models;
-
-  for(var j = 0; j < mealPlanRecipes.length; j++){
-    recipe = mealPlanRecipes[j].attributes;
-    switch(recipe.course){
-      case 'breakfast':
-        mealPlanObject.breakfastRecipes.push(recipe);
-        break;
-      case 'lunch':
-        mealPlanObject.lunchRecipes.push(recipe);
-        break;
-      case 'dinner':
-        mealPlanObject.dinnerRecipes.push(recipe);
-        break;
-      default:
-        break;
-    }
-  }
-  return mealPlanObject;
-}
+//   for(var j = 0; j < mealPlanRecipes.length; j++){
+//     recipe = mealPlanRecipes[j].attributes;
+//     console.log(recipe);
+//     switch(recipe.course){
+//       case 'breakfast':
+//         mealPlanObject.breakfastRecipes.push(recipe);
+//         break;
+//       case 'lunch':
+//         mealPlanObject.lunchRecipes.push(recipe);
+//         break;
+//       case 'dinner':
+//         mealPlanObject.dinnerRecipes.push(recipe);
+//         break;
+//       default:
+//         break;
+//     }
+//   }
+//   return mealPlanObject;
+// }
 
 var processMealPlansInformation = function(mealPlansBookshelf){
 
@@ -122,9 +122,9 @@ module.exports = {
     return new Promise(function(resolve, reject){
       new MealPlan({ 'userId': userId, 'title': title}).save({}, {method: 'insert'})
       .then(function(mealPlan){
-        mealPlan.recipes().attach(recipes).then(function(attachedRecipes) {
-          var newMealPlan = processIndividualMealPlan(mealPlan, attachedRecipes);
-          resolve(newMealPlan);
+        mealPlan.recipes().attach(recipes).then(function() {
+
+          resolve(mealPlan.id);
         })
         .catch(function(error) {
           console.error("On attaching recipes to meal plan got:", error);
