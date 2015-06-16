@@ -129,33 +129,33 @@ describe('Node server', function() {
       });
   });
 
-  // it('should save meal plans', function(done) {
-  //   request
-  //     .post({
-  //       url: 'http://127.0.0.1:3000/api/mealplan',
-  //       headers: { 'Cookie': testCookie },
-  //       json: true, 
-  //       body: {
-  //         userId: testUserId,
-  //         breakfastRecipes: [],
-  //         lunchRecipes: [],
-  //         dinnerRecipes: [{id: testRecipeId}]
-  //       }
-  //     })
-  //     .on('response', function(response) {
-  //       expect(response.statusCode).to.equal(200);
-  //       new MealPlan({userId: testUserId}).fetch().then(function(mealPlan) {
-  //         expect(mealPlan).to.exist;
-  //         done();
-  //       });
-  //     });
-  // });
+  it('should save meal plans', function(done) {
+    request
+      .post({
+        url: 'http://127.0.0.1:3000/api/users/' + testUserId + '/mealplans',
+        headers: { 'Cookie': testCookie },
+        json: true, 
+        body: {
+          userId: testUserId,
+          breakfastRecipes: [],
+          lunchRecipes: [],
+          dinnerRecipes: [{id: testRecipeId}]
+        }
+      })
+      .on('response', function(response) {
+        expect(response.statusCode).to.equal(200);
+        new MealPlan({userId: testUserId}).fetch().then(function(mealPlan) {
+          expect(mealPlan).to.exist;
+          done();
+        });
+      });
+  });
 
   after(function(done) {
-    // db.knex.select('id').from('mealPlans').where('userId', testUserId).then(function(resp) {
-    //   var mealPlanId = resp[0].id;
-    //   db.knex('mealPlans_recipes').where('mealPlan_id', mealPlanId).del().then(function() {
-    //     db.knex('mealPlans').where('id', mealPlanId).del().then(function() {
+    db.knex.select('id').from('mealPlans').where('userId', testUserId).then(function(resp) {
+      var mealPlanId = resp[0].id;
+      db.knex('mealPlans_recipes').where('mealPlan_id', mealPlanId).del().then(function() {
+        db.knex('mealPlans').where('id', mealPlanId).del().then(function() {
           db.knex('recipes').where('id', 'New-Orleans-Jambalaya-TEST').del().then(function() {
             db.knex('recipePreferences').where('userId', testUserId).del().then(function() {
               db.knex('users').where('id', testUserId).del().then(function() {
@@ -163,8 +163,8 @@ describe('Node server', function() {
               });
             });
           });
-      //   });
-      // });
-    // });
+        });
+      });
+    });
   });
 });
