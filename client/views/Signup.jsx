@@ -87,8 +87,7 @@ var SignUp = React.createClass({
           </form>
 
           <p className="suggested-action">
-            Already have an account with us?
-            <a href="/#/login">Login here.</a>
+            Already have an account with us? <a href="/#/login">Login here.</a>
           </p>
 
         </div>

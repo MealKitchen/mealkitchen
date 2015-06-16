@@ -13,16 +13,21 @@ var MealPlanLink = React.createClass({
 
   _mealLink: function(){
     this.props.setMealPlan(this.props.mealPlan);
+    console.log(this.props.mealPlan);
     this.props.transitionTo('/mealplan');
   },
 
   render : function() {
 
     //Find main focus of meal plan to display appropriate image on the screen to represent the Meal Plan. Currently defaults to dinner.
+    var numDinners = this.state.dinners.length;
+    var numLunches = this.state.lunches.length;
+    var numBreakfasts = this.state.breakfasts.length;
+
     var imgUrl;
-    if(this.state.dinners.length > 0){
+    if(numDinners > 0){
       imgUrl = this.state.dinners[0].smallImgUrl;
-    } else if(this.state.lunches.length > 0){
+    } else if(numLunches > 0){
       imgUrl = this.state.lunches[0].smallImgUrl;
     } else {
       imgUrl = this.state.breakfasts[0].smallImgUrl;
@@ -31,6 +36,7 @@ var MealPlanLink = React.createClass({
     var bgStyle = {
       backgroundImage: 'url(' + imgUrl + ')',
     };
+
 
     return (
       <div
@@ -41,9 +47,7 @@ var MealPlanLink = React.createClass({
         <div className="overlay">
           <p className="overlay-title">{this.state.title}</p>
           <p className="overlay-text">
-            {this.state.dinners.length} D |
-            {this.state.lunches.length} L |
-            {this.state.breakfasts.length} B
+            {numDinners} D | {numLunches} L | {numBreakfasts} B
           </p>
         </div>
 

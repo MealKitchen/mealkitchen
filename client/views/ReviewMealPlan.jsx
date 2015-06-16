@@ -72,7 +72,7 @@ var ReviewMeals = React.createClass({
     var rejectedRecipe = this.props[collection].remove(this.props[collection].at(modelId));
 
     /*
-    PREFERENCES
+    USER PREFERENCES
     Whenever a recipe is rejected, a preference model with the recipe's id and flavor
     profile is sent to the server to be run through the machine learning algorithm.
     This improves future recipe recommendations by Meal Kitchen.
@@ -139,7 +139,8 @@ var ReviewMeals = React.createClass({
       return alert('Please enter a name for your Meal Plan before continuing!');
     }
 
-    var mealPlan = new MealPlanModel({
+    var mealPlan = new MealPlanModel(this.props.user.id);
+    mealPlan.set({
       'title': this.state.mealPlanTitle,
       'userId': this.props.user.get('id'),
       'breakfastRecipes': this.props.breakfastCollection,
@@ -149,7 +150,12 @@ var ReviewMeals = React.createClass({
 
     mealPlan.save({}, {
       success: function(model, res) {
-        that.props.setMealPlan(mealPlan);
+        model.set({
+          'breakfastRecipes': that.props.breakfastCollection,
+          'lunchRecipes': that.props.lunchCollection,
+          'dinnerRecipes': that.props.dinnerCollection
+        });
+        that.props.setMealPlan(model);
         that.props.transitionTo('/mealplan');
       },
       error: function(model, err) {
@@ -163,6 +169,7 @@ var ReviewMeals = React.createClass({
         <div className="split-container">
           <div className="row">
             <div className="primary-container col-md-10">
+
               <h2 className="page-header">Review Meal Plan</h2>
 
               <input
@@ -173,10 +180,10 @@ var ReviewMeals = React.createClass({
                 value={this.value}
                 onChange={this.handleChange} />
 
+
               <div className="course-container">
                 <h3 className="section-header">Dinner</h3>
                 <div className="row">
-
                   {this.props.dinnerCollection.map(function(item, i) {
                     return [
                       <Recipe
@@ -187,14 +194,13 @@ var ReviewMeals = React.createClass({
                         rejectRecipe={this._rejectRecipe} />
                     ];
                   }, this)}
-
                 </div>
               </div>
+
 
               <div className="course-container">
                 <h3 className="section-header">Lunch</h3>
                 <div className="row">
-
                   {this.props.lunchCollection.map(function(item, i) {
                     return [
                       <Recipe
@@ -205,14 +211,12 @@ var ReviewMeals = React.createClass({
                         rejectRecipe={this._rejectRecipe} />
                     ];
                   }, this)}
-
                 </div>
               </div>
 
               <div className="course-container">
                 <h3 className="section-header">Breakfast</h3>
                 <div className="row">
-
                   {this.props.breakfastCollection.map(function(item, i) {
                     return [
                       <Recipe
@@ -223,24 +227,20 @@ var ReviewMeals = React.createClass({
                         rejectRecipe={this._rejectRecipe} />
                     ];
                   }, this)}
-
                 </div>
               </div>
 
               <div className="secondary-container col-md-2">
-
                 <p>Recipe search powered by
                   <a href='http://www.yummly.com/recipes' target="_blank">
                     <img alt='Yummly' src='http://static.yummly.com/api-logo.png'/>
                   </a>
                 </p>
-
               </div>
 
             </div>
 
             <div className="secondary-container col-md-2">
-
               <button
                 type="button"
                 className="btn
@@ -249,7 +249,6 @@ var ReviewMeals = React.createClass({
                 onClick={this.handleSubmit}>
                   Save meal plan
               </button>
-
             </div>
 
           </div>

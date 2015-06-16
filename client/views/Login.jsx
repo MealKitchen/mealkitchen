@@ -90,8 +90,7 @@ var LogIn = React.createClass({
           </form>
 
           <p className="suggested-action">
-            Don&#39;t have an account with us?
-            <a href="/#/signup">Sign up here.</a>
+            Don&#39;t have an account with us? <a href="/#/signup">Sign up here.</a>
           </p>
 
         </div>

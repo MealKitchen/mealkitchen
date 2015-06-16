@@ -156,7 +156,7 @@ var saveRecipe = function(recipe, course){
 module.exports = {
 
   createRecipes: function (queryModel, userCourseFlavorPreferences, attempts) {
-    
+
     return new Promise(function(resolve, reject) {
       attempts = attempts || 0;
       attempts++;
@@ -185,7 +185,7 @@ module.exports = {
 
           var expected = [numBreakfastsExpected, numLunchesExpected, numDinnersExpected];
           var recieved = [breakfasts.length, lunches.length, dinners.length];
-          
+
           //checking if we have enough results to fulfil user request
           if (utils.resultsLengthValid(expected, recieved)) {
             resolve({
@@ -312,26 +312,6 @@ module.exports = {
       .catch(function(error){
         reject({'error saving recipe array': error});
       })
-    });
-  },
-  createIngredientsList: function (request, response) {
-    if (!request.body.id) {
-      response.status(404).send({error: "Meal plan not found!"});
-    }
-    var id = request.body.id;
-
-    new MealPlan({id: id}).fetch({withRelated: 'recipes'}).then(function(model){
-      var ingredients = [];
-      model.related('recipes').forEach(function(item){
-        var recipeIngredients = item.get('ingredients');
-        recipeIngredients = recipeIngredients.split('|');
-        console.log('recipe ingredients after split', recipeIngredients);
-        ingredients = ingredients.concat(recipeIngredients);
-      });
-      response.status(200).send(ingredients);
-    })
-    .catch(function(error) {
-      response.status(404).send({error: "Meal plan not found!"});
     });
   }
 };

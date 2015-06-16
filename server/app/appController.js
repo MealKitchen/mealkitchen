@@ -75,7 +75,8 @@ module.exports = {
 
         mealPlanController.createMealPlan(req.session.user.id, req.body.title, utils.getObjectRecipeIds(recipesFromYummly))
         .then(function(mealPlanId){
-          res.status(200).send({mealPlanId: mealPlanId});
+          req.body.id = mealPlanId;
+          res.status(200).send(req.body);
         })
         .catch(function(error){
           res.status(500).send({'error saving mealplan': error});
@@ -111,8 +112,7 @@ module.exports = {
     })
   },
   login: function(req, res){
-    console.log(req.body);
-    //validate user
+
     userController.login(req.body.username, req.body.password)
     .then(function(user){
       //create user session
@@ -142,11 +142,22 @@ module.exports = {
         res.status(200).send(user);
       })
       .catch(function(error){
-        rest.status(500).send({'error creating session': error})
+        res.status(500).send({'error creating session': error})
       })
     })
     .catch(function(error){
       res.status(error.status || 500).send({'signup error': error});
+    })
+  },
+
+  createShoppingList: function(req, res){
+    console.log('creating shopping list', req.params.id);
+    mealPlanController.fetchMealPlanIngredients(req.params.id)
+    .then(function(mealPlanShoppingList){
+      res.status(200).send(mealPlanShoppingList);
+    })
+    .catch(function(error){
+      res.status(error.status || 500).send({'error creating shoppingList': error})
     })
   }
 };

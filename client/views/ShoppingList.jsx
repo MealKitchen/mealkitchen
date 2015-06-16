@@ -2,12 +2,6 @@
 
 var ShoppingList = React.createClass({
 
-  mixins: [Backbone.Events],
-
-  getInitialState: function () {
-    return {};
-  },
-
   componentWillMount: function(){
     this.props.setBGImg(false);
   },
@@ -33,7 +27,7 @@ var ShoppingList = React.createClass({
             </h2>
             <ul className='list-group'>
 
-              {that.props.ingredients.map(function(ingredient, i) {
+              {that.props.shoppingList.map(function(ingredient, i) {
                 return [
                     <li
                       className='list-group-item ingredient'

@@ -11,7 +11,9 @@ var Recipe = React.createClass({
     window.open(baseUrl + (this.props.recipe.id || this.props.recipe.get('id')));
   },
 
-  render : function() {
+  render: function() {
+
+    console.log(this.props.recipe.smallImgUrl);
     //Get the image url from Yummly and modify it to get a bigger image.
     //Note: this will probably break if Yummly changes their image urls.
     var imgUrl = this.props.recipe.smallImgUrl || this.props.recipe.get('smallImageUrls')[0];

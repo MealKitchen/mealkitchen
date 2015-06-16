@@ -12,7 +12,6 @@ var MealPlanLibrary = React.createClass({
 
   componentDidMount: function(){
     var that = this;
-    debugger;
     //This method call gets the user's previous Meal Plans from the server to display on the page.
     var mealPlans = new MealPlansCollection(this.props.user);
     mealPlans.fetch({
@@ -26,10 +25,12 @@ var MealPlanLibrary = React.createClass({
     });
   },
 
-  render : function() {
+  render: function() {
     return (
       <div className="library-container">
-        <h1 className="page-header">Meal Plan Library ({this.state.mealPlans.length})</h1>
+        <h1 className="page-header">
+          Meal Plan Library ({this.props.mealPlans ? this.props.mealPlans.length : 0})
+        </h1>
         <div className="row">
 
           <div
@@ -37,11 +38,16 @@ var MealPlanLibrary = React.createClass({
             data-route='/mealquery'
             onClick={this.props.linkHandler}>
 
-            <span className="glyphicon glyphicon-plus" aria-hidden="true"></span>
+            <span
+              className="glyphicon glyphicon-plus"
+              data-route='/mealquery'
+              onClick={this.props.linkHandler}
+              aria-hidden="true">
+            </span>
             <p className="overlay-title">Create New Meal Plan</p>
           </div>
 
-          {this.state.mealPlans.map(function(mealPlan, i) {
+          {this.props.mealPlans ? this.props.mealPlans.map(function(mealPlan, i) {
               return (
                 <MealPlanLink
                   key={i}
@@ -49,7 +55,7 @@ var MealPlanLibrary = React.createClass({
                   setMealPlan={this.props.setMealPlan}
                   transitionTo={this.props.transitionTo} />
               )
-            }, this)}
+            }, this) : function(){}}
 
         </div>
       </div>
