@@ -183,7 +183,6 @@ p.suggested-action {
   opacity: 0;
   margin-top: 10px;
   text-align: center;
-
 }
 
 .recipe-preview {
@@ -196,8 +195,11 @@ p.suggested-action {
   -o-background-size: cover;
   background-size: cover;
   background-position: center;
-  cursor: pointer;
   overflow: hidden;
+}
+
+.link-to-recipe {
+  cursor: pointer;
 }
 
 .recipe-preview:hover {
