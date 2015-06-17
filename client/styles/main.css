@@ -72,6 +72,11 @@ label {
 }
 
 @media (max-width: 750px) {
+
+  .how-it-works-container {
+    display: none;
+  }
+
   .how-it-works-container .default-header {
     font-size: 1.2em;
     text-align: center;
