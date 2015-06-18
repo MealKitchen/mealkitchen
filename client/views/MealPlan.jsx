@@ -7,7 +7,9 @@ var MealPlan = React.createClass({
   },
 
   _createShoppingList: function(){
+    React.findDOMNode(this.refs.submitButton).disabled = true;
     var that = this;
+
     $.ajax({
       type: "POST",
       url: "api/mealplans/" + that.props.mealPlan.id + "/shoppinglist",
@@ -19,6 +21,7 @@ var MealPlan = React.createClass({
       },
       error: function(xhr, ajaxOptions, thrownError){
         alert('There was an error with your request!');
+        React.findDOMNode(that.refs.submitButton).disabled = false;
       }
     });
   },
@@ -28,7 +31,6 @@ var MealPlan = React.createClass({
     var dinnerRecipes = this.props.mealPlan.get('dinnerRecipes');
     var lunchRecipes = this.props.mealPlan.get('lunchRecipes');
     var breakfastRecipes = this.props.mealPlan.get('breakfastRecipes');
-    console.log(dinnerRecipes.length, dinnerRecipes);
 
     return (
       <div className="split-container">
@@ -95,7 +97,8 @@ var MealPlan = React.createClass({
           <div className="secondary-container col-md-2">
             <button
               className="btn btn-primary btn-large"
-              type='button'
+              type="button"
+              ref="submitButton"
               onClick={this._createShoppingList}>
               Create Shopping List
             </button>
