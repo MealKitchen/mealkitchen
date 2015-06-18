@@ -121,9 +121,12 @@ var Query = React.createClass({
         that.props.transitionTo('/reviewmeals');
       },
       error: function(model, err){
-        console.error(err);
         React.findDOMNode(that.refs.submitButton).disabled = false;
-        alert("There was an error with your request, please try adjusting your filters.")
+        if(err.status === 406) {
+          alert("There was an error with your request, please try adjusting your filters.");
+        } else {
+          alert("There was an error with Yummly, please refresh the page and try again.")
+        }
       }
     });
   },
