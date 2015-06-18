@@ -28,11 +28,16 @@ var queryYummly = function(queryString){
         });
 
         yummlyResponse.on('end', function () {
-          results = JSON.parse(str);
+          try {
+            results = JSON.parse(str);
+            resolve(results.matches);
+          } catch (error) {
+            console.log('On parsing data from Yummly got error', error);
+            console.log('The Yummly data was', str);
+            reject(error);
+          }
 
           //we first have the matches here
-          resolve(results.matches);
-
         });
         yummlyResponse.on('error', function(error){
           reject(error);
