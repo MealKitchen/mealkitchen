@@ -70,6 +70,7 @@ var Query = React.createClass({
    */
   handleSubmit: function(e){
     e.preventDefault();
+    React.findDOMNode(this.refs.submitButton).disabled = true;
     var that = this;
 
     //Prevent submission if no recipes are requested.
@@ -121,6 +122,7 @@ var Query = React.createClass({
       },
       error: function(model, err){
         console.error(err);
+        React.findDOMNode(that.refs.submitButton).disabled = false;
         alert("There was an error with your request, please try adjusting your filters.")
       }
     });
@@ -263,6 +265,7 @@ var Query = React.createClass({
             <input
               type="submit"
               value="Create Plan"
+              ref="submitButton"
               className="btn btn-primary btn-medium" />
 
           </div>

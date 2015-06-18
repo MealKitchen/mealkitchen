@@ -139,6 +139,8 @@ var ReviewMeals = React.createClass({
       return alert('Please enter a name for your Meal Plan before continuing!');
     }
 
+    React.findDOMNode(this.refs.submitButton).disabled = true;
+
     var mealPlan = new MealPlanModel(this.props.user.id);
     mealPlan.set({
       'title': this.state.mealPlanTitle,
@@ -160,6 +162,7 @@ var ReviewMeals = React.createClass({
       },
       error: function(model, err) {
         console.error("There was an error with your request! ", err);
+        React.findDOMNode(that.refs.submitButton).disabled = false;
       }
     });
   },
@@ -243,9 +246,8 @@ var ReviewMeals = React.createClass({
             <div className="secondary-container col-md-2">
               <button
                 type="button"
-                className="btn
-                btn-primary
-                btn-large"
+                className="btn btn-primary btn-large"
+                ref="submitButton"
                 onClick={this.handleSubmit}>
                   Save meal plan
               </button>
