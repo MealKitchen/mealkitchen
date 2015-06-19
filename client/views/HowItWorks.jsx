@@ -27,7 +27,7 @@ var HowItWorks = React.createClass({
           <a href="http://zackfischmann.com/" target="_blank">Zack Fischmann</a>,&nbsp;and&nbsp; 
           <a href="https://www.linkedin.com/in/melaniegin" target="_blank">Melanie Gin</a>&nbsp;|&nbsp;
           View on &nbsp; 
-          <a href="https://github.com/Unconditional-Chocolate/mealplan" target="_blank">GitHub</a>
+          <a href="https://github.com/MealKitchen/mealkitchen" target="_blank">GitHub</a>
           </p>
         </div>
       </div>
