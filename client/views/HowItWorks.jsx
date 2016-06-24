@@ -20,16 +20,6 @@ var HowItWorks = React.createClass({
             <p className="step-text">3. Generate list of ingredients for purchase</p>
           </div>
         </div>
-        <div className="attribution-container">
-          <p>Built by &nbsp;
-          <a href="https://www.linkedin.com/in/asponring" target="_blank">Andy Sponring</a>,&nbsp; 
-          <a href="https://www.linkedin.com/in/marktausch" target="_blank">Mark Tausch</a>,&nbsp;
-          <a href="http://zackfischmann.com/" target="_blank">Zack Fischmann</a>,&nbsp;and&nbsp; 
-          <a href="https://www.linkedin.com/in/melaniegin" target="_blank">Melanie Gin</a>&nbsp;|&nbsp;
-          View on &nbsp; 
-          <a href="https://github.com/MealKitchen/mealkitchen" target="_blank">GitHub</a>
-          </p>
-        </div>
       </div>
     );
   }
