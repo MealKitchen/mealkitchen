@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/Unconditional-Chocolate/mealplan.svg?branch=master)](https://travis-ci.org/Unconditional-Chocolate/mealplan)
+[![Build Status](https://travis-ci.org/MealKitchen/mealkitchen.svg?branch=master)](https://travis-ci.org/MealKitchen/mealkitchen)
 
 # Meal Kitchen
 
